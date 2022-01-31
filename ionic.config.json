@@ -1,0 +1,7 @@
+{
+  "name": "found-wisdom",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
