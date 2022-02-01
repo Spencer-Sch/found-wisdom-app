@@ -12,6 +12,7 @@ const WisdomCard: React.FC = () => {
       <IonItem
         className="ion-no-padding"
         onClick={() => console.log('card was clicked')}
+        href="/wisdom"
       >
         <IonCardContent>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cupiditate

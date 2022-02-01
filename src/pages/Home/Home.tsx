@@ -13,7 +13,7 @@ import { add } from 'ionicons/icons';
 
 import './Home.css';
 
-import WisdomList from '../components/WisdomList/WisdomList';
+import WisdomList from '../../components/WisdomList/WisdomList';
 
 const Home: React.FC = () => {
   return (
