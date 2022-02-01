@@ -4,14 +4,22 @@ import WisdomCard from '../WisdomCard/WisdomCard';
 
 import './WisdomList.css';
 
-const WisdomList: React.FC = () => {
+interface ItemsProps {
+  items: { id: string; title: string; date: string; text: string }[];
+}
+
+const WisdomList: React.FC<ItemsProps> = (props) => {
   return (
     <div>
-      <WisdomCard />
-      <WisdomCard />
-      <WisdomCard />
-      <WisdomCard />
-      <WisdomCard />
+      {props.items.map((item) => (
+        <WisdomCard
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          date={item.date}
+          text={item.text}
+        />
+      ))}
     </div>
   );
 };

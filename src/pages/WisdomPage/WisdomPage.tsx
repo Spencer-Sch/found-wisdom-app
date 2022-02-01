@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   IonButton,
   IonCol,
@@ -11,7 +13,6 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import React from 'react';
 
 const WisdomPage: React.FC = () => {
   return (
@@ -62,6 +63,7 @@ const WisdomPage: React.FC = () => {
                 expand="full"
                 color="secondary"
                 className="ion-text-uppercase"
+                href="/wisdom/edit/:wisdomid"
               >
                 edit
               </IonButton>
