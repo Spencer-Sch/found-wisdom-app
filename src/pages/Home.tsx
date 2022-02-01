@@ -7,6 +7,8 @@ import {
 } from '@ionic/react';
 import './Home.css';
 
+import WisdomList from '../components/WisdomList/WisdomList';
+
 const Home: React.FC = () => {
   return (
     <IonPage>
@@ -22,6 +24,7 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         {/* Page Content Here */}
+        <WisdomList />
       </IonContent>
     </IonPage>
   );
