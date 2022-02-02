@@ -11,6 +11,7 @@ import {
   IonHeader,
   IonInput,
   IonItem,
+  IonLabel,
   IonList,
   IonModal,
   IonPage,
@@ -52,10 +53,14 @@ const WisdomPage: React.FC = (props) => {
       <IonContent>
         <IonList>
           <IonItem>
+            <IonLabel position="stacked">Title</IonLabel>
             <IonInput value={title} />
           </IonItem>
           <IonItem>
-            <IonInput value={date} />
+            <IonLabel position="stacked">Date</IonLabel>
+            <IonText className="ion-margin-top">
+              <p style={{ margin: '0' }}>{date}</p>
+            </IonText>
             <IonButton onClick={() => setShowModal(true)}>choose</IonButton>
             <IonModal isOpen={showModal}>
               <IonContent>
@@ -78,6 +83,7 @@ const WisdomPage: React.FC = (props) => {
             </IonModal>
           </IonItem>
           <IonItem>
+            <IonLabel position="stacked">Your Wisdom</IonLabel>
             <IonTextarea autoGrow value={text}></IonTextarea>
           </IonItem>
           <IonButton
@@ -87,6 +93,14 @@ const WisdomPage: React.FC = (props) => {
             href={`/wisdom/${wisdom.id}`}
           >
             save
+          </IonButton>
+          <IonButton
+            expand="full"
+            color="danger"
+            className="ion-text-uppercase"
+            href={`/wisdom/${wisdom.id}`}
+          >
+            cancel
           </IonButton>
         </IonList>
       </IonContent>
