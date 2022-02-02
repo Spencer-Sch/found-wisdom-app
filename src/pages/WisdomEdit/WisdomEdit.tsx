@@ -28,8 +28,15 @@ const WisdomPage: React.FC = (props) => {
   const [title, setTitle] = useState(wisdom.title);
   const [text, setText] = useState(wisdom.text);
 
-  const updateDate = (data: any) => {
-    setDate(data);
+  const formatDate = (dateTime: string) => {
+    const slicedDate = dateTime.slice(0, dateTime.indexOf('T'));
+    const [year, month, day] = slicedDate.split('-');
+    return `${month}/${day}/${year}`;
+  };
+
+  const updateDate = (dateTime: string) => {
+    const formatedDate = formatDate(dateTime);
+    setDate(formatedDate);
   };
 
   return (
@@ -56,7 +63,12 @@ const WisdomPage: React.FC = (props) => {
               <IonText className="ion-margin-top">
                 <span style={{ margin: '0' }}>{date}</span>
               </IonText>
-              <IonButton id="open-modal">choose</IonButton>
+              <IonButton
+                id="open-modal"
+                className="ion-margin-bottom ion-margin-top"
+              >
+                choose
+              </IonButton>
               <IonModal trigger="open-modal">
                 <IonContent>
                   <IonDatetime
