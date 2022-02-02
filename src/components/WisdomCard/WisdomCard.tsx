@@ -11,7 +11,7 @@ interface WisdomCardProps {
 }
 
 const WisdomCard: React.FC<WisdomCardProps> = (props) => {
-  const { id, title, date, text } = props;
+  const { id, title, text } = props;
 
   return (
     <IonCard onClick={() => console.log('card was clicked')}>
