@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import {
   IonButton,
@@ -21,10 +22,15 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
+import { DUMMY_DATA } from '../../dummy_data/dummy_data';
+
 const WisdomPage: React.FC = (props) => {
-  const [date, setDate] = useState('');
-  const [title, setTitle] = useState('');
-  const [text, setText] = useState('');
+  const { wisdomid }: { wisdomid: string } = useParams();
+  const wisdom = DUMMY_DATA.find((wisdom) => wisdom.id === wisdomid)!;
+
+  const [date, setDate] = useState(wisdom.date);
+  const [title, setTitle] = useState(wisdom.title);
+  const [text, setText] = useState(wisdom.text);
   const [showModal, setShowModal] = useState(false);
 
   const updateDate = (data: any) => {
@@ -78,7 +84,7 @@ const WisdomPage: React.FC = (props) => {
             expand="full"
             color="secondary"
             className="ion-text-uppercase"
-            href="/wisdom"
+            href={`/wisdom/${wisdom.id}`}
           >
             save
           </IonButton>

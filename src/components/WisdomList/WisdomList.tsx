@@ -4,14 +4,21 @@ import WisdomCard from '../WisdomCard/WisdomCard';
 
 import './WisdomList.css';
 
-interface ItemsProps {
-  items: { id: string; title: string; date: string; text: string }[];
-}
+import { DUMMY_DATA } from '../../dummy_data/dummy_data';
 
-const WisdomList: React.FC<ItemsProps> = (props) => {
+// type DummyDataType = {
+//   DUMMY_DATA: {
+//     id: string;
+//     title: string;
+//     date: string;
+//     text: string;
+//   }[]
+// }
+
+const WisdomList: React.FC = () => {
   return (
     <div>
-      {props.items.map((item) => (
+      {DUMMY_DATA.map((item) => (
         <WisdomCard
           key={item.id}
           id={item.id}

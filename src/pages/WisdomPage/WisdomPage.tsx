@@ -1,4 +1,7 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+
+import { DUMMY_DATA } from '../../dummy_data/dummy_data';
 
 import {
   IonButton,
@@ -15,6 +18,10 @@ import {
 } from '@ionic/react';
 
 const WisdomPage: React.FC = () => {
+  const { wisdomid }: { wisdomid: string } = useParams();
+
+  const wisdom = DUMMY_DATA.find((wisdom) => wisdom.id === wisdomid)!;
+
   return (
     <IonPage>
       <IonHeader>
@@ -28,7 +35,7 @@ const WisdomPage: React.FC = () => {
             <IonCol size="12">
               {/* <IonItem> */}
               <IonText>
-                <h1 className="ion-no-margin">Wisdom Title</h1>
+                <h1 className="ion-no-margin">{wisdom.title}</h1>
               </IonText>
               {/* </IonItem> */}
             </IonCol>
@@ -37,7 +44,7 @@ const WisdomPage: React.FC = () => {
             <IonCol size="3" offset="9">
               {/* <IonItem> */}
               <IonText color="medium">
-                <p>8/20/1990</p>
+                <p>{wisdom.date}</p>
               </IonText>
               {/* </IonItem> */}
             </IonCol>
@@ -46,13 +53,7 @@ const WisdomPage: React.FC = () => {
             <IonCol>
               {/* <IonItem> */}
               <IonText>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Architecto nihil at dolorum, sint sunt nisi laboriosam illum
-                  iusto pariatur odio quae accusamus autem necessitatibus
-                  corporis exercitationem voluptatum doloribus, repellendus
-                  mollitia.
-                </p>
+                <p>{wisdom.text}</p>
               </IonText>
               {/* </IonItem> */}
             </IonCol>
@@ -63,7 +64,7 @@ const WisdomPage: React.FC = () => {
                 expand="full"
                 color="secondary"
                 className="ion-text-uppercase"
-                href="/wisdom/edit/:wisdomid"
+                href={`/wisdom/edit/${wisdom.id}`}
               >
                 edit
               </IonButton>
