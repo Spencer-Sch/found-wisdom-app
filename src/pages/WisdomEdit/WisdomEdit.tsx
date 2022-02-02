@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+// import { useFormik } from 'formik';
+
+// import { format, parseISO } from 'date-fns';
+
 import {
   IonButton,
   IonContent,
@@ -24,20 +28,26 @@ const WisdomPage: React.FC = (props) => {
   const { wisdomid }: { wisdomid: string } = useParams();
   const wisdom = DUMMY_DATA.find((wisdom) => wisdom.id === wisdomid)!;
 
-  const [date, setDate] = useState(wisdom.date);
+  // const [date, setDate] = useState(
+  //   format(parseISO(wisdom.date), 'MMM d, yyyy')
+  // );
   const [title, setTitle] = useState(wisdom.title);
   const [text, setText] = useState(wisdom.text);
 
-  const formatDate = (dateTime: string) => {
-    const slicedDate = dateTime.slice(0, dateTime.indexOf('T'));
-    const [year, month, day] = slicedDate.split('-');
-    return `${month}/${day}/${year}`;
-  };
+  // const formik = useFormik({
+  //   initialValues: {
+  //     title: title,
+  //     date: date,
+  //     text: text,
+  //   },
+  //   onSubmit: (values) => {
+  //     console.log(JSON.stringify(values, null, 2));
+  //   },
+  // });
 
-  const updateDate = (dateTime: string) => {
-    const formatedDate = formatDate(dateTime);
-    setDate(formatedDate);
-  };
+  // const updateDate = (dateTime: string) => {
+  //   setDate(format(parseISO(dateTime), 'MMM d, yyyy'));
+  // };
 
   return (
     <IonPage>
@@ -48,22 +58,28 @@ const WisdomPage: React.FC = (props) => {
       </IonHeader>
       <IonContent>
         <IonList>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              console.log('submited.');
-            }}
-          >
+          {/* <form onSubmit={formik.handleSubmit}> */}
+          {/* <form onSubmit={console.log('submit')}> */}
+          <form>
             <IonItem>
               <IonLabel position="stacked">Title</IonLabel>
-              <IonInput value={title} />
+              <IonInput
+                // id="title"
+                // name="title"
+                // type="text"
+                // onIonChange={formik.handleChange}
+                // value={formik.values.title}
+                value={title}
+              />
             </IonItem>
-            <IonItem>
+            {/* <IonItem>
               <IonLabel position="stacked">Date</IonLabel>
-              <IonText className="ion-margin-top">
-                <span style={{ margin: '0' }}>{date}</span>
-              </IonText>
-              <IonButton
+              <IonText className="ion-margin-top ion-margin-bottom">
+                {/* <span style={{ margin: '0' }}>{formik.values.date}</span> 
+                <span>{date}</span>
+              </IonText>*/}
+            {/* Date read only ? */}
+            {/* <IonButton
                 id="open-modal"
                 className="ion-margin-bottom ion-margin-top"
               >
@@ -72,6 +88,9 @@ const WisdomPage: React.FC = (props) => {
               <IonModal trigger="open-modal">
                 <IonContent>
                   <IonDatetime
+                    // id="date"
+                    // name="date"
+                    // onIonChange={formik.handleChange}
                     showDefaultButtons={true}
                     presentation="date"
                     onIonChange={(ev) => {
@@ -79,11 +98,18 @@ const WisdomPage: React.FC = (props) => {
                     }}
                   ></IonDatetime>
                 </IonContent>
-              </IonModal>
-            </IonItem>
+              </IonModal> */}
+            {/* </IonItem> */}
             <IonItem>
               <IonLabel position="stacked">Your Wisdom</IonLabel>
-              <IonTextarea autoGrow value={text}></IonTextarea>
+              <IonTextarea
+                // id="text"
+                // name="text"
+                // onIonChange={formik.handleChange}
+                // value={formik.values.text}
+                value={text}
+                autoGrow
+              ></IonTextarea>
             </IonItem>
             <IonButton
               expand="full"
