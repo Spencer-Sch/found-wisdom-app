@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 
 import { DUMMY_DATA } from '../../dummy_data/dummy_data';
 
+import { format, parseISO } from 'date-fns';
+
 import {
   IonButton,
   IonCol,
@@ -41,10 +43,10 @@ const WisdomPage: React.FC = () => {
             </IonCol>
           </IonRow>
           <IonRow>
-            <IonCol size="3" offset="9">
+            <IonCol size="4" offset="8">
               {/* <IonItem> */}
               <IonText color="medium">
-                <p>{wisdom.date}</p>
+                <p>{format(parseISO(wisdom.date), 'MMM d, yyyy')}</p>
               </IonText>
               {/* </IonItem> */}
             </IonCol>
