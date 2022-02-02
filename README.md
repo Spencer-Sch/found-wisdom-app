@@ -34,6 +34,8 @@ I am building this app to regular injection these encouraging words into my life
 ✅ TypeScript </br>
 ✅ React </br>
 ✅ Ionic </br>
+✅ Formik </br>
+✅ date-fns </br>
 
 [Back To The Top](#found-wisdom)
 
