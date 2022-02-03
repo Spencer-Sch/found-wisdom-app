@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-// import { useFormik } from 'formik';
+import { useFormik } from 'formik';
 
 // import { format, parseISO } from 'date-fns';
 
@@ -34,16 +34,28 @@ const WisdomPage: React.FC = (props) => {
   const [title, setTitle] = useState(wisdom.title);
   const [text, setText] = useState(wisdom.text);
 
-  // const formik = useFormik({
-  //   initialValues: {
-  //     title: title,
-  //     date: date,
-  //     text: text,
-  //   },
-  //   onSubmit: (values) => {
-  //     console.log(JSON.stringify(values, null, 2));
-  //   },
-  // });
+  const formik = useFormik({
+    initialValues: {
+      title: title,
+      // date: date,
+      text: text,
+    },
+    onSubmit: (values) => {
+      console.log({
+        id: wisdomid,
+        ...values,
+      });
+      DUMMY_DATA.forEach((item) => {
+        if (item.id === wisdomid) {
+          item.text = values.text;
+          item.title = values.title;
+        }
+      });
+      console.log(DUMMY_DATA);
+
+      // console.log(JSON.stringify(values, null, 2));
+    },
+  });
 
   // const updateDate = (dateTime: string) => {
   //   setDate(format(parseISO(dateTime), 'MMM d, yyyy'));
@@ -58,18 +70,18 @@ const WisdomPage: React.FC = (props) => {
       </IonHeader>
       <IonContent>
         <IonList>
-          {/* <form onSubmit={formik.handleSubmit}> */}
-          {/* <form onSubmit={console.log('submit')}> */}
-          <form>
+          <form onSubmit={formik.handleSubmit}>
+            {/* <form onSubmit={console.log('submit')}> */}
+            {/* <form> */}
             <IonItem>
               <IonLabel position="stacked">Title</IonLabel>
               <IonInput
-                // id="title"
-                // name="title"
-                // type="text"
-                // onIonChange={formik.handleChange}
-                // value={formik.values.title}
-                value={title}
+                id="title"
+                name="title"
+                type="text"
+                onIonChange={formik.handleChange}
+                value={formik.values.title}
+                // value={title}
               />
             </IonItem>
             {/* <IonItem>
@@ -103,11 +115,11 @@ const WisdomPage: React.FC = (props) => {
             <IonItem>
               <IonLabel position="stacked">Your Wisdom</IonLabel>
               <IonTextarea
-                // id="text"
-                // name="text"
-                // onIonChange={formik.handleChange}
-                // value={formik.values.text}
-                value={text}
+                id="text"
+                name="text"
+                onIonChange={formik.handleChange}
+                value={formik.values.text}
+                // value={text}
                 autoGrow
               ></IonTextarea>
             </IonItem>
