@@ -29,9 +29,22 @@ const WisdomAdd: React.FC = () => {
       text: '',
     },
     onSubmit: (values) => {
-      values.date = format(new Date(), 'MMM dd, yyyy');
-      values.id = uuidv4();
-      console.log(values);
+      const valuesToSave = {
+        ...values,
+        date: format(new Date(), 'MMM dd, yyyy'),
+        id: uuidv4(),
+      };
+
+      const currentStorage = localStorage.getItem('myWisdoms');
+
+      if (currentStorage) {
+        const storageArr = JSON.parse(currentStorage);
+        storageArr.push(valuesToSave);
+        localStorage.setItem('myWisdoms', JSON.stringify(storageArr));
+      } else {
+        const wisdomsArr = [valuesToSave];
+        localStorage.setItem('myWisdoms', JSON.stringify(wisdomsArr));
+      }
     },
   });
 
