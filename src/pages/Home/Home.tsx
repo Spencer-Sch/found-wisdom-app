@@ -32,7 +32,7 @@ const Home: React.FC = () => {
         {/* Page Content Here */}
         <WisdomList />
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color="secondary">
+          <IonFabButton color="secondary" href="wisdom/add">
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>
