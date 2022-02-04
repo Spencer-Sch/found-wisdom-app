@@ -36,6 +36,7 @@ I am building this app to regular injection these encouraging words into my life
 ✅ Ionic </br>
 ✅ Formik </br>
 ✅ date-fns </br>
+✅ uuid </br>
 
 [Back To The Top](#found-wisdom)
 
