@@ -11,7 +11,6 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
-  IonItem,
   IonPage,
   IonRow,
   IonText,
@@ -35,29 +34,23 @@ const WisdomPage: React.FC = () => {
         <IonGrid className="ion-no-padding ion-margin-top">
           <IonRow>
             <IonCol size="12">
-              {/* <IonItem> */}
               <IonText>
                 <h1 className="ion-no-margin">{wisdom.title}</h1>
               </IonText>
-              {/* </IonItem> */}
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol size="4" offset="8">
-              {/* <IonItem> */}
               <IonText color="medium">
                 <p>{format(parseISO(wisdom.date), 'MMM d, yyyy')}</p>
               </IonText>
-              {/* </IonItem> */}
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
-              {/* <IonItem> */}
               <IonText>
                 <p>{wisdom.text}</p>
               </IonText>
-              {/* </IonItem> */}
             </IonCol>
           </IonRow>
           <IonRow className="ion-align-items-end ion-justify-content-end">
