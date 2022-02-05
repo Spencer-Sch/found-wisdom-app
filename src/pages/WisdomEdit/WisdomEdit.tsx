@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useFormik } from 'formik';
@@ -17,14 +17,43 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
-import { DUMMY_DATA } from '../../dummy_data/dummy_data';
+interface WisdomObj {
+  id: string;
+  title: string;
+  date: string;
+  text: string;
+}
+
+const getStoredWisdoms = () => {
+  console.log('getting data from LS');
+  const wisdomsString: string | null = localStorage.getItem('myWisdoms');
+  if (wisdomsString) {
+    return JSON.parse(wisdomsString);
+  } else {
+    return [];
+  }
+};
 
 const WisdomEdit: React.FC = () => {
   const { wisdomid }: { wisdomid: string } = useParams();
-  const wisdom = DUMMY_DATA.find((wisdom) => wisdom.id === wisdomid)!;
 
-  const [title, setTitle] = useState(wisdom.title);
-  const [text, setText] = useState(wisdom.text);
+  // const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(
+  //   getStoredWisdoms()
+  // );
+
+  const storedWisdoms = useRef<WisdomObj[]>(getStoredWisdoms());
+
+  console.log('storedWisdoms ', storedWisdoms);
+
+  // const wisdom = storedWisdoms.current.find(
+  //   (wisdom) => wisdom.id === wisdomid
+  // )!;
+  const { id, title, text } = storedWisdoms.current.find(
+    (wisdom) => wisdom.id === wisdomid
+  )!;
+
+  // const [title, setTitle] = useState(wisdom.title);
+  // const [text, setText] = useState(wisdom.text);
 
   const formik = useFormik({
     initialValues: {
@@ -32,17 +61,15 @@ const WisdomEdit: React.FC = () => {
       text: text,
     },
     onSubmit: (values) => {
-      console.log({
-        id: wisdomid,
-        ...values,
-      });
-      DUMMY_DATA.forEach((item) => {
+      console.log('value: ', values);
+      storedWisdoms.current.forEach((item) => {
         if (item.id === wisdomid) {
           item.text = values.text;
           item.title = values.title;
         }
       });
-      console.log(DUMMY_DATA);
+      console.log('onSubmit ', storedWisdoms);
+      localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms.current));
     },
   });
 
@@ -81,7 +108,6 @@ const WisdomEdit: React.FC = () => {
               type="submit"
               color="secondary"
               className="ion-text-uppercase"
-              href={`/wisdom/${wisdom.id}`}
             >
               save
             </IonButton>
@@ -90,7 +116,7 @@ const WisdomEdit: React.FC = () => {
             expand="full"
             color="danger"
             className="ion-text-uppercase"
-            href={`/wisdom/${wisdom.id}`}
+            href={`/wisdom/${id}`}
           >
             cancel
           </IonButton>
