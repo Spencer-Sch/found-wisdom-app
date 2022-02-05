@@ -1,9 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-
-import { DUMMY_DATA } from '../../dummy_data/dummy_data';
-
-import { format, parseISO } from 'date-fns';
 
 import {
   IonButton,
@@ -18,10 +14,31 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
+interface WisdomObj {
+  id: string;
+  title: string;
+  date: string;
+  text: string;
+}
+
+const getStoredWisdoms = () => {
+  const wisdomsString: string | null = localStorage.getItem('myWisdoms');
+  console.log('wisdomsString ', wisdomsString);
+  if (wisdomsString) {
+    return JSON.parse(wisdomsString);
+  } else {
+    return [];
+  }
+};
+
 const WisdomPage: React.FC = () => {
   const { wisdomid }: { wisdomid: string } = useParams();
 
-  const wisdom = DUMMY_DATA.find((wisdom) => wisdom.id === wisdomid)!;
+  const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(
+    getStoredWisdoms()
+  );
+
+  const wisdom = storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!;
 
   return (
     <IonPage>
@@ -42,7 +59,7 @@ const WisdomPage: React.FC = () => {
           <IonRow>
             <IonCol size="4" offset="8">
               <IonText color="medium">
-                <p>{format(parseISO(wisdom.date), 'MMM d, yyyy')}</p>
+                <p>{wisdom.date}</p>
               </IonText>
             </IonCol>
           </IonRow>
