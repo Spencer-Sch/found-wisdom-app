@@ -23,7 +23,6 @@ interface WisdomObj {
 
 const getStoredWisdoms = () => {
   const wisdomsString: string | null = localStorage.getItem('myWisdoms');
-  console.log('wisdomsString ', wisdomsString);
   if (wisdomsString) {
     return JSON.parse(wisdomsString);
   } else {
