@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import WisdomPageModal from '../../components/WisdomPageModal/WisdomPageModal';
+
 import {
   IonButton,
   IonCol,
@@ -8,14 +10,13 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
-  IonModal,
   IonPage,
   IonRow,
-  IonSpinner,
   IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+
 import { home } from 'ionicons/icons';
 
 interface WisdomObj {
@@ -41,17 +42,11 @@ const WisdomPage: React.FC = () => {
     getStoredWisdoms()
   );
   const [showModal, setShowModal] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const wisdom = storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!;
 
   const handleDelete = () => {
     setShowModal(true);
-    /////////
-    // const filteredWisdoms = storedWisdoms.filter(
-    //   (item) => item.id !== wisdomid
-    // );
-    // localStorage.setItem('myWisdsoms', JSON.stringify(filteredWisdoms));
   };
 
   const deleteWisdom = () => {
@@ -70,30 +65,15 @@ const WisdomPage: React.FC = () => {
           <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonModal isOpen={showModal}>
-        <IonContent>
-          <IonText>
-            <p>Are you sure?</p>
-          </IonText>
-          <IonButton
-            color="secondary"
-            expand="full"
-            className="ion-text-uppercase"
-            onClick={() => deleteWisdom()}
-          >
-            Yes, delete
-          </IonButton>
-          <IonButton
-            color="danger"
-            expand="full"
-            className="ion-text-uppercase"
-            onClick={() => setShowModal(false)}
-          >
-            No, cancel
-          </IonButton>
-        </IonContent>
-      </IonModal>
-      <IonContent>
+      <IonContent className="ss-content-relative">
+        {/* confirm delete modal */}
+        {showModal && (
+          <WisdomPageModal
+            deleteWisdom={deleteWisdom}
+            setShowModal={setShowModal}
+          />
+        )}
+        {/* page content */}
         <IonGrid className="ion-no-padding ion-margin-top">
           <IonRow>
             <IonCol size="12">
