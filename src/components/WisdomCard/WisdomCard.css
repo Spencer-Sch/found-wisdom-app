@@ -1,4 +1,6 @@
-.card {
+.ss-card {
+  max-height: 5rem;
+  overflow-y: hidden;
   border: solid 1px var(--ion-color-primary);
   border-left: solid 5px var(--ion-color-primary);
 }

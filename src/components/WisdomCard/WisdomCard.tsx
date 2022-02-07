@@ -11,7 +11,7 @@ interface WisdomCardProps {
 
 const WisdomCard: React.FC<WisdomCardProps> = ({ id, source, text }) => {
   return (
-    <IonCard className="card">
+    <IonCard className="ss-card">
       {/* <IonCardHeader className="ion-text-uppercase" color="primary">
         {source}
       </IonCardHeader> */}
