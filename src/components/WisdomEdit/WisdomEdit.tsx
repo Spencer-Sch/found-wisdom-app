@@ -2,8 +2,6 @@ import React from 'react';
 
 import { useFormik } from 'formik';
 
-// WisdomPageWisdomEditMerge
-
 import {
   IonButton,
   IonContent,
@@ -18,15 +16,10 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
-interface FomikValues {
-  title: string;
-  text: string;
-}
+import { WisdomObj } from '../../models/WisdomObj.model';
 
-interface WisdomObj {
-  id: string;
-  title: string;
-  date: string;
+interface FomikValues {
+  source: string;
   text: string;
 }
 
@@ -41,11 +34,11 @@ const WisdomEdit: React.FC<PropsData> = ({
   handleEdit,
   setShowEdit,
 }) => {
-  const { title, text } = currentWisdom;
+  const { source, text } = currentWisdom;
 
   const formik = useFormik({
     initialValues: {
-      title: title,
+      source: source,
       text: text,
     },
     onSubmit: (values) => {
@@ -64,13 +57,13 @@ const WisdomEdit: React.FC<PropsData> = ({
         <IonList>
           <form onSubmit={formik.handleSubmit}>
             <IonItem>
-              <IonLabel position="stacked">Title</IonLabel>
+              <IonLabel position="stacked">Source</IonLabel>
               <IonInput
-                id="title"
-                name="title"
+                id="source"
+                name="source"
                 type="text"
                 onIonChange={formik.handleChange}
-                value={formik.values.title}
+                value={formik.values.source}
               />
             </IonItem>
             <IonItem>

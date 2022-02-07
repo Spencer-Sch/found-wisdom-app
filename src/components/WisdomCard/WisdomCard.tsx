@@ -5,18 +5,15 @@ import './WisdomCard.css';
 
 interface WisdomCardProps {
   id: string;
-  title: string;
-  date: string;
+  source: string;
   text: string;
 }
 
-const WisdomCard: React.FC<WisdomCardProps> = (props) => {
-  const { id, title, text } = props;
-
+const WisdomCard: React.FC<WisdomCardProps> = ({ id, source, text }) => {
   return (
     <IonCard onClick={() => console.log('card was clicked')}>
       <IonCardHeader className="ion-text-uppercase" color="primary">
-        {title}
+        {source}
       </IonCardHeader>
       <IonItem
         className="ion-no-padding"

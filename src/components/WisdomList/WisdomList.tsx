@@ -4,12 +4,7 @@ import WisdomCard from '../WisdomCard/WisdomCard';
 
 import './WisdomList.css';
 
-interface WisdomObj {
-  id: string;
-  title: string;
-  date: string;
-  text: string;
-}
+import { WisdomObj } from '../../models/WisdomObj.model';
 
 const WisdomList: React.FC = () => {
   const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>([]);
@@ -28,8 +23,7 @@ const WisdomList: React.FC = () => {
         <WisdomCard
           key={item.id}
           id={item.id}
-          title={item.title}
-          date={item.date}
+          source={item.source}
           text={item.text}
         />
       ))}

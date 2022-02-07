@@ -4,17 +4,12 @@ import { useParams } from 'react-router-dom';
 import WisdomView from '../../components/WisdomView/WisdomView';
 import WisdomEdit from '../../components/WisdomEdit/WisdomEdit';
 
+import { WisdomObj } from '../../models/WisdomObj.model';
+
 import { IonPage } from '@ionic/react';
 
 interface FomikValues {
-  title: string;
-  text: string;
-}
-
-interface WisdomObj {
-  id: string;
-  title: string;
-  date: string;
+  source: string;
   text: string;
 }
 
@@ -56,7 +51,7 @@ const WisdomPage: React.FC = () => {
     storedWisdoms.forEach((item) => {
       if (item.id === wisdomid) {
         item.text = values.text;
-        item.title = values.title;
+        item.source = values.source;
       }
     });
     localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms));

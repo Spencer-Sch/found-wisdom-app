@@ -23,8 +23,7 @@ import {
 const WisdomAdd: React.FC = () => {
   const formik = useFormik({
     initialValues: {
-      id: '',
-      title: '',
+      source: '',
       text: '',
     },
     onSubmit: (values) => {
@@ -61,11 +60,11 @@ const WisdomAdd: React.FC = () => {
             <IonItem>
               <IonLabel position="stacked"></IonLabel>
               <IonInput
-                id="title"
-                name="title"
+                id="source"
+                name="source"
                 type="text"
                 onIonChange={formik.handleChange}
-                placeholder="Enter Title Here"
+                placeholder="Enter Source Here"
               />
             </IonItem>
             <IonItem>

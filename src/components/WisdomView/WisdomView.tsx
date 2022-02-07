@@ -17,12 +17,7 @@ import {
 
 import { home } from 'ionicons/icons';
 
-interface WisdomObj {
-  id: string;
-  title: string;
-  date: string;
-  text: string;
-}
+import { WisdomObj } from '../../models/WisdomObj.model';
 
 interface PropsData {
   showModal: boolean;
@@ -61,7 +56,7 @@ const WisdomPage: React.FC<PropsData> = ({
           <IonRow>
             <IonCol size="12">
               <IonText>
-                <h1 className="ion-no-margin">{currentWisdom.title}</h1>
+                <h1 className="ion-no-margin">{currentWisdom.source}</h1>
               </IonText>
             </IonCol>
           </IonRow>
