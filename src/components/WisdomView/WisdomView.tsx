@@ -2,6 +2,8 @@ import React from 'react';
 
 import WisdomPageModal from '../../components/WisdomPageModal/WisdomPageModal';
 
+import './WisdomView.css';
+
 import {
   IonButton,
   IonCol,
@@ -9,6 +11,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonItemDivider,
   IonRow,
   IonText,
   IonTitle,
@@ -52,29 +55,30 @@ const WisdomPage: React.FC<PropsData> = ({
           />
         )}
         {/* content */}
-        <IonGrid className="ion-no-padding ion-margin-top">
+        <IonGrid className="ss-grid ion-no-padding ion-margin-top">
           <IonRow>
-            <IonCol size="12">
-              <IonText>
-                <h1 className="ion-no-margin">{currentWisdom.source}</h1>
-              </IonText>
-            </IonCol>
+            <IonRow className="ion-margin-horizontal">
+              <IonItemDivider className="ion-no-padding">
+                <IonCol>
+                  <IonText color="dark" className="ss-larger-text">
+                    <p>{currentWisdom.text}</p>
+                  </IonText>
+                </IonCol>
+              </IonItemDivider>
+            </IonRow>
+            <IonRow className="ion-margin-horizontal ion-align-items-center ion-justify-content-between ss-row">
+              <IonCol size="auto">
+                <IonText color="medium">
+                  <p>{currentWisdom.date}</p>
+                </IonText>
+              </IonCol>
+              <IonCol size="auto" className="ion-justify-content-end">
+                <IonText color="medium">
+                  <p>-{currentWisdom.source}</p>
+                </IonText>
+              </IonCol>
+            </IonRow>
           </IonRow>
-          <IonRow>
-            <IonCol size="4" offset="8">
-              <IonText color="medium">
-                <p>{currentWisdom.date}</p>
-              </IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonText>
-                <p>{currentWisdom.text}</p>
-              </IonText>
-            </IonCol>
-          </IonRow>
-          {/* buttons */}
           <IonRow className="ion-align-items-end ion-justify-content-end">
             <IonCol size="12">
               <IonButton
