@@ -22,7 +22,6 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 import WisdomPage from './pages/WisdomPage/WisdomPage';
-import WisdomEdit from './pages/WisdomEdit/WisdomEdit';
 import Home from './pages/Home/Home';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
 
@@ -32,7 +31,6 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route exact path="/wisdom/edit/:wisdomid" component={WisdomEdit} />
         <Route exact path="/wisdom/:wisdomid" component={WisdomPage} />
         <Route exact path="/wisdom/add" component={WisdomAdd} />
         <Route exact path="/home">

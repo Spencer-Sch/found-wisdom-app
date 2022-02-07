@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
 
 import { useFormik } from 'formik';
 
@@ -19,6 +18,11 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
+interface FomikValues {
+  title: string;
+  text: string;
+}
+
 interface WisdomObj {
   id: string;
   title: string;
@@ -26,26 +30,18 @@ interface WisdomObj {
   text: string;
 }
 
-const getStoredWisdoms = () => {
-  // this function is being called 4 times for every onChange happening in the input elements.  Not sure how to solve this problem.
-  const wisdomsString: string | null = localStorage.getItem('myWisdoms');
-  if (wisdomsString) {
-    return JSON.parse(wisdomsString);
-  } else {
-    return [];
-  }
-};
+interface PropsData {
+  currentWisdom: WisdomObj;
+  handleEdit: (values: FomikValues) => void;
+  setShowEdit: (value: boolean) => void;
+}
 
-const WisdomEdit: React.FC = () => {
-  const { wisdomid }: { wisdomid: string } = useParams();
-
-  const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(
-    getStoredWisdoms()
-  );
-
-  const { title, text } = storedWisdoms.find(
-    (wisdom) => wisdom.id === wisdomid
-  )!;
+const WisdomEdit: React.FC<PropsData> = ({
+  currentWisdom,
+  handleEdit,
+  setShowEdit,
+}) => {
+  const { title, text } = currentWisdom;
 
   const formik = useFormik({
     initialValues: {
@@ -53,15 +49,7 @@ const WisdomEdit: React.FC = () => {
       text: text,
     },
     onSubmit: (values) => {
-      console.log('value: ', values);
-      storedWisdoms.forEach((item) => {
-        if (item.id === wisdomid) {
-          item.text = values.text;
-          item.title = values.title;
-        }
-      });
-      localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms));
-      window.location.replace(`/wisdom/${wisdomid}`);
+      handleEdit(values);
     },
   });
 
@@ -108,7 +96,7 @@ const WisdomEdit: React.FC = () => {
             expand="full"
             color="danger"
             className="ion-text-uppercase"
-            href={`/wisdom/${wisdomid}`}
+            onClick={() => setShowEdit(false)}
           >
             cancel
           </IonButton>
