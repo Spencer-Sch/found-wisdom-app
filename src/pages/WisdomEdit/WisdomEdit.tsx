@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useFormik } from 'formik';
@@ -25,7 +25,7 @@ interface WisdomObj {
 }
 
 const getStoredWisdoms = () => {
-  console.log('getting data from LS');
+  // this function is being called 4 times for every onChange happening in the input elements.  Not sure how to solve this problem.
   const wisdomsString: string | null = localStorage.getItem('myWisdoms');
   if (wisdomsString) {
     return JSON.parse(wisdomsString);
@@ -41,18 +41,9 @@ const WisdomEdit: React.FC = () => {
     getStoredWisdoms()
   );
 
-  // const storedWisdoms = useRef<WisdomObj[]>(getStoredWisdoms());
-
-  console.log('storedWisdoms ', storedWisdoms);
-
-  const wisdom = storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!;
-
-  const { id, title, text } = storedWisdoms.find(
+  const { title, text } = storedWisdoms.find(
     (wisdom) => wisdom.id === wisdomid
   )!;
-
-  // const [title, setTitle] = useState(wisdom.title);
-  // const [text, setText] = useState(wisdom.text);
 
   const formik = useFormik({
     initialValues: {
@@ -67,7 +58,6 @@ const WisdomEdit: React.FC = () => {
           item.title = values.title;
         }
       });
-      console.log('onSubmit ', storedWisdoms);
       localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms));
       window.location.replace(`/wisdom/${wisdomid}`);
     },
@@ -116,7 +106,7 @@ const WisdomEdit: React.FC = () => {
             expand="full"
             color="danger"
             className="ion-text-uppercase"
-            href={`/wisdom/${id}`}
+            href={`/wisdom/${wisdomid}`}
           >
             cancel
           </IonButton>
