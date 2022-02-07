@@ -37,18 +37,17 @@ const getStoredWisdoms = () => {
 const WisdomEdit: React.FC = () => {
   const { wisdomid }: { wisdomid: string } = useParams();
 
-  // const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(
-  //   getStoredWisdoms()
-  // );
+  const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(
+    getStoredWisdoms()
+  );
 
-  const storedWisdoms = useRef<WisdomObj[]>(getStoredWisdoms());
+  // const storedWisdoms = useRef<WisdomObj[]>(getStoredWisdoms());
 
   console.log('storedWisdoms ', storedWisdoms);
 
-  // const wisdom = storedWisdoms.current.find(
-  //   (wisdom) => wisdom.id === wisdomid
-  // )!;
-  const { id, title, text } = storedWisdoms.current.find(
+  const wisdom = storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!;
+
+  const { id, title, text } = storedWisdoms.find(
     (wisdom) => wisdom.id === wisdomid
   )!;
 
@@ -62,14 +61,15 @@ const WisdomEdit: React.FC = () => {
     },
     onSubmit: (values) => {
       console.log('value: ', values);
-      storedWisdoms.current.forEach((item) => {
+      storedWisdoms.forEach((item) => {
         if (item.id === wisdomid) {
           item.text = values.text;
           item.title = values.title;
         }
       });
       console.log('onSubmit ', storedWisdoms);
-      localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms.current));
+      localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms));
+      window.location.replace(`/wisdom/${wisdomid}`);
     },
   });
 
