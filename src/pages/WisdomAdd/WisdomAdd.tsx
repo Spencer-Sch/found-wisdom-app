@@ -25,7 +25,6 @@ const WisdomAdd: React.FC = () => {
     initialValues: {
       id: '',
       title: '',
-      date: '',
       text: '',
     },
     onSubmit: (values) => {
@@ -45,6 +44,7 @@ const WisdomAdd: React.FC = () => {
         const wisdomsArr = [valuesToSave];
         localStorage.setItem('myWisdoms', JSON.stringify(wisdomsArr));
       }
+      window.location.replace('/');
     },
   });
 
@@ -83,7 +83,6 @@ const WisdomAdd: React.FC = () => {
               type="submit"
               color="secondary"
               className="ion-text-uppercase"
-              href="/home"
             >
               save
             </IonButton>
@@ -92,7 +91,7 @@ const WisdomAdd: React.FC = () => {
             expand="full"
             color="danger"
             className="ion-text-uppercase"
-            href="/home"
+            href="/"
           >
             cancel
           </IonButton>
