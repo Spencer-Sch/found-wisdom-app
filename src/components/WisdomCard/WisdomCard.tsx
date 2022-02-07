@@ -11,15 +11,11 @@ interface WisdomCardProps {
 
 const WisdomCard: React.FC<WisdomCardProps> = ({ id, source, text }) => {
   return (
-    <IonCard onClick={() => console.log('card was clicked')}>
-      <IonCardHeader className="ion-text-uppercase" color="primary">
+    <IonCard className="card">
+      {/* <IonCardHeader className="ion-text-uppercase" color="primary">
         {source}
-      </IonCardHeader>
-      <IonItem
-        className="ion-no-padding"
-        onClick={() => console.log('card was clicked')}
-        href={`/wisdom/${id}`}
-      >
+      </IonCardHeader> */}
+      <IonItem className="ion-no-padding" href={`/wisdom/${id}`}>
         <IonCardContent>{text}</IonCardContent>
       </IonItem>
     </IonCard>
