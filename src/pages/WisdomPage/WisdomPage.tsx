@@ -8,8 +8,10 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonModal,
   IonPage,
   IonRow,
+  IonSpinner,
   IonText,
   IonTitle,
   IonToolbar,
@@ -38,8 +40,28 @@ const WisdomPage: React.FC = () => {
   const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(
     getStoredWisdoms()
   );
+  const [showModal, setShowModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const wisdom = storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!;
+
+  const handleDelete = () => {
+    setShowModal(true);
+    /////////
+    // const filteredWisdoms = storedWisdoms.filter(
+    //   (item) => item.id !== wisdomid
+    // );
+    // localStorage.setItem('myWisdsoms', JSON.stringify(filteredWisdoms));
+  };
+
+  const deleteWisdom = () => {
+    const filteredWisdoms = storedWisdoms.filter(
+      (item) => item.id !== wisdomid
+    );
+    localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
+    setShowModal(false);
+    window.location.replace(`/`);
+  };
 
   return (
     <IonPage>
@@ -48,6 +70,29 @@ const WisdomPage: React.FC = () => {
           <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
         </IonToolbar>
       </IonHeader>
+      <IonModal isOpen={showModal}>
+        <IonContent>
+          <IonText>
+            <p>Are you sure?</p>
+          </IonText>
+          <IonButton
+            color="secondary"
+            expand="full"
+            className="ion-text-uppercase"
+            onClick={() => deleteWisdom()}
+          >
+            Yes, delete
+          </IonButton>
+          <IonButton
+            color="danger"
+            expand="full"
+            className="ion-text-uppercase"
+            onClick={() => setShowModal(false)}
+          >
+            No, cancel
+          </IonButton>
+        </IonContent>
+      </IonModal>
       <IonContent>
         <IonGrid className="ion-no-padding ion-margin-top">
           <IonRow>
@@ -85,6 +130,7 @@ const WisdomPage: React.FC = () => {
                 expand="full"
                 color="danger"
                 className="ion-text-uppercase"
+                onClick={() => handleDelete()}
               >
                 delete
               </IonButton>
