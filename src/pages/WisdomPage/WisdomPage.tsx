@@ -7,12 +7,14 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
+  IonIcon,
   IonPage,
   IonRow,
   IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import { home } from 'ionicons/icons';
 
 interface WisdomObj {
   id: string;
@@ -85,6 +87,9 @@ const WisdomPage: React.FC = () => {
                 className="ion-text-uppercase"
               >
                 delete
+              </IonButton>
+              <IonButton fill="outline" expand="block" color="primary" href="/">
+                <IonIcon color="primary" slot="icon-only" icon={home} />
               </IonButton>
             </IonCol>
           </IonRow>
