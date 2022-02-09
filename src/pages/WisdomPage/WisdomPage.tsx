@@ -42,7 +42,11 @@ const WisdomPage: React.FC = () => {
     const filteredWisdoms = storedWisdoms.filter(
       (item) => item.id !== wisdomid
     );
-    localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
+    if (filteredWisdoms.length > 0) {
+      localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
+    } else {
+      localStorage.setItem('myWisdoms', JSON.stringify([]));
+    }
     setShowModal(false);
     window.location.replace(`/`);
   };
