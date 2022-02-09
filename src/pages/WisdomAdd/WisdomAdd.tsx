@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useFormik } from 'formik';
 
@@ -20,7 +20,20 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
+import { WisdomObj } from '../../models/WisdomObj.model';
+
+const getStoredWisdoms = () => {
+  const wisdomsString: string | null = localStorage.getItem('myWisdoms');
+  if (wisdomsString) {
+    return JSON.parse(wisdomsString);
+  } else {
+    return [];
+  }
+};
+
 const WisdomAdd: React.FC = () => {
+  const storedWisdoms: WisdomObj[] = getStoredWisdoms();
+
   const formik = useFormik({
     initialValues: {
       source: '',
@@ -34,12 +47,9 @@ const WisdomAdd: React.FC = () => {
         next: false,
       };
 
-      const currentStorage: string | null = localStorage.getItem('myWisdoms');
-
-      if (currentStorage) {
-        const storageArr = JSON.parse(currentStorage);
-        storageArr.push(valuesToSave);
-        localStorage.setItem('myWisdoms', JSON.stringify(storageArr));
+      if (storedWisdoms.length > 0) {
+        storedWisdoms.push(valuesToSave);
+        localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms));
       } else {
         const wisdomsArr = [{ ...valuesToSave, next: true }];
         localStorage.setItem('myWisdoms', JSON.stringify(wisdomsArr));
