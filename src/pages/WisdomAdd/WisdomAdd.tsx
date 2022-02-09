@@ -31,6 +31,7 @@ const WisdomAdd: React.FC = () => {
         ...values,
         date: format(new Date(), 'MMM dd, yyyy'),
         id: uuidv4(),
+        next: false,
       };
 
       const currentStorage = localStorage.getItem('myWisdoms');

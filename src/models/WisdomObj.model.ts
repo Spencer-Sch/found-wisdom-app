@@ -3,4 +3,5 @@ export interface WisdomObj {
   source: string;
   date: string;
   text: string;
+  next: boolean;
 }

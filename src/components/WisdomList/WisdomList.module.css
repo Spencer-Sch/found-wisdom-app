@@ -1,0 +1,8 @@
+.ss_larger_text {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.ss_faded_text {
+  opacity: 0.3;
+}

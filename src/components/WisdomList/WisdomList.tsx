@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import WisdomCard from '../WisdomCard/WisdomCard';
 
-import './WisdomList.css';
+import styles from './WisdomList.module.css';
 
 import { WisdomObj } from '../../models/WisdomObj.model';
 import {
@@ -41,8 +41,8 @@ const WisdomList: React.FC = () => {
           <IonRow className="ion-margin-horizontal">
             {/* <IonItemDivider className="ion-no-padding"> */}
             <IonCol className="ion-text-center">
-              <IonText color="dark" className="ss-larger-text">
-                <p className="ss-faded-text">
+              <IonText color="dark" className={styles.ss_larger_text}>
+                <p className={styles.ss_faded_text}>
                   You haven't added <br /> any wisdom yet...
                 </p>
               </IonText>

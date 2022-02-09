@@ -1,8 +1,4 @@
-.ss-content-relative {
-  position: relative;
-}
-
-.ss-modal-wrapper {
+.ss_modal_wrapper {
   width: 85%;
   z-index: 100;
   position: absolute;
@@ -11,11 +7,11 @@
   transform: translate(-50%, -50%);
 }
 
-.ss-ion-card {
+.ss_ion_card {
   padding: 1rem;
 }
 
-.ss-backdrop {
+.ss_backdrop {
   opacity: 0.3;
   position: absolute;
 }

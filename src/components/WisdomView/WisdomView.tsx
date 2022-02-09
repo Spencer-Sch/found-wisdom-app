@@ -2,7 +2,7 @@ import React from 'react';
 
 import WisdomPageModal from '../../components/WisdomPageModal/WisdomPageModal';
 
-import './WisdomView.css';
+import styles from './WisdomView.module.css';
 
 import {
   IonButton,
@@ -46,7 +46,7 @@ const WisdomPage: React.FC<PropsData> = ({
           <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ss-content-relative">
+      <IonContent className={styles.ss_content_relative}>
         {/* confirm delete modal */}
         {/* {showModal && (
           <WisdomPageModal
@@ -55,18 +55,22 @@ const WisdomPage: React.FC<PropsData> = ({
           />
         )} */}
         {/* content */}
-        <IonGrid className="ss-grid ion-no-padding ion-margin-top ss-move-back">
+        <IonGrid
+          className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}
+        >
           <IonRow>
             <IonRow className="ion-margin-horizontal">
               <IonItemDivider className="ion-no-padding">
                 <IonCol>
-                  <IonText color="dark" className="ss-larger-text">
+                  <IonText color="dark" className={styles.ss_larger_text}>
                     <p>{currentWisdom.text}</p>
                   </IonText>
                 </IonCol>
               </IonItemDivider>
             </IonRow>
-            <IonRow className="ion-margin-horizontal ion-align-items-center ion-justify-content-between ss-row">
+            <IonRow
+              className={`${styles.ss_row} ion-margin-horizontal ion-align-items-center ion-justify-content-between`}
+            >
               <IonCol size="auto">
                 <IonText color="medium">
                   <p>{currentWisdom.date}</p>

@@ -8,7 +8,7 @@ import {
   IonText,
 } from '@ionic/react';
 
-import './WisdomPageModal.css';
+import styles from './WisdomPageModal.module.css';
 
 interface ModalProps {
   deleteWisdom: () => void;
@@ -21,9 +21,13 @@ const WisdomPage_Modal: React.FC<ModalProps> = ({
 }) => {
   return (
     <>
-      <IonBackdrop className="ss-backdrop" visible={true} tappable={false} />
-      <div className="ss-modal-wrapper">
-        <IonCard className="ss-ion-card">
+      <IonBackdrop
+        className={styles.ss_backdrop}
+        visible={true}
+        tappable={false}
+      />
+      <div className={styles.ss_modal_wrapper}>
+        <IonCard className={styles.ss_ion_card}>
           <IonCardContent>
             <IonText className="ion-text-center">
               <p
