@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+
 import {
   IonContent,
   IonFab,
@@ -13,9 +15,21 @@ import { add } from 'ionicons/icons';
 
 import './Home.css';
 
+import { WisdomObj } from '../../models/WisdomObj.model';
+
 import WisdomList from '../../components/WisdomList/WisdomList';
 
 const Home: React.FC = () => {
+  const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>([]);
+
+  useEffect(() => {
+    const wisdomsString: string | null = localStorage.getItem('myWisdoms');
+    if (wisdomsString) {
+      const wisdomsArr: WisdomObj[] = JSON.parse(wisdomsString);
+      setStoredWisdoms(wisdomsArr);
+    }
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
@@ -30,7 +44,7 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         {/* Page Content Here */}
-        <WisdomList />
+        <WisdomList storedWisdoms={storedWisdoms} />
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton color="secondary" href="wisdom/add">
             <IonIcon icon={add} />
