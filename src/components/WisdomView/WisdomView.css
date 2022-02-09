@@ -13,3 +13,8 @@
 .ss-row {
   width: 100%;
 }
+
+.ss-move-back {
+  z-index: 1;
+  position: relative;
+}

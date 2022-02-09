@@ -48,14 +48,14 @@ const WisdomPage: React.FC<PropsData> = ({
       </IonHeader>
       <IonContent className="ss-content-relative">
         {/* confirm delete modal */}
-        {showModal && (
+        {/* {showModal && (
           <WisdomPageModal
             deleteWisdom={deleteWisdom}
             setShowModal={setShowModal}
           />
-        )}
+        )} */}
         {/* content */}
-        <IonGrid className="ss-grid ion-no-padding ion-margin-top">
+        <IonGrid className="ss-grid ion-no-padding ion-margin-top ss-move-back">
           <IonRow>
             <IonRow className="ion-margin-horizontal">
               <IonItemDivider className="ion-no-padding">
@@ -103,6 +103,13 @@ const WisdomPage: React.FC<PropsData> = ({
             </IonCol>
           </IonRow>
         </IonGrid>
+        {/* confirm delete modal */}
+        {showModal && (
+          <WisdomPageModal
+            deleteWisdom={deleteWisdom}
+            setShowModal={setShowModal}
+          />
+        )}
       </IonContent>
     </>
   );

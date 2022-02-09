@@ -21,6 +21,7 @@ const WisdomPage_Modal: React.FC<ModalProps> = ({
 }) => {
   return (
     <>
+      <IonBackdrop className="ss-backdrop" visible={true} tappable={false} />
       <div className="ss-modal-wrapper">
         <IonCard className="ss-ion-card">
           <IonCardContent>
@@ -52,7 +53,6 @@ const WisdomPage_Modal: React.FC<ModalProps> = ({
           </IonCardContent>
         </IonCard>
       </div>
-      <IonBackdrop className="ss-backdrop" visible={true} tappable={false} />
     </>
   );
 };

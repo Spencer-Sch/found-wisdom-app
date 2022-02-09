@@ -17,4 +17,5 @@
 
 .ss-backdrop {
   opacity: 0.3;
+  position: absolute;
 }
