@@ -34,14 +34,14 @@ const WisdomAdd: React.FC = () => {
         next: false,
       };
 
-      const currentStorage = localStorage.getItem('myWisdoms');
+      const currentStorage: string | null = localStorage.getItem('myWisdoms');
 
       if (currentStorage) {
         const storageArr = JSON.parse(currentStorage);
         storageArr.push(valuesToSave);
         localStorage.setItem('myWisdoms', JSON.stringify(storageArr));
       } else {
-        const wisdomsArr = [valuesToSave];
+        const wisdomsArr = [{ ...valuesToSave, next: true }];
         localStorage.setItem('myWisdoms', JSON.stringify(wisdomsArr));
       }
       window.location.replace('/');
