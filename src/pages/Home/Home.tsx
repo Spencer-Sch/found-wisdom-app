@@ -19,6 +19,33 @@ import { WisdomObj } from '../../models/WisdomObj.model';
 
 import WisdomList from '../../components/WisdomList/WisdomList';
 
+////////////////////////////////////
+// THIS CODE IS TO PRE-LOAD WISDOMS SO I DON'T
+// HAVE TO KEEP DOING IT MANUALLY DURING DEVELOPMENT
+////////////////////////////////////
+
+import { wisdomData } from './wisdomData';
+
+const getStoredWisdoms = () => {
+  const wisdomsString: string | null = localStorage.getItem('myWisdoms');
+  if (wisdomsString) {
+    return JSON.parse(wisdomsString);
+  } else {
+    return [];
+  }
+};
+
+const loadWisdoms = () => {
+  const wisdomsToUpload: WisdomObj[] = getStoredWisdoms();
+  wisdomData.forEach((item) => {
+    wisdomsToUpload.push(item);
+  });
+  localStorage.setItem('myWisdoms', JSON.stringify(wisdomsToUpload));
+};
+loadWisdoms();
+
+////////////////////////////////////
+
 const Home: React.FC = () => {
   const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>([]);
 
