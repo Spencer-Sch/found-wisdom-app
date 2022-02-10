@@ -6,12 +6,13 @@ import {
   IonFabButton,
   IonHeader,
   IonIcon,
+  IonItem,
   IonPage,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
 
-import { add } from 'ionicons/icons';
+import { add, alertSharp } from 'ionicons/icons';
 
 import './Home.css';
 
@@ -42,7 +43,7 @@ const loadWisdoms = () => {
   });
   localStorage.setItem('myWisdoms', JSON.stringify(wisdomsToUpload));
 };
-loadWisdoms();
+// loadWisdoms();
 
 ////////////////////////////////////
 
@@ -56,6 +57,39 @@ const Home: React.FC = () => {
       setStoredWisdoms(wisdomsArr);
     }
   }, []);
+
+  const pushNotification = () => {
+    // NEXT STEP: WHEN END OF ARRAY IS HIT SET NEXT BACK TO FIRST ITEM
+    let wisdomToShow: WisdomObj;
+    let nextWisdom: WisdomObj;
+    const editedState = [...storedWisdoms];
+
+    storedWisdoms.forEach((item, idx) => {
+      if (item.next === true) {
+        wisdomToShow = {
+          ...item,
+          next: false,
+        };
+
+        editedState[idx] = { ...wisdomToShow };
+
+        nextWisdom = {
+          ...storedWisdoms[idx + 1],
+          next: true,
+        };
+
+        editedState[idx + 1] = { ...nextWisdom };
+      }
+    });
+
+    localStorage.setItem('myWisdoms', JSON.stringify(editedState));
+    setStoredWisdoms(editedState);
+    console.log(editedState);
+
+    // if (wisdomToShow!) {
+    alert(wisdomToShow!.text);
+    // }
+  };
 
   return (
     <IonPage>
@@ -77,6 +111,13 @@ const Home: React.FC = () => {
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>
+        {/* Temp button to activate "push notification" functionality */}
+        <IonFab vertical="bottom" horizontal="start" slot="fixed">
+          <IonFabButton color="tertiary" onClick={pushNotification}>
+            <IonIcon icon={alertSharp} />
+          </IonFabButton>
+        </IonFab>
+        {/* /////////////////////////////////////////////////////// */}
       </IonContent>
     </IonPage>
   );

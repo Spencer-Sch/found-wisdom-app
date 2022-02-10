@@ -14,7 +14,7 @@ export const wisdomData: WisdomObj[] = [
     date: format(new Date(), 'MMM dd, yyyy'),
     source: 'Jako Wilink',
     text: 'Discipline = freedom',
-    next: false,
+    next: true,
   },
   {
     id: uuidv4(),
@@ -41,7 +41,7 @@ export const wisdomData: WisdomObj[] = [
     id: uuidv4(),
     date: format(new Date(), 'MMM dd, yyyy'),
     source: 'Pastor Per',
-    text: 'I order for the vine to produce good, high quality produce there must be a process of pruning away unnecessary material.',
+    text: 'In order for the vine to produce good, high quality produce there must be a process of pruning away unnecessary material.',
     next: false,
   },
   {
