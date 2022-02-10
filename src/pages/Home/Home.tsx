@@ -59,7 +59,6 @@ const Home: React.FC = () => {
   }, []);
 
   const pushNotification = () => {
-    // NEXT STEP: WHEN END OF ARRAY IS HIT SET NEXT BACK TO FIRST ITEM
     let wisdomToShow: WisdomObj;
     let nextWisdom: WisdomObj;
     const editedState = [...storedWisdoms];
@@ -73,22 +72,28 @@ const Home: React.FC = () => {
 
         editedState[idx] = { ...wisdomToShow };
 
-        nextWisdom = {
-          ...storedWisdoms[idx + 1],
-          next: true,
-        };
+        if (idx === storedWisdoms.length - 1) {
+          nextWisdom = {
+            ...storedWisdoms[0],
+            next: true,
+          };
 
-        editedState[idx + 1] = { ...nextWisdom };
+          editedState[0] = { ...nextWisdom };
+        } else {
+          nextWisdom = {
+            ...storedWisdoms[idx + 1],
+            next: true,
+          };
+
+          editedState[idx + 1] = { ...nextWisdom };
+        }
       }
     });
 
     localStorage.setItem('myWisdoms', JSON.stringify(editedState));
     setStoredWisdoms(editedState);
-    console.log(editedState);
 
-    // if (wisdomToShow!) {
     alert(wisdomToShow!.text);
-    // }
   };
 
   return (
