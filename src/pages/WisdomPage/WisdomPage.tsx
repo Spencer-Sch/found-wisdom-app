@@ -7,6 +7,7 @@ import WisdomEdit from '../../components/WisdomEdit/WisdomEdit';
 import { WisdomObj } from '../../models/WisdomObj.model';
 
 import { IonPage } from '@ionic/react';
+import { storefront } from 'ionicons/icons';
 
 interface FomikValues {
   source: string;
@@ -34,54 +35,51 @@ const WisdomPage: React.FC = () => {
 
   const currentWisdom = storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!;
 
-  const handleDelete = () => {
-    //////////////////////////////////////////
-    // REFACTOR!!!!!
-    //////////////////////////////////////////
-    if (currentWisdom.next === true && storedWisdoms.length > 1) {
-      let nextWisdom: WisdomObj;
-      const editedState = [...storedWisdoms];
+  const transferNextValue = () => {
+    let nextWisdom: WisdomObj;
+    const stateCopy = [...storedWisdoms];
 
-      const currentWisdomIdx = storedWisdoms.indexOf(currentWisdom);
+    const currentWisdomIdx = storedWisdoms.indexOf(currentWisdom);
 
-      if (currentWisdomIdx === storedWisdoms.length - 1) {
-        nextWisdom = {
-          ...storedWisdoms[0],
-          next: true,
-        };
-        editedState[0] = { ...nextWisdom };
-      } else {
-        nextWisdom = {
-          ...storedWisdoms[currentWisdomIdx + 1],
-          next: true,
-        };
-        editedState[currentWisdomIdx + 1] = { ...nextWisdom };
-      }
-      ////////////////
-      const filteredWisdoms = editedState.filter(
-        (item) => item.id !== wisdomid
-      );
-      if (filteredWisdoms.length > 0) {
-        localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
-      } else {
-        localStorage.setItem('myWisdoms', JSON.stringify([]));
-      }
-      setStoredWisdoms(editedState);
-      setShowDeleteModal(false);
-      window.location.replace(`/`);
-      //////////////////
+    if (currentWisdomIdx === storedWisdoms.length - 1) {
+      nextWisdom = {
+        ...storedWisdoms[0],
+        next: true,
+      };
+      stateCopy[0] = { ...nextWisdom };
     } else {
-      const filteredWisdoms = storedWisdoms.filter(
-        (item) => item.id !== wisdomid
-      );
-      if (filteredWisdoms.length > 0) {
-        localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
-      } else {
-        localStorage.setItem('myWisdoms', JSON.stringify([]));
-      }
-      setShowDeleteModal(false);
-      window.location.replace(`/`);
+      nextWisdom = {
+        ...storedWisdoms[currentWisdomIdx + 1],
+        next: true,
+      };
+      stateCopy[currentWisdomIdx + 1] = { ...nextWisdom };
     }
+    return stateCopy;
+  };
+
+  const filterDeletedItem = (stateToFilter: WisdomObj[]) =>
+    stateToFilter.filter((item) => item.id !== wisdomid);
+
+  const updateLocalStorage = (filteredWisdoms: WisdomObj[]) => {
+    if (filteredWisdoms.length > 0) {
+      localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
+    } else {
+      localStorage.setItem('myWisdoms', JSON.stringify([]));
+    }
+  };
+
+  const handleDelete = () => {
+    if (currentWisdom.next === true && storedWisdoms.length > 1) {
+      const editedState = transferNextValue();
+      const filteredState = filterDeletedItem(editedState);
+      updateLocalStorage(filteredState);
+      setStoredWisdoms(editedState);
+    } else {
+      const filteredState = filterDeletedItem(storedWisdoms);
+      updateLocalStorage(filteredState);
+    }
+    setShowDeleteModal(false);
+    window.location.replace(`/`);
   };
 
   const handleEdit = (values: FomikValues) => {
