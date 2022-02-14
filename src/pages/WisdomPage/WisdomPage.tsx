@@ -7,7 +7,6 @@ import WisdomEdit from '../../components/WisdomEdit/WisdomEdit';
 import { WisdomObj } from '../../models/WisdomObj.model';
 
 import { IonPage } from '@ionic/react';
-import { storefront } from 'ionicons/icons';
 
 interface FomikValues {
   source: string;
