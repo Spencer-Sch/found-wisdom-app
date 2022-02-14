@@ -59,6 +59,9 @@ const Home: React.FC = () => {
   }, []);
 
   const pushNotification = () => {
+    //////////////////////////////////////////
+    // REFACTOR!!!!!
+    //////////////////////////////////////////
     let wisdomToShow: WisdomObj;
     let nextWisdom: WisdomObj;
     const editedState = [...storedWisdoms];
