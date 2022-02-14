@@ -25,7 +25,7 @@ const getStoredWisdoms = () => {
 const WisdomPage: React.FC = () => {
   const { wisdomid }: { wisdomid: string } = useParams();
 
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
 
   const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(
@@ -35,10 +35,6 @@ const WisdomPage: React.FC = () => {
   const currentWisdom = storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!;
 
   const handleDelete = () => {
-    setShowModal(true);
-  };
-
-  const deleteWisdom = () => {
     //////////////////////////////////////////
     // REFACTOR!!!!!
     //////////////////////////////////////////
@@ -61,7 +57,7 @@ const WisdomPage: React.FC = () => {
         };
         editedState[currentWisdomIdx + 1] = { ...nextWisdom };
       }
-      // localStorage.setItem('myWisdoms', JSON.stringify(editedState));
+      ////////////////
       const filteredWisdoms = editedState.filter(
         (item) => item.id !== wisdomid
       );
@@ -71,8 +67,9 @@ const WisdomPage: React.FC = () => {
         localStorage.setItem('myWisdoms', JSON.stringify([]));
       }
       setStoredWisdoms(editedState);
-      setShowModal(false);
+      setShowDeleteModal(false);
       window.location.replace(`/`);
+      //////////////////
     } else {
       const filteredWisdoms = storedWisdoms.filter(
         (item) => item.id !== wisdomid
@@ -82,7 +79,7 @@ const WisdomPage: React.FC = () => {
       } else {
         localStorage.setItem('myWisdoms', JSON.stringify([]));
       }
-      setShowModal(false);
+      setShowDeleteModal(false);
       window.location.replace(`/`);
     }
   };
@@ -102,11 +99,10 @@ const WisdomPage: React.FC = () => {
     <IonPage>
       {!showEdit && (
         <WisdomView
-          showModal={showModal}
+          showDeleteModal={showDeleteModal}
           setShowEdit={setShowEdit}
           handleDelete={handleDelete}
-          deleteWisdom={deleteWisdom}
-          setShowModal={setShowModal}
+          setShowDeleteModal={setShowDeleteModal}
           currentWisdom={currentWisdom}
         />
       )}

@@ -23,20 +23,18 @@ import { home } from 'ionicons/icons';
 import { WisdomObj } from '../../models/WisdomObj.model';
 
 interface PropsData {
-  showModal: boolean;
+  showDeleteModal: boolean;
   currentWisdom: WisdomObj;
   handleDelete: () => void;
-  deleteWisdom: () => void;
-  setShowModal: (value: boolean) => void;
+  setShowDeleteModal: (value: boolean) => void;
   setShowEdit: (value: boolean) => void;
 }
 
 const WisdomPage: React.FC<PropsData> = ({
-  showModal,
+  showDeleteModal,
   currentWisdom,
   handleDelete,
-  deleteWisdom,
-  setShowModal,
+  setShowDeleteModal,
   setShowEdit,
 }) => {
   return (
@@ -47,14 +45,6 @@ const WisdomPage: React.FC<PropsData> = ({
         </IonToolbar>
       </IonHeader>
       <IonContent className={styles.ss_content_relative}>
-        {/* confirm delete modal */}
-        {/* {showModal && (
-          <WisdomPageModal
-            deleteWisdom={deleteWisdom}
-            setShowModal={setShowModal}
-          />
-        )} */}
-        {/* content */}
         <IonGrid
           className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}
         >
@@ -97,7 +87,7 @@ const WisdomPage: React.FC<PropsData> = ({
                 expand="full"
                 color="danger"
                 className="ion-text-uppercase"
-                onClick={() => handleDelete()}
+                onClick={() => setShowDeleteModal(true)}
               >
                 delete
               </IonButton>
@@ -108,10 +98,10 @@ const WisdomPage: React.FC<PropsData> = ({
           </IonRow>
         </IonGrid>
         {/* confirm delete modal */}
-        {showModal && (
+        {showDeleteModal && (
           <WisdomPageModal
-            deleteWisdom={deleteWisdom}
-            setShowModal={setShowModal}
+            handleDelete={handleDelete}
+            setShowDeleteModal={setShowDeleteModal}
           />
         )}
       </IonContent>

@@ -11,13 +11,13 @@ import {
 import styles from './WisdomPageModal.module.css';
 
 interface ModalProps {
-  deleteWisdom: () => void;
-  setShowModal: (value: boolean) => void;
+  handleDelete: () => void;
+  setShowDeleteModal: (value: boolean) => void;
 }
 
 const WisdomPage_Modal: React.FC<ModalProps> = ({
-  deleteWisdom,
-  setShowModal,
+  handleDelete,
+  setShowDeleteModal,
 }) => {
   return (
     <>
@@ -42,7 +42,7 @@ const WisdomPage_Modal: React.FC<ModalProps> = ({
               color="secondary"
               expand="full"
               className="ion-text-uppercase"
-              onClick={() => deleteWisdom()}
+              onClick={() => handleDelete()}
             >
               Yes, delete
             </IonButton>
@@ -50,7 +50,7 @@ const WisdomPage_Modal: React.FC<ModalProps> = ({
               color="danger"
               expand="full"
               className="ion-text-uppercase"
-              onClick={() => setShowModal(false)}
+              onClick={() => setShowDeleteModal(false)}
             >
               No, cancel
             </IonButton>
