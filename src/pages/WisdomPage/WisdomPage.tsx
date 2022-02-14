@@ -39,16 +39,52 @@ const WisdomPage: React.FC = () => {
   };
 
   const deleteWisdom = () => {
-    const filteredWisdoms = storedWisdoms.filter(
-      (item) => item.id !== wisdomid
-    );
-    if (filteredWisdoms.length > 0) {
-      localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
+    //////////////////////////////////////////
+    // REFACTOR!!!!!
+    //////////////////////////////////////////
+    if (currentWisdom.next === true && storedWisdoms.length > 1) {
+      let nextWisdom: WisdomObj;
+      const editedState = [...storedWisdoms];
+
+      const currentWisdomIdx = storedWisdoms.indexOf(currentWisdom);
+
+      if (currentWisdomIdx === storedWisdoms.length - 1) {
+        nextWisdom = {
+          ...storedWisdoms[0],
+          next: true,
+        };
+        editedState[0] = { ...nextWisdom };
+      } else {
+        nextWisdom = {
+          ...storedWisdoms[currentWisdomIdx + 1],
+          next: true,
+        };
+        editedState[currentWisdomIdx + 1] = { ...nextWisdom };
+      }
+      // localStorage.setItem('myWisdoms', JSON.stringify(editedState));
+      const filteredWisdoms = editedState.filter(
+        (item) => item.id !== wisdomid
+      );
+      if (filteredWisdoms.length > 0) {
+        localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
+      } else {
+        localStorage.setItem('myWisdoms', JSON.stringify([]));
+      }
+      setStoredWisdoms(editedState);
+      setShowModal(false);
+      window.location.replace(`/`);
     } else {
-      localStorage.setItem('myWisdoms', JSON.stringify([]));
+      const filteredWisdoms = storedWisdoms.filter(
+        (item) => item.id !== wisdomid
+      );
+      if (filteredWisdoms.length > 0) {
+        localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
+      } else {
+        localStorage.setItem('myWisdoms', JSON.stringify([]));
+      }
+      setShowModal(false);
+      window.location.replace(`/`);
     }
-    setShowModal(false);
-    window.location.replace(`/`);
   };
 
   const handleEdit = (values: FomikValues) => {
