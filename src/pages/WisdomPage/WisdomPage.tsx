@@ -72,7 +72,7 @@ const WisdomPage: React.FC = () => {
       const editedState = transferNextValue();
       const filteredState = filterDeletedItem(editedState);
       updateLocalStorage(filteredState);
-      setStoredWisdoms(editedState);
+      setStoredWisdoms(filteredState);
     } else {
       const filteredState = filterDeletedItem(storedWisdoms);
       updateLocalStorage(filteredState);
