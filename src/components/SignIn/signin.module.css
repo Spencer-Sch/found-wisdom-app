@@ -1,0 +1,27 @@
+/* .ss_container {
+  height: 100%;
+}
+
+.ss_form_wrapper {
+} */
+
+.ss_larger_text {
+  font-size: 1.2rem;
+}
+
+.ss_grid {
+  margin: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.ss_form {
+  margin-top: -6rem;
+}
+
+.ss_form_error_label {
+  padding-top: 5rem;
+  color: red;
+}
