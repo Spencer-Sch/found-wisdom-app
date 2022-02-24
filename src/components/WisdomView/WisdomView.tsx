@@ -39,11 +39,11 @@ const WisdomPage: React.FC<PropsData> = ({
 }) => {
   return (
     <>
-      <IonHeader>
+      {/* <IonHeader>
         <IonToolbar>
           <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
         </IonToolbar>
-      </IonHeader>
+      </IonHeader> */}
       <IonContent className={styles.ss_content_relative}>
         <IonGrid
           className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}

@@ -101,32 +101,32 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      {/* <IonHeader>
         <IonToolbar>
           <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
         </IonToolbar>
+      </IonHeader> */}
+      {/* <IonContent fullscreen> */}
+      <IonHeader collapse="condense">
+        <IonToolbar>
+          <IonTitle size="large">Wisdom</IonTitle>
+        </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Wisdom</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        {/* Page Content Here */}
-        <WisdomList storedWisdoms={storedWisdoms} />
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color="secondary" href="wisdom/add">
-            <IonIcon icon={add} />
-          </IonFabButton>
-        </IonFab>
-        {/* Temp button to activate "push notification" functionality */}
-        <IonFab vertical="bottom" horizontal="start" slot="fixed">
-          <IonFabButton color="tertiary" onClick={pushNotification}>
-            <IonIcon icon={alertSharp} />
-          </IonFabButton>
-        </IonFab>
-        {/* /////////////////////////////////////////////////////// */}
-      </IonContent>
+      {/* Page Content Here */}
+      <WisdomList storedWisdoms={storedWisdoms} />
+      <IonFab vertical="bottom" horizontal="end" slot="fixed">
+        <IonFabButton color="secondary" href="wisdom/add">
+          <IonIcon icon={add} />
+        </IonFabButton>
+      </IonFab>
+      {/* Temp button to activate "push notification" functionality */}
+      <IonFab vertical="bottom" horizontal="start" slot="fixed">
+        <IonFabButton color="tertiary" onClick={pushNotification}>
+          <IonIcon icon={alertSharp} />
+        </IonFabButton>
+      </IonFab>
+      {/* /////////////////////////////////////////////////////// */}
+      {/* </IonContent> */}
     </IonPage>
   );
 };

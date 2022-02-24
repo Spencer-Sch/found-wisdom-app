@@ -48,53 +48,53 @@ const WisdomEdit: React.FC<PropsData> = ({
 
   return (
     <IonPage>
-      <IonHeader>
+      {/* <IonHeader>
         <IonToolbar>
           <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
         </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonList>
-          <form onSubmit={formik.handleSubmit}>
-            <IonItem>
-              <IonLabel position="stacked">Source</IonLabel>
-              <IonInput
-                id="source"
-                name="source"
-                type="text"
-                onIonChange={formik.handleChange}
-                value={formik.values.source}
-              />
-            </IonItem>
-            <IonItem>
-              <IonLabel position="stacked">Your Wisdom</IonLabel>
-              <IonTextarea
-                id="text"
-                name="text"
-                onIonChange={formik.handleChange}
-                value={formik.values.text}
-                autoGrow
-              ></IonTextarea>
-            </IonItem>
-            <IonButton
-              expand="full"
-              type="submit"
-              color="secondary"
-              className="ion-text-uppercase"
-            >
-              save
-            </IonButton>
-          </form>
+      </IonHeader> */}
+      {/* <IonContent> */}
+      <IonList>
+        <form onSubmit={formik.handleSubmit}>
+          <IonItem>
+            <IonLabel position="stacked">Source</IonLabel>
+            <IonInput
+              id="source"
+              name="source"
+              type="text"
+              onIonChange={formik.handleChange}
+              value={formik.values.source}
+            />
+          </IonItem>
+          <IonItem>
+            <IonLabel position="stacked">Your Wisdom</IonLabel>
+            <IonTextarea
+              id="text"
+              name="text"
+              onIonChange={formik.handleChange}
+              value={formik.values.text}
+              autoGrow
+            ></IonTextarea>
+          </IonItem>
           <IonButton
             expand="full"
-            color="danger"
+            type="submit"
+            color="secondary"
             className="ion-text-uppercase"
-            onClick={() => setShowEdit(false)}
           >
-            cancel
+            save
           </IonButton>
-        </IonList>
-      </IonContent>
+        </form>
+        <IonButton
+          expand="full"
+          color="danger"
+          className="ion-text-uppercase"
+          onClick={() => setShowEdit(false)}
+        >
+          cancel
+        </IonButton>
+      </IonList>
+      {/* </IonContent> */}
     </IonPage>
   );
 };

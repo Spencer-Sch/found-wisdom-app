@@ -1,5 +1,13 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import {
+  IonApp,
+  IonContent,
+  IonHeader,
+  IonRouterOutlet,
+  IonTitle,
+  IonToolbar,
+  setupIonicReact,
+} from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 /* Core CSS required for Ionic components to work properly */
@@ -24,21 +32,30 @@ import './theme/variables.css';
 import WisdomPage from './pages/WisdomPage/WisdomPage';
 import Home from './pages/Home/Home';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
+// import SignIn from './components/SignIn';
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/wisdom/:wisdomid" component={WisdomPage} />
-        <Route exact path="/wisdom/add" component={WisdomAdd} />
-        <Route exact path="/home">
-          <Redirect to="/" />
-        </Route>
-        <Route exact path="/" component={Home} />
-      </IonRouterOutlet>
-    </IonReactRouter>
+    <IonHeader>
+      <IonToolbar>
+        <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route exact path="/wisdom/:wisdomid" component={WisdomPage} />
+          <Route exact path="/wisdom/add" component={WisdomAdd} />
+          <Route exact path="/home">
+            <Redirect to="/" />
+          </Route>
+          {/* <Route exact path="/sign_in" component={SignIn} /> */}
+          <Route exact path="/" component={Home} />
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonContent>
   </IonApp>
 );
 
