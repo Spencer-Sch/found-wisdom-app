@@ -35,6 +35,7 @@ I am building this app to regular injection these encouraging words into my life
 ✅ React </br>
 ✅ Ionic </br>
 ✅ Formik </br>
+✅ Yup </br>
 ✅ date-fns </br>
 ✅ uuid </br>
 
