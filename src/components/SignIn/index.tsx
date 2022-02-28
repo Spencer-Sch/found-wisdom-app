@@ -11,6 +11,9 @@ import {
 } from '@ionic/react';
 import React, { useState } from 'react';
 
+import { firebase } from '../../firebase/firebase';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+
 import { Redirect } from 'react-router-dom';
 
 import { useFormik } from 'formik';
@@ -18,13 +21,13 @@ import * as Yup from 'yup';
 
 import styles from './signin.module.css';
 
-const SignIn = () => {
+const SignIn = (props: any) => {
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: 'admin@fw.com',
+      password: 'qwerty123456',
     },
     validationSchema: Yup.object({
       email: Yup.string()
@@ -34,9 +37,26 @@ const SignIn = () => {
     }),
     onSubmit: (values) => {
       setLoading(true);
-      console.log(values);
+      submitForm(values);
     },
   });
+
+  const submitForm = (values: { email: string; password: string }) => {
+    const auth = getAuth(firebase);
+
+    signInWithEmailAndPassword(auth, values.email, values.password)
+      .then(() => {
+        // props.history.push('/');
+        props.history.replace('/');
+        // console.log(props.history);
+        setLoading(false);
+        // <Redirect to="/" />;
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error.message);
+      });
+  };
 
   return (
     <IonPage>
