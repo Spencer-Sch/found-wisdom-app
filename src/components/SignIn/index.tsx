@@ -5,12 +5,12 @@ import {
   IonInput,
   IonItem,
   IonLabel,
+  IonLoading,
   IonPage,
   IonText,
 } from '@ionic/react';
 import React, { useState } from 'react';
 
-import { useIonLoading } from '@ionic/react';
 import { Redirect } from 'react-router-dom';
 
 import { useFormik } from 'formik';
@@ -19,7 +19,7 @@ import * as Yup from 'yup';
 import styles from './signin.module.css';
 
 const SignIn = () => {
-  const [present, dismiss] = useIonLoading();
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -33,24 +33,23 @@ const SignIn = () => {
       password: Yup.string().required('password is required'),
     }),
     onSubmit: (values) => {
-      console.log('Logging in...');
+      setLoading(true);
+      console.log(values);
     },
   });
 
   return (
     <IonPage>
       <IonContent>
-        {/* <div className={styles.ss_container}>
-          <div className={styles.ss_form_wrapper}> */}
         <IonGrid
           className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}
           style={{ padding: '1rem' }}
         >
           <form onSubmit={formik.handleSubmit} className={styles.ss_form}>
             <IonText color="dark" className="ion-text-center">
-              <h2>Please Login</h2>
+              <h2>Please Log In</h2>
             </IonText>
-            {/* <div> */}
+
             <IonItem>
               <IonLabel position="stacked"></IonLabel>
               <IonInput
@@ -60,18 +59,15 @@ const SignIn = () => {
                 onIonChange={formik.handleChange}
                 onIonBlur={formik.handleBlur}
                 value={formik.values.email}
-                placeholder="Enter email Here"
+                placeholder="Enter Email Here"
               />
             </IonItem>
             {formik.touched.email && formik.errors.email ? (
-              <IonLabel
-                className={`${styles.ss_form_error_label} ion-text-center`}
-                position="stacked"
-              >
+              <div className={`${styles.ss_form_error_label} ion-text-center`}>
                 {formik.errors.email}
-              </IonLabel>
+              </div>
             ) : null}
-            {/* </div> */}
+
             <IonItem>
               <IonLabel position="stacked"></IonLabel>
               <IonInput
@@ -81,40 +77,33 @@ const SignIn = () => {
                 onIonChange={formik.handleChange}
                 onIonBlur={formik.handleBlur}
                 value={formik.values.password}
-                placeholder="Enter password Here"
+                placeholder="Enter Password Here"
               />
             </IonItem>
             {formik.touched.password && formik.errors.password ? (
-              <IonLabel
-                className={`${styles.ss_form_error_label} ion-text-center`}
-                position="stacked"
-              >
+              <div className={`${styles.ss_form_error_label} ion-text-center`}>
                 {formik.errors.password}
-              </IonLabel>
+              </div>
             ) : null}
-            <IonButton
-              expand="full"
-              type="submit"
-              color="primary"
-              className="ion-text-uppercase"
-            >
-              login
-            </IonButton>
+
+            {loading ? (
+              <IonLoading
+                isOpen={loading}
+                spinner="lines-sharp"
+                cssClass={styles.my_custom_spinner}
+                message="logging in..."
+              />
+            ) : (
+              <IonButton
+                expand="full"
+                type="submit"
+                color="primary"
+                className="ion-text-uppercase"
+              >
+                log in
+              </IonButton>
+            )}
           </form>
-          {/* </div> */}
-          {/* <IonButton
-            expand="block"
-            onClick={() => {
-              present({
-                spinner: 'lines-sharp',
-                message: 'Loading...',
-                duration: 3000,
-              });
-            }}
-          >
-            Show Loading
-          </IonButton> */}
-          {/* </div> */}
         </IonGrid>
       </IonContent>
     </IonPage>
