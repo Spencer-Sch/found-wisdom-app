@@ -2,10 +2,7 @@ import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
   IonContent,
-  IonHeader,
   IonRouterOutlet,
-  IonTitle,
-  IonToolbar,
   setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -29,6 +26,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import Header from './components/Header/Header';
 import WisdomPage from './pages/WisdomPage/WisdomPage';
 import Home from './pages/Home/Home';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
@@ -38,12 +36,8 @@ setupIonicReact();
 
 const Routes: React.FC = () => (
   <IonApp>
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent>
+    <Header />
+    <IonContent id="main-content">
       <IonReactRouter>
         <IonRouterOutlet>
           <Route exact path="/wisdom/:wisdomid" component={WisdomPage} />
