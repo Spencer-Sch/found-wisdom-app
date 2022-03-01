@@ -32,7 +32,7 @@ import './theme/variables.css';
 import WisdomPage from './pages/WisdomPage/WisdomPage';
 import Home from './pages/Home/Home';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
-import SignIn from './components/SignIn';
+import SignIn from './pages/SignIn';
 
 setupIonicReact();
 
