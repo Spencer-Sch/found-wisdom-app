@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {
-  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -11,7 +10,6 @@ import {
   IonList,
   IonMenu,
   IonMenuButton,
-  IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
@@ -19,7 +17,7 @@ import { home, person, cog, key } from 'ionicons/icons';
 
 import styles from './header.module.css';
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <>
       <IonMenu side="start" contentId="main-content">
