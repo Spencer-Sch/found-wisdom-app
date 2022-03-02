@@ -14,7 +14,7 @@ interface PropsData {
 
 const WisdomList: React.FC<PropsData> = ({ storedWisdoms }) => {
   return (
-    <div>
+    <div style={{ overflow: 'scroll' }}>
       {storedWisdoms.length > 0 ? (
         storedWisdoms.map((item: WisdomObj) => (
           <WisdomCard
