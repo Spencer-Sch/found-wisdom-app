@@ -23,6 +23,7 @@ import styles from './signin.module.css';
 
 const SignIn = (props: any) => {
   const [loading, setLoading] = useState(false);
+  console.log('loading is: ', loading);
 
   const formik = useFormik({
     initialValues: {
@@ -49,93 +50,99 @@ const SignIn = (props: any) => {
         props.history.replace('/');
       })
       .catch((error) => {
-        // setLoading(false);
-        console.log(error.message);
-      })
-      .finally(() => {
-        setLoading(false);
+        console.log('sign in: ', error);
       });
   };
 
   return (
-    <IonPage>
-      <IonContent>
-        <IonGrid
-          className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}
-          style={{ padding: '1rem' }}
-        >
-          <form onSubmit={formik.handleSubmit} className={styles.ss_form}>
-            <IonText color="dark" className="ion-text-center">
-              <h2>Please Log In</h2>
-            </IonText>
+    <>
+      {!props.user ? (
+        <IonPage>
+          <IonContent>
+            <IonGrid
+              className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}
+              style={{ padding: '1rem' }}
+            >
+              <form onSubmit={formik.handleSubmit} className={styles.ss_form}>
+                <IonText color="dark" className="ion-text-center">
+                  <h2>Please Log In</h2>
+                </IonText>
 
-            <IonItem>
-              <IonLabel position="stacked"></IonLabel>
-              <IonInput
-                id="email"
-                name="email"
-                type="text"
-                onIonChange={formik.handleChange}
-                onIonBlur={formik.handleBlur}
-                value={formik.values.email}
-                placeholder="Enter Email Here"
-              />
-            </IonItem>
-            {formik.touched.email && formik.errors.email ? (
-              <div className={`${styles.ss_form_error_label} ion-text-center`}>
-                {formik.errors.email}
-              </div>
-            ) : null}
+                <IonItem>
+                  <IonLabel position="stacked"></IonLabel>
+                  <IonInput
+                    id="email"
+                    name="email"
+                    type="text"
+                    onIonChange={formik.handleChange}
+                    onIonBlur={formik.handleBlur}
+                    value={formik.values.email}
+                    placeholder="Enter Email Here"
+                  />
+                </IonItem>
+                {formik.touched.email && formik.errors.email ? (
+                  <div
+                    className={`${styles.ss_form_error_label} ion-text-center`}
+                  >
+                    {formik.errors.email}
+                  </div>
+                ) : null}
 
-            <IonItem>
-              <IonLabel position="stacked"></IonLabel>
-              <IonInput
-                id="password"
-                name="password"
-                type="password"
-                onIonChange={formik.handleChange}
-                onIonBlur={formik.handleBlur}
-                value={formik.values.password}
-                placeholder="Enter Password Here"
-              />
-            </IonItem>
-            {formik.touched.password && formik.errors.password ? (
-              <div className={`${styles.ss_form_error_label} ion-text-center`}>
-                {formik.errors.password}
-              </div>
-            ) : null}
+                <IonItem>
+                  <IonLabel position="stacked"></IonLabel>
+                  <IonInput
+                    id="password"
+                    name="password"
+                    type="password"
+                    onIonChange={formik.handleChange}
+                    onIonBlur={formik.handleBlur}
+                    value={formik.values.password}
+                    placeholder="Enter Password Here"
+                  />
+                </IonItem>
+                {formik.touched.password && formik.errors.password ? (
+                  <div
+                    className={`${styles.ss_form_error_label} ion-text-center`}
+                  >
+                    {formik.errors.password}
+                  </div>
+                ) : null}
 
-            {loading ? (
-              <IonLoading
-                isOpen={loading}
-                spinner="lines-sharp"
-                cssClass={styles.my_custom_spinner}
-                message="logging in..."
-              />
-            ) : (
-              <>
-                <IonButton
-                  expand="block"
-                  type="submit"
-                  color="primary"
-                  className="ion-text-uppercase"
-                >
-                  log in
-                </IonButton>
-                <IonButton
-                  fill="outline"
-                  expand="block"
-                  color="secondary"
-                  className="ion-text-uppercase"
-                >
-                  register
-                </IonButton>
-              </>
-            )}
-          </form>
-        </IonGrid>
-      </IonContent>
-    </IonPage>
+                {loading ? (
+                  <IonLoading
+                    isOpen={loading}
+                    spinner="lines-sharp"
+                    cssClass={styles.my_custom_spinner}
+                    message="logging in..."
+                  />
+                ) : (
+                  <>
+                    <IonButton
+                      expand="block"
+                      type="submit"
+                      color="primary"
+                      className="ion-text-uppercase"
+                    >
+                      log in
+                    </IonButton>
+                    <IonButton
+                      fill="outline"
+                      expand="block"
+                      color="secondary"
+                      className="ion-text-uppercase"
+                    >
+                      register
+                    </IonButton>
+                  </>
+                )}
+              </form>
+            </IonGrid>
+          </IonContent>
+        </IonPage>
+      ) : (
+        <Redirect to={'/'} />
+      )}
+    </>
   );
 };
 
