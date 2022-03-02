@@ -28,19 +28,19 @@ const Header: React.FC = () => {
         </IonHeader>
         <IonContent>
           <IonList>
-            <IonItem button={true}>
+            <IonItem button={true} onClick={() => console.log('Home')}>
               <IonIcon slot="start" icon={home} />
               <IonLabel>Home</IonLabel>
             </IonItem>
-            <IonItem button={true}>
+            <IonItem button={true} onClick={() => console.log('Account')}>
               <IonIcon slot="start" icon={person} />
               <IonLabel>Account</IonLabel>
             </IonItem>
-            <IonItem button={true}>
+            <IonItem button={true} onClick={() => console.log('Settings')}>
               <IonIcon slot="start" icon={cog} />
               <IonLabel>Settings</IonLabel>
             </IonItem>
-            <IonItem button={true}>
+            <IonItem button={true} onClick={() => console.log('Log Out')}>
               <IonIcon slot="start" icon={key} />
               <IonLabel>Log Out</IonLabel>
             </IonItem>
