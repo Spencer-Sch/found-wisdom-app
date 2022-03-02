@@ -31,32 +31,31 @@ import WisdomPage from './pages/WisdomPage/WisdomPage';
 import Home from './pages/Home/Home';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
 import SignIn from './pages/SignIn';
+import AuthGuard from './components/HOC/AuthGuard';
 
 setupIonicReact();
 
-const Routes: React.FC = () => (
+const Routes: React.FC = ({ user }: any) => (
   <IonApp>
-    <Header />
+    {user ? <Header /> : null}
     <IonContent id="main-content">
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route exact path="/wisdom/:wisdomid" component={WisdomPage} />
-          <Route exact path="/wisdom/add" component={WisdomAdd} />
+          <Route
+            exact
+            path="/wisdom/:wisdomid"
+            component={AuthGuard(WisdomPage)}
+          />
+          <Route exact path="/wisdom/add" component={AuthGuard(WisdomAdd)} />
           <Route exact path="/home">
             <Redirect to="/" />
           </Route>
-          {/* <Route exact path="/sign_in" component={SignIn} /> */}
-          {/* <Route
-            exact
-            path="/sign_in"
-            component={(props: any) => <SignIn {...props} user={user} />}
-          /> */}
           <Route
             exact
             path="/sign_in"
-            component={(props: any) => <SignIn {...props} />}
+            component={(props: any) => <SignIn {...props} user={user} />}
           />
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={AuthGuard(Home)} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonContent>
