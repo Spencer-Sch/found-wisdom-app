@@ -21,7 +21,7 @@ import * as Yup from 'yup';
 
 import styles from './signin.module.css';
 
-const SignIn = (props: any) => {
+const SignIn: React.FC = (props: any) => {
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
