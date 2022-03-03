@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -20,9 +21,12 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
+import styles from './wisdomAdd.module.css';
+
 import { WisdomObj } from '../../models/WisdomObj.model';
 
 const getStoredWisdoms = () => {
+  console.log('WisdomAdd getItem');
   const wisdomsString: string | null = localStorage.getItem('myWisdoms');
   if (wisdomsString) {
     return JSON.parse(wisdomsString);
@@ -32,6 +36,7 @@ const getStoredWisdoms = () => {
 };
 
 const WisdomAdd: React.FC = () => {
+  console.log('WisdomAdd Render');
   const storedWisdoms: WisdomObj[] = getStoredWisdoms();
 
   const formik = useFormik({
@@ -39,6 +44,10 @@ const WisdomAdd: React.FC = () => {
       source: '',
       text: '',
     },
+    validationSchema: Yup.object({
+      source: Yup.string(),
+      text: Yup.string().required('some text is required'),
+    }),
     onSubmit: (values) => {
       const valuesToSave = {
         ...values,
@@ -75,6 +84,7 @@ const WisdomAdd: React.FC = () => {
               name="source"
               type="text"
               onIonChange={formik.handleChange}
+              value={formik.values.source}
               placeholder="Enter Source Here"
             />
           </IonItem>
@@ -84,10 +94,17 @@ const WisdomAdd: React.FC = () => {
               id="text"
               name="text"
               onIonChange={formik.handleChange}
+              onIonBlur={formik.handleBlur}
+              value={formik.values.text}
               placeholder="Enter Wisdom Here"
               autoGrow
             ></IonTextarea>
           </IonItem>
+          {formik.touched.text && formik.errors.text ? (
+            <div className={`${styles.ss_form_error_label} ion-text-center`}>
+              {formik.errors.text}
+            </div>
+          ) : null}
           <IonButton
             expand="full"
             type="submit"

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import {
   IonButton,
@@ -15,6 +16,8 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+
+import styles from './wisdomEdit.module.css';
 
 import { WisdomObj } from '../../models/WisdomObj.model';
 
@@ -41,6 +44,10 @@ const WisdomEdit: React.FC<PropsData> = ({
       source: source,
       text: text,
     },
+    validationSchema: Yup.object({
+      source: Yup.string(),
+      text: Yup.string().required('some text is required'),
+    }),
     onSubmit: (values) => {
       handleEdit(values);
     },
@@ -72,10 +79,16 @@ const WisdomEdit: React.FC<PropsData> = ({
               id="text"
               name="text"
               onIonChange={formik.handleChange}
+              onIonBlur={formik.handleBlur}
               value={formik.values.text}
               autoGrow
             ></IonTextarea>
           </IonItem>
+          {formik.touched.text && formik.errors.text ? (
+            <div className={`${styles.ss_form_error_label} ion-text-center`}>
+              {formik.errors.text}
+            </div>
+          ) : null}
           <IonButton
             expand="full"
             type="submit"
