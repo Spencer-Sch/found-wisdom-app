@@ -19,6 +19,7 @@ import { firebase } from '../../firebase/firebase';
 import { getAuth, signOut } from 'firebase/auth';
 
 import styles from './header.module.css';
+import { Redirect } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const logoutHandler = () => {
@@ -44,7 +45,7 @@ const Header: React.FC = () => {
         </IonHeader>
         <IonContent>
           <IonList>
-            <IonItem button={true} onClick={() => console.log('Home')}>
+            <IonItem button={true} href="/">
               <IonIcon slot="start" icon={home} />
               <IonLabel>Home</IonLabel>
             </IonItem>
