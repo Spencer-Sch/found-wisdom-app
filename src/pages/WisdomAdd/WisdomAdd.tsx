@@ -51,6 +51,7 @@ const WisdomAdd: React.FC = () => {
     onSubmit: (values) => {
       const valuesToSave = {
         ...values,
+        source: values.source === '' ? 'unknown' : values.source,
         date: format(new Date(), 'MMM dd, yyyy'),
         id: uuidv4(),
         next: false,

@@ -85,7 +85,7 @@ const WisdomPage: React.FC = () => {
     storedWisdoms.forEach((item) => {
       if (item.id === wisdomid) {
         item.text = values.text;
-        item.source = values.source;
+        item.source = values.source === '' ? 'unknown' : values.source;
       }
     });
     localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms));
