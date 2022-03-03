@@ -23,7 +23,6 @@ import styles from './signin.module.css';
 
 const SignIn = (props: any) => {
   const [loading, setLoading] = useState(false);
-  console.log('loading is: ', loading);
 
   const formik = useFormik({
     initialValues: {
