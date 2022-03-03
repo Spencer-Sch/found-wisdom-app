@@ -37,7 +37,8 @@ setupIonicReact();
 
 const Routes: React.FC = ({ user }: any) => (
   <IonApp>
-    {user ? <Header /> : null}
+    {/* {user ? <Header /> : null} */}
+    <Header />
     <IonContent id="main-content">
       <IonReactRouter>
         <IonRouterOutlet>
