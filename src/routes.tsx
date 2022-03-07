@@ -30,8 +30,9 @@ import Header from './components/Header/Header';
 import WisdomPage from './pages/WisdomPage/WisdomPage';
 import Home from './pages/Home/Home';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
-import SignIn from './pages/SignIn';
+// import SignIn from './pages/SignInOrRegister';
 import AuthGuard from './components/HOC/AuthGuard';
+import SignInOrRegister from './pages/SignInOrRegister';
 
 setupIonicReact();
 
@@ -54,7 +55,9 @@ const Routes: React.FC = ({ user }: any) => (
           <Route
             exact
             path="/sign_in"
-            component={(props: any) => <SignIn {...props} user={user} />}
+            component={(props: any) => (
+              <SignInOrRegister {...props} user={user} />
+            )}
           />
           <Route exact path="/" component={AuthGuard(Home)} />
         </IonRouterOutlet>
