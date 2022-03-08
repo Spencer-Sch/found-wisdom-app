@@ -16,9 +16,15 @@ const SignInOrRegister: React.FC = (props: any) => {
         <IonPage>
           <IonContent>
             {showRegisterForm ? (
-              <RegisterNewUser setShowRegisterForm={setShowRegisterForm} />
+              <RegisterNewUser
+                {...props}
+                setShowRegisterForm={setShowRegisterForm}
+              />
             ) : (
-              <SignInUser setShowRegisterForm={setShowRegisterForm} />
+              <SignInUser
+                {...props}
+                setShowRegisterForm={setShowRegisterForm}
+              />
             )}
           </IonContent>
         </IonPage>
