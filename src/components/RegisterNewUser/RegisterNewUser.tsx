@@ -9,8 +9,9 @@ import {
 } from '@ionic/react';
 import React, { useState } from 'react';
 
-import { firebase } from '../../firebase/firebase';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { firebase, firestoreDB } from '../../firebase/firebase';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
 
 import { Redirect } from 'react-router-dom';
 
@@ -56,13 +57,29 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
   }) => {
     const auth = getAuth(firebase);
 
-    signInWithEmailAndPassword(auth, values.email, values.password)
+    createUserCollection(values.email);
+
+    createUserWithEmailAndPassword(auth, values.email, values.password)
       .then(() => {
         props.history.replace('/');
       })
       .catch((error) => {
-        console.log('registerUser: ', error);
+        console.log('register user: ', error);
       });
+  };
+
+  const createUserCollection = (userEmail: string) => {
+    const userCollection = collection(firestoreDB, userEmail);
+
+    addDoc(userCollection, {
+      userInfo: {
+        userEmail,
+      },
+    }).catch((error) => console.log('Error from create userInfo doc: ', error));
+
+    addDoc(userCollection, { wisdoms: [] }).catch((error) =>
+      console.log('Error from create wisdoms doc: ', error)
+    );
   };
 
   return (
