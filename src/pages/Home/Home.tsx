@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { firebase, firestoreDB } from '../../firebase/firebase';
+import { getDocs, collection, query } from 'firebase/firestore';
+
 import {
   IonContent,
   IonFab,
@@ -47,16 +50,48 @@ const loadWisdoms = () => {
 
 ////////////////////////////////////
 
+// interface PropsData {
+//   user: any;
+// }
+
+// const Home: React.FC<PropsData> = (props: any) => {
 const Home: React.FC = () => {
   const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>([]);
+  const [loading, setLoading] = useState(false);
 
+  //////////////////////////////////////////
+  // localStorage useEffect
+  //////////////////////////////////////////
+  // useEffect(() => {
+  //   const wisdomsString: string | null = localStorage.getItem('myWisdoms');
+  //   if (wisdomsString) {
+  //     const wisdomsArr: WisdomObj[] = JSON.parse(wisdomsString);
+  //     setStoredWisdoms(wisdomsArr);
+  //   }
+  // }, []);
+
+  //////////////////////////////////////////
+  // firebase useEffect
+  //////////////////////////////////////////
   useEffect(() => {
-    const wisdomsString: string | null = localStorage.getItem('myWisdoms');
-    if (wisdomsString) {
-      const wisdomsArr: WisdomObj[] = JSON.parse(wisdomsString);
-      setStoredWisdoms(wisdomsArr);
+    console.log('inside firebase useEffect');
+    console.log(storedWisdoms);
+    if (storedWisdoms.length < 1) {
+      // setLoading(true);
+
+      // const userCollection = collection(firestoreDB, props.user.email);
+      const userCollection = collection(firestoreDB, 'test1@test.com');
+
+      const q = query(userCollection);
+      getDocs(q).then((snapshot) => {
+        const wisdoms = snapshot.docs.map((item) => ({
+          ...item.data(),
+        }));
+        console.log('snapshot', wisdoms[0]);
+        console.log('snapshot', wisdoms[0]);
+      });
     }
-  }, []);
+  }, [storedWisdoms]);
 
   const pushNotification = () => {
     //////////////////////////////////////////

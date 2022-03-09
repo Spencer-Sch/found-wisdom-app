@@ -75,11 +75,8 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
       userInfo: {
         userEmail,
       },
+      userWisdoms: [],
     }).catch((error) => console.log('Error from create userInfo doc: ', error));
-
-    addDoc(userCollection, { wisdoms: [] }).catch((error) =>
-      console.log('Error from create wisdoms doc: ', error)
-    );
   };
 
   return (
