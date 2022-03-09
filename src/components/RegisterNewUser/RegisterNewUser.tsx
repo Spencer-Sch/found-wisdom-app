@@ -13,6 +13,8 @@ import { firebase, firestoreDB } from '../../firebase/firebase';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
 
+import { useAuth } from '../../contexts/AuthContext';
+
 import { Redirect } from 'react-router-dom';
 
 import { useFormik } from 'formik';
@@ -26,6 +28,10 @@ interface PropsData {
 
 const RegisterNewUser: React.FC<PropsData> = (props: any) => {
   const [loading, setLoading] = useState(false);
+  //////////////////////
+  // unsure how to properly type this section
+  const { registerNewUser } = useAuth();
+  //////////////////////
 
   const formik = useFormik({
     initialValues: {
@@ -55,17 +61,17 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
     password: string;
     confirmPassword: string;
   }) => {
-    const auth = getAuth(firebase);
+    // const auth = getAuth(firebase);
 
     createUserCollection(values.email);
 
-    createUserWithEmailAndPassword(auth, values.email, values.password)
-      .then(() => {
-        props.history.replace('/');
-      })
-      .catch((error) => {
-        console.log('register user: ', error);
-      });
+    // createUserWithEmailAndPassword(auth, values.email, values.password)
+    //   .then(() => {
+    //     props.history.replace('/');
+    //   })
+    //   .catch((error) => {
+    //     console.log('register user: ', error);
+    //   });
   };
 
   const createUserCollection = (userEmail: string) => {
