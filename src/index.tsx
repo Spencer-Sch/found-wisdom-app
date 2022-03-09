@@ -12,6 +12,10 @@ interface PropsData {
   user: any;
 }
 
+//////////////////////////////
+// Auth Context Branch
+//////////////////////////////
+
 const App: React.FC<PropsData> = (props) => {
   return <Routes {...props} />;
 };
