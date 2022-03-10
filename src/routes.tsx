@@ -32,38 +32,41 @@ import Home from './pages/Home/Home';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
 // import SignIn from './pages/SignInOrRegister';
 import AuthGuard from './components/HOC/AuthGuard';
+import { useAuth } from './contexts/AuthContext';
 import SignInOrRegister from './pages/SignInOrRegister';
 
 setupIonicReact();
 
-const Routes: React.FC = ({ user }: any) => (
-  <IonApp>
-    {/* {user ? <Header /> : null} */}
-    <Header />
-    <IonContent id="main-content">
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route
-            exact
-            path="/wisdom/:wisdomid"
-            component={AuthGuard(WisdomPage)}
-          />
-          <Route exact path="/wisdom/add" component={AuthGuard(WisdomAdd)} />
-          <Route exact path="/home">
-            <Redirect to="/" />
-          </Route>
-          <Route
-            exact
-            path="/sign_in"
-            component={(props: any) => (
-              <SignInOrRegister {...props} user={user} />
-            )}
-          />
-          <Route exact path="/" component={AuthGuard(Home)} />
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </IonContent>
-  </IonApp>
-);
+const Routes: React.FC = () => {
+  // const { currentUser } = useAuth();
+
+  return (
+    <IonApp>
+      {/* {currentUser ? <Header /> : null} */}
+      <Header />
+      <IonContent id="main-content">
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route
+              exact
+              path="/wisdom/:wisdomid"
+              component={AuthGuard(WisdomPage)}
+            />
+            <Route exact path="/wisdom/add" component={AuthGuard(WisdomAdd)} />
+            <Route exact path="/home">
+              <Redirect to="/" />
+            </Route>
+            <Route
+              exact
+              path="/sign_in"
+              component={(props: any) => <SignInOrRegister {...props} />}
+            />
+            <Route exact path="/" component={AuthGuard(Home)} />
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </IonContent>
+    </IonApp>
+  );
+};
 
 export default Routes;
