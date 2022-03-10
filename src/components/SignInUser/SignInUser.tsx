@@ -101,6 +101,26 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
           </div>
         ) : null}
 
+        <IonButton
+          expand="block"
+          type="submit"
+          color="primary"
+          disabled={loading}
+          className="ion-text-uppercase"
+        >
+          log in
+        </IonButton>
+        <IonButton
+          fill="clear"
+          expand="block"
+          color="secondary"
+          disabled={loading}
+          className="ion-text-lowercase"
+          onClick={() => props.setShowRegisterForm(true)}
+        >
+          new user? register here.
+        </IonButton>
+
         {loading ? (
           <IonLoading
             isOpen={loading}
@@ -110,15 +130,15 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
           />
         ) : (
           <>
-            <IonButton
+            {/* <IonButton
               expand="block"
               type="submit"
               color="primary"
               className="ion-text-uppercase"
             >
               log in
-            </IonButton>
-            <IonButton
+            </IonButton> */}
+            {/* <IonButton
               fill="clear"
               expand="block"
               color="secondary"
@@ -126,7 +146,7 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
               onClick={() => props.setShowRegisterForm(true)}
             >
               new user? register here.
-            </IonButton>
+            </IonButton> */}
           </>
         )}
       </form>
