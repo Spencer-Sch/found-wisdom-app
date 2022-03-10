@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { Redirect } from 'react-router-dom';
 
+import { useAuth } from '../../contexts/AuthContext';
 import styles from './signInOrRegister.module.css';
 import SignInUser from '../../components/SignInUser/SignInUser';
 import RegisterNewUser from '../../components/RegisterNewUser/RegisterNewUser';
@@ -10,9 +11,11 @@ import RegisterNewUser from '../../components/RegisterNewUser/RegisterNewUser';
 const SignInOrRegister: React.FC = (props: any) => {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
 
+  const { currentUser } = useAuth();
+
   return (
     <>
-      {!props.user ? (
+      {!currentUser ? (
         <IonPage>
           <IonContent>
             {showRegisterForm ? (
