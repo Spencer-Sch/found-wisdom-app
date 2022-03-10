@@ -1,36 +1,46 @@
-import { createUserWithEmailAndPassword } from '@firebase/auth';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, createContext } from 'react';
 
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
-/////////////////////////
-// Unsure how to properly type this section
-type useAuthResult = ReturnType<typeof useAuth>;
+import {
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  UserCredential,
+} from 'firebase/auth';
+import { User as FirebaseUser } from 'firebase/auth'; // User type from firebase
 
-const AuthContext = React.createContext<useAuthResult>({
-  useContext: () => {}, // useContext doesn't return void. It should return currentUser and registerNewUser
-});
+import { auth } from '../firebase/firebase'; // local firebase.ts
 
-export function useAuth(): {
-  useContext: () => {
-    currentUser: any;
-    registerNewUser: () => Promise<UserCredential>;
-  };
-} {
+interface AuthContextResult {
+  currentUser: FirebaseUser | null;
+  registerNewUser?: (
+    email: string,
+    password: string
+  ) => Promise<UserCredential>;
+}
+
+const defaultState = {
+  currentUser: null,
+};
+
+const AuthContext = createContext<AuthContextResult>(defaultState);
+
+export function useAuth() {
   return useContext(AuthContext);
 }
-/////////////////////////
 
-export const AuthProvider: React.FC = ({ children }: any) => {
-  const [currentUser, setCurrentUser] = useState(null);
+//////////////////////////////
+
+export const AuthProvider: React.FC = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const registerNewUser = (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      setLoading(false);
     });
 
     return unsubscribe;
@@ -41,5 +51,9 @@ export const AuthProvider: React.FC = ({ children }: any) => {
     registerNewUser,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 };
