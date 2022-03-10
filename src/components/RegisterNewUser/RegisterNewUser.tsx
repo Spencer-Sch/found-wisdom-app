@@ -28,10 +28,8 @@ interface PropsData {
 
 const RegisterNewUser: React.FC<PropsData> = (props: any) => {
   const [loading, setLoading] = useState(false);
-  //////////////////////
-  // unsure how to properly type this section
+
   const { registerNewUser } = useAuth();
-  //////////////////////
 
   const formik = useFormik({
     initialValues: {
@@ -64,6 +62,14 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
     // const auth = getAuth(firebase);
 
     createUserCollection(values.email);
+
+    registerNewUser!(values.email, values.password)
+      .then(() => {
+        props.history.replace('/');
+      })
+      .catch((error) => {
+        console.log('register user: ', error);
+      });
 
     // createUserWithEmailAndPassword(auth, values.email, values.password)
     //   .then(() => {
@@ -148,6 +154,26 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
           </div>
         ) : null}
 
+        <IonButton
+          expand="block"
+          type="submit"
+          color="primary"
+          disabled={loading}
+          className="ion-text-uppercase"
+        >
+          register
+        </IonButton>
+        <IonButton
+          fill="clear"
+          expand="block"
+          color="secondary"
+          disabled={loading}
+          className="ion-text-lowercase"
+          onClick={() => props.setShowRegisterForm(false)}
+        >
+          existing user? log in here.
+        </IonButton>
+
         {loading ? (
           <IonLoading
             isOpen={loading}
@@ -157,7 +183,7 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
           />
         ) : (
           <>
-            <IonButton
+            {/* <IonButton
               expand="block"
               type="submit"
               color="primary"
@@ -173,7 +199,7 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
               onClick={() => props.setShowRegisterForm(false)}
             >
               existing user? log in here.
-            </IonButton>
+            </IonButton> */}
           </>
         )}
       </form>
