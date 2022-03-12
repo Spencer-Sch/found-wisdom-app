@@ -12,7 +12,9 @@ import React, { useState } from 'react';
 import { firebase } from '../../firebase/firebase';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-import { Redirect } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+
+import { Redirect, useHistory } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -25,6 +27,8 @@ interface PropsData {
 
 const SignInUser: React.FC<PropsData> = (props: any) => {
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
+  const { signIn } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -46,13 +50,22 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
   const submitForm = (values: { email: string; password: string }) => {
     const auth = getAuth(firebase);
 
-    signInWithEmailAndPassword(auth, values.email, values.password)
+    signIn!(email, password)
       .then(() => {
-        props.history.replace('/');
+        history.replace('/');
+        // props.history.replace('/');
       })
       .catch((error) => {
         console.log('sign in: ', error);
       });
+
+    // signInWithEmailAndPassword(auth, values.email, values.password)
+    //   .then(() => {
+    //     props.history.replace('/');
+    //   })
+    //   .catch((error) => {
+    //     console.log('sign in: ', error);
+    //   });
   };
 
   return (
