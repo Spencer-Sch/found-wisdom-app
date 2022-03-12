@@ -171,7 +171,17 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
         >
           register
         </IonButton>
-        <IonButton
+        <div className={`ion-text-center ${styles.ss_div}`}>
+          already have an account?{' '}
+          <span
+            className={styles.ss_span}
+            onClick={() => props.setShowRegisterForm(false)}
+          >
+            log in here
+          </span>
+        </div>
+
+        {/* <IonButton
           fill="clear"
           expand="block"
           color="secondary"
@@ -180,7 +190,7 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
           onClick={() => props.setShowRegisterForm(false)}
         >
           existing user? log in here.
-        </IonButton>
+        </IonButton> */}
 
         {loading ? (
           <IonLoading
