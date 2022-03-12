@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   UserCredential,
+  signOut,
 } from 'firebase/auth';
 import { User as FirebaseUser } from 'firebase/auth'; // User type from firebase
 
@@ -17,6 +18,7 @@ interface AuthContextResult {
     email: string,
     password: string
   ) => Promise<UserCredential>;
+  signOutUser?: () => Promise<void>;
 }
 
 const defaultState = {
@@ -43,6 +45,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  const signOutUser = () => {
+    return signOut(auth);
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -56,6 +62,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     currentUser,
     signIn,
     registerNewUser,
+    signOutUser,
   };
 
   return (
