@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect, createContext } from 'react';
 import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   UserCredential,
 } from 'firebase/auth';
 import { User as FirebaseUser } from 'firebase/auth'; // User type from firebase
@@ -11,6 +12,7 @@ import { auth } from '../firebase/firebase'; // local firebase.ts
 
 interface AuthContextResult {
   currentUser: FirebaseUser | null;
+  signIn?: (email: string, password: string) => Promise<UserCredential>;
   registerNewUser?: (
     email: string,
     password: string
@@ -37,6 +39,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
+  const signIn = (email: string, password: string) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -48,6 +54,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const value = {
     currentUser,
+    signIn,
     registerNewUser,
   };
 
