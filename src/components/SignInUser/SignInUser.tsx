@@ -25,6 +25,11 @@ interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
 }
 
+interface ValuesData {
+  email: string;
+  password: string;
+}
+
 const SignInUser: React.FC<PropsData> = (props: any) => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -47,8 +52,9 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
     },
   });
 
-  const submitForm = (values: { email: string; password: string }) => {
-    const auth = getAuth(firebase);
+  // const submitForm = (values: { email: string; password: string }) => {
+  const submitForm = ({ email, password }: ValuesData) => {
+    // const auth = getAuth(firebase);
 
     signIn!(email, password)
       .then(() => {
@@ -56,7 +62,7 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
         // props.history.replace('/');
       })
       .catch((error) => {
-        console.log('sign in: ', error);
+        console.log('register user: ', error);
       });
 
     // signInWithEmailAndPassword(auth, values.email, values.password)
