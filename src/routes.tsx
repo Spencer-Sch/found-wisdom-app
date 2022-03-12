@@ -30,7 +30,6 @@ import Header from './components/Header/Header';
 import WisdomPage from './pages/WisdomPage/WisdomPage';
 import Home from './pages/Home/Home';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
-// import SignIn from './pages/SignInOrRegister';
 import AuthGuard from './components/HOC/AuthGuard';
 import { useAuth } from './contexts/AuthContext';
 import SignInOrRegister from './pages/SignInOrRegister';
@@ -38,12 +37,14 @@ import SignInOrRegister from './pages/SignInOrRegister';
 setupIonicReact();
 
 const Routes: React.FC = () => {
-  // const { currentUser } = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <IonApp>
+      {/* ///////////////////////////////// */}
       {/* {currentUser ? <Header /> : null} */}
       <Header />
+      {/* ///////////////////////////////// */}
       <IonContent id="main-content">
         <IonReactRouter>
           <IonRouterOutlet>

@@ -6,8 +6,8 @@ import {
   signInWithEmailAndPassword,
   UserCredential,
   signOut,
+  User as FirebaseUser, // User type from firebase
 } from 'firebase/auth';
-import { User as FirebaseUser } from 'firebase/auth'; // User type from firebase
 
 import { auth } from '../firebase/firebase'; // local firebase.ts
 

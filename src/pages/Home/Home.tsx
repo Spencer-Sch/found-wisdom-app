@@ -17,11 +17,11 @@ import {
 
 import { add, alertSharp } from 'ionicons/icons';
 
-import './Home.css';
-
 import { WisdomObj } from '../../models/WisdomObj.model';
 
 import WisdomList from '../../components/WisdomList/WisdomList';
+
+import './Home.css';
 
 ////////////////////////////////////
 // THIS CODE IS TO PRE-LOAD WISDOMS SO I DON'T

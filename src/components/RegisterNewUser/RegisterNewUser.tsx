@@ -8,17 +8,15 @@ import {
   IonText,
 } from '@ionic/react';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { firebase, firestoreDB } from '../../firebase/firebase';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
-
-import { useAuth } from '../../contexts/AuthContext';
-
-import { Redirect, useHistory } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+
+import { useAuth } from '../../contexts/AuthContext';
 
 import styles from './registerNewUser.module.css';
 
@@ -60,14 +58,7 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
     },
   });
 
-  // const submitForm = (values: {
-  //   email: string;
-  //   password: string;
-  //   confirmPassword: string;
-  // }) => {
   const submitForm = ({ email, password }: ValuesData) => {
-    // const auth = getAuth(firebase);
-
     createUserCollection(email);
 
     registerNewUser!(email, password)
@@ -78,14 +69,6 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
       .catch((error) => {
         console.log('register user: ', error);
       });
-
-    // createUserWithEmailAndPassword(auth, values.email, values.password)
-    //   .then(() => {
-    //     props.history.replace('/');
-    //   })
-    //   .catch((error) => {
-    //     console.log('register user: ', error);
-    //   });
   };
 
   const createUserCollection = (userEmail: string) => {
@@ -181,44 +164,13 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
           </span>
         </div>
 
-        {/* <IonButton
-          fill="clear"
-          expand="block"
-          color="secondary"
-          disabled={loading}
-          className="ion-text-lowercase"
-          onClick={() => props.setShowRegisterForm(false)}
-        >
-          existing user? log in here.
-        </IonButton> */}
-
-        {loading ? (
+        {loading && (
           <IonLoading
             isOpen={loading}
             spinner="lines-sharp"
             cssClass={styles.my_custom_spinner}
             message="logging in..."
           />
-        ) : (
-          <>
-            {/* <IonButton
-              expand="block"
-              type="submit"
-              color="primary"
-              className="ion-text-uppercase"
-            >
-              register
-            </IonButton>
-            <IonButton
-              fill="clear"
-              expand="block"
-              color="secondary"
-              className="ion-text-lowercase"
-              onClick={() => props.setShowRegisterForm(false)}
-            >
-              existing user? log in here.
-            </IonButton> */}
-          </>
         )}
       </form>
     </IonGrid>
