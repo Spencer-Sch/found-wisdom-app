@@ -19,7 +19,7 @@ import { Redirect, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import styles from './signInNewUser.module.css';
+import styles from './signInUser.module.css';
 
 interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
@@ -129,7 +129,7 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
         >
           log in
         </IonButton>
-        <IonButton
+        {/* <IonButton
           fill="clear"
           expand="block"
           color="secondary"
@@ -138,7 +138,16 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
           onClick={() => props.setShowRegisterForm(true)}
         >
           new user? register here.
-        </IonButton>
+        </IonButton> */}
+        <div className={`ion-text-center ${styles.ss_div}`}>
+          new user?{' '}
+          <span
+            className={styles.ss_span}
+            onClick={() => props.setShowRegisterForm(true)}
+          >
+            register here
+          </span>
+        </div>
 
         {loading ? (
           <IonLoading

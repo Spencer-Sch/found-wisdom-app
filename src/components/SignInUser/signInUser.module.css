@@ -20,6 +20,14 @@
   margin: 10px 0px;
 }
 
+.ss_div {
+  margin-top: 1rem;
+}
+
+.ss_span {
+  color: var(--ion-color-secondary);
+}
+
 .my_custom_spinner {
   color: var(--ion-color-primary);
 }
