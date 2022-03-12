@@ -78,7 +78,15 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
       userInfo: {
         userEmail,
       },
-      userWisdoms: [],
+      userWisdoms: [
+        {
+          id: '123',
+          source: 'me',
+          date: '12/5/22',
+          text: 'a saying',
+          next: false,
+        },
+      ],
     }).catch((error) => console.log('Error from create userInfo doc: ', error));
   };
 

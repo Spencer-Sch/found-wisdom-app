@@ -10,6 +10,7 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
+  IonLoading,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -20,8 +21,9 @@ import { add, alertSharp } from 'ionicons/icons';
 import { WisdomObj } from '../../models/WisdomObj.model';
 
 import WisdomList from '../../components/WisdomList/WisdomList';
+import { useAuth } from '../../contexts/AuthContext';
 
-import './Home.css';
+import styles from './home.module.css';
 
 ////////////////////////////////////
 // THIS CODE IS TO PRE-LOAD WISDOMS SO I DON'T
@@ -58,6 +60,7 @@ const loadWisdoms = () => {
 const Home: React.FC = () => {
   const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>([]);
   const [loading, setLoading] = useState(false);
+  const { currentUser } = useAuth();
 
   //////////////////////////////////////////
   // localStorage useEffect
@@ -74,28 +77,39 @@ const Home: React.FC = () => {
   // firebase useEffect
   //////////////////////////////////////////
   useEffect(() => {
-    console.log('inside firebase useEffect');
-    console.log(storedWisdoms);
-    if (storedWisdoms.length < 1) {
-      // setLoading(true);
+    if (!currentUser) {
+      console.error('currentUser is null!');
+      return;
+    }
 
-      // const userCollection = collection(firestoreDB, props.user.email);
-      const userCollection = collection(firestoreDB, 'test1@test.com');
+    if (storedWisdoms.length === 0) {
+      setLoading(true);
+
+      const userCollection = collection(firestoreDB, currentUser.email!);
+      // const userCollection = collection(firestoreDB, 'test1@test.com');
 
       const q = query(userCollection);
-      getDocs(q).then((snapshot) => {
-        const wisdoms = snapshot.docs.map((item) => ({
-          ...item.data(),
-        }));
-        console.log('snapshot', wisdoms[0]);
-        console.log('snapshot', wisdoms[0]);
-      });
+      getDocs(q)
+        .then((snapshot) => {
+          const userDoc = snapshot.docs.map((item) => ({
+            ...item.data(),
+          }));
+          const userObj = userDoc[0];
+          const userWisdoms = userObj.userWisdoms;
+          setStoredWisdoms(userWisdoms);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   }, [storedWisdoms]);
 
   const pushNotification = () => {
     //////////////////////////////////////////
-    // REFACTOR!!!!!
+    // REFACTOR???
     //////////////////////////////////////////
     let wisdomToShow: WisdomObj;
     let nextWisdom: WisdomObj;
@@ -148,7 +162,7 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       {/* Page Content Here */}
-      <WisdomList storedWisdoms={storedWisdoms} />
+      {!loading && <WisdomList storedWisdoms={storedWisdoms} />}
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
         <IonFabButton color="secondary" href="wisdom/add">
           <IonIcon icon={add} />
@@ -162,6 +176,14 @@ const Home: React.FC = () => {
       </IonFab>
       {/* /////////////////////////////////////////////////////// */}
       {/* </IonContent> */}
+      {loading && (
+        <IonLoading
+          isOpen={loading}
+          spinner="lines-sharp"
+          cssClass={styles.my_custom_spinner}
+          message="logging in..."
+        />
+      )}
     </IonPage>
   );
 };
