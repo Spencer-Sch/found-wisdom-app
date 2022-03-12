@@ -15,7 +15,7 @@ import { addDoc, collection } from 'firebase/firestore';
 
 import { useAuth } from '../../contexts/AuthContext';
 
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -26,9 +26,15 @@ interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
 }
 
+interface ValuesData {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 const RegisterNewUser: React.FC<PropsData> = (props: any) => {
   const [loading, setLoading] = useState(false);
-
+  const history = useHistory();
   const { registerNewUser } = useAuth();
 
   const formik = useFormik({
@@ -54,18 +60,20 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
     },
   });
 
-  const submitForm = (values: {
-    email: string;
-    password: string;
-    confirmPassword: string;
-  }) => {
+  // const submitForm = (values: {
+  //   email: string;
+  //   password: string;
+  //   confirmPassword: string;
+  // }) => {
+  const submitForm = ({ email, password }: ValuesData) => {
     // const auth = getAuth(firebase);
 
-    createUserCollection(values.email);
+    createUserCollection(email);
 
-    registerNewUser!(values.email, values.password)
+    registerNewUser!(email, password)
       .then(() => {
-        props.history.replace('/');
+        history.replace('/');
+        // props.history.replace('/');
       })
       .catch((error) => {
         console.log('register user: ', error);
