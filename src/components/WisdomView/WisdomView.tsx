@@ -22,21 +22,26 @@ import { home } from 'ionicons/icons';
 
 import { WisdomObj } from '../../models/WisdomObj.model';
 
+// interface PropsData {
+//   showDeleteModal: boolean;
+//   currentWisdom: WisdomObj;
+//   handleDelete: () => void;
+//   setShowDeleteModal: (value: boolean) => void;
+//   setShowEdit: (value: boolean) => void;
+// }
 interface PropsData {
-  showDeleteModal: boolean;
   currentWisdom: WisdomObj;
-  handleDelete: () => void;
-  setShowDeleteModal: (value: boolean) => void;
   setShowEdit: (value: boolean) => void;
 }
 
-const WisdomPage: React.FC<PropsData> = ({
-  showDeleteModal,
-  currentWisdom,
-  handleDelete,
-  setShowDeleteModal,
-  setShowEdit,
-}) => {
+// const WisdomPage: React.FC<PropsData> = ({
+//   showDeleteModal,
+//   currentWisdom,
+//   handleDelete,
+//   setShowDeleteModal,
+//   setShowEdit,
+// }) => {
+const WisdomPage: React.FC<PropsData> = ({ currentWisdom, setShowEdit }) => {
   return (
     <>
       {/* <IonHeader>
@@ -87,7 +92,7 @@ const WisdomPage: React.FC<PropsData> = ({
                 expand="full"
                 color="danger"
                 className="ion-text-uppercase"
-                onClick={() => setShowDeleteModal(true)}
+                // onClick={() => setShowDeleteModal(true)}
               >
                 delete
               </IonButton>
@@ -98,12 +103,12 @@ const WisdomPage: React.FC<PropsData> = ({
           </IonRow>
         </IonGrid>
         {/* confirm delete modal */}
-        {showDeleteModal && (
+        {/* {showDeleteModal && (
           <WisdomPageModal
             handleDelete={handleDelete}
             setShowDeleteModal={setShowDeleteModal}
           />
-        )}
+        )} */}
       </IonContent>
     </>
   );
