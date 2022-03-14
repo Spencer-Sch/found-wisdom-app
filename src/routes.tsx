@@ -27,12 +27,14 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 import Header from './components/Header/Header';
-import WisdomPage from './pages/WisdomPage/WisdomPage';
 import Home from './pages/Home/Home';
-import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
 import AuthGuard from './components/HOC/AuthGuard';
-import { useAuth } from './contexts/AuthContext';
 import SignInOrRegister from './pages/SignInOrRegister';
+import WisdomPageWrapper from './pages/WisdomPage/WisdomPageWrapper';
+// import WisdomPage from './pages/WisdomPage/WisdomPage';
+import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
+
+import { useAuth } from './contexts/AuthContext';
 
 setupIonicReact();
 
@@ -51,7 +53,7 @@ const Routes: React.FC = () => {
             <Route
               exact
               path="/wisdom/:wisdomid"
-              component={AuthGuard(WisdomPage)}
+              component={AuthGuard(WisdomPageWrapper)}
             />
             <Route exact path="/wisdom/add" component={AuthGuard(WisdomAdd)} />
             <Route exact path="/home">
