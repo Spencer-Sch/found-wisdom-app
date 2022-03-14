@@ -9,10 +9,15 @@ import styles from './WisdomList.module.css';
 import { WisdomObj } from '../../models/WisdomObj.model';
 
 interface PropsData {
-  storedWisdoms: WisdomObj[];
+  storedWisdoms: WisdomObj[] | null;
 }
 
 const WisdomList: React.FC<PropsData> = ({ storedWisdoms }) => {
+  if (!storedWisdoms) {
+    console.log('from WisdomList: storedWisdoms is null!');
+    storedWisdoms = [];
+  }
+
   return (
     <div style={{ overflow: 'scroll' }}>
       {storedWisdoms.length > 0 ? (
