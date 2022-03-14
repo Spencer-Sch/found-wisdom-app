@@ -33,8 +33,8 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
 
   const formik = useFormik({
     initialValues: {
-      email: 'admin@fw.com',
-      password: 'qwerty123456',
+      email: 'test1@test.com',
+      password: 'password',
     },
     validationSchema: Yup.object({
       email: Yup.string()
