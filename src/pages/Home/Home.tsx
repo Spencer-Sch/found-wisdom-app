@@ -52,15 +52,12 @@ const loadWisdoms = () => {
 
 ////////////////////////////////////
 
-// interface PropsData {
-//   user: any;
-// }
-
-// const Home: React.FC<PropsData> = (props: any) => {
 const Home: React.FC = () => {
-  const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>([]);
+  const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[] | null>(null);
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
+
+  console.log('Home rendering...');
 
   //////////////////////////////////////////
   // localStorage useEffect
@@ -72,23 +69,25 @@ const Home: React.FC = () => {
   //     setStoredWisdoms(wisdomsArr);
   //   }
   // }, []);
+  //////////////////////////////////////////
 
   //////////////////////////////////////////
   // firebase useEffect
   //////////////////////////////////////////
   useEffect(() => {
     if (!currentUser) {
-      console.error('currentUser is null!');
+      console.error('from useEffect in Home: currentUser is null!');
       return;
     }
 
-    if (storedWisdoms.length === 0) {
+    if (!storedWisdoms) {
+      console.log('from useEffect in Home: fetching data...');
       setLoading(true);
 
       const userCollection = collection(firestoreDB, currentUser.email!);
-      // const userCollection = collection(firestoreDB, 'test1@test.com');
 
       const q = query(userCollection);
+      // extract getDocs, userCollection/query out to thier own functions
       getDocs(q)
         .then((snapshot) => {
           const userDoc = snapshot.docs.map((item) => ({
@@ -99,6 +98,7 @@ const Home: React.FC = () => {
           setStoredWisdoms(userWisdoms);
         })
         .catch((error) => {
+          // If error then setStoredWisdoms() to a placeholder wisdom with error message inside
           console.error(error);
         })
         .finally(() => {
@@ -106,10 +106,16 @@ const Home: React.FC = () => {
         });
     }
   }, [storedWisdoms]);
+  //////////////////////////////////////////
 
   const pushNotification = () => {
     //////////////////////////////////////////
     // REFACTOR???
+    //////////////////////////////////////////
+    if (!storedWisdoms) {
+      console.error('from pushNotification in Home: storedWisdoms is null!');
+      return;
+    }
     //////////////////////////////////////////
     let wisdomToShow: WisdomObj;
     let nextWisdom: WisdomObj;
