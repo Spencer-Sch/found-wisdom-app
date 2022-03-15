@@ -15,5 +15,5 @@ export interface HandleEditArgs {
   values: FormikValues;
   storedWisdoms: WisdomObj[];
   wisdomid: string;
-  setShowEdit: (value: boolean) => void;
+  // setShowEdit: (value: boolean) => void;
 }
