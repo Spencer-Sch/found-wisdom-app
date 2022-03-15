@@ -30,24 +30,15 @@ import styles from './home.module.css';
 // HAVE TO KEEP DOING IT MANUALLY DURING DEVELOPMENT
 ////////////////////////////////////
 
-import { wisdomData } from './wisdomData';
+// import { wisdomData } from './wisdomData';
 
-const getStoredWisdoms = () => {
-  const wisdomsString: string | null = localStorage.getItem('myWisdoms');
-  if (wisdomsString) {
-    return JSON.parse(wisdomsString);
-  } else {
-    return [];
-  }
-};
-
-const loadWisdoms = () => {
-  const wisdomsToUpload: WisdomObj[] = getStoredWisdoms();
-  wisdomData.forEach((item) => {
-    wisdomsToUpload.push(item);
-  });
-  localStorage.setItem('myWisdoms', JSON.stringify(wisdomsToUpload));
-};
+// const loadWisdoms = () => {
+//   const wisdomsToUpload: WisdomObj[] = getStoredWisdoms();
+//   wisdomData.forEach((item) => {
+//     wisdomsToUpload.push(item);
+//   });
+//   localStorage.setItem('myWisdoms', JSON.stringify(wisdomsToUpload));
+// };
 // loadWisdoms();
 
 ////////////////////////////////////
@@ -58,18 +49,6 @@ const Home: React.FC = () => {
   const { currentUser } = useAuth();
 
   console.log('Home rendering...');
-
-  //////////////////////////////////////////
-  // localStorage useEffect
-  //////////////////////////////////////////
-  // useEffect(() => {
-  //   const wisdomsString: string | null = localStorage.getItem('myWisdoms');
-  //   if (wisdomsString) {
-  //     const wisdomsArr: WisdomObj[] = JSON.parse(wisdomsString);
-  //     setStoredWisdoms(wisdomsArr);
-  //   }
-  // }, []);
-  //////////////////////////////////////////
 
   //////////////////////////////////////////
   // firebase useEffect

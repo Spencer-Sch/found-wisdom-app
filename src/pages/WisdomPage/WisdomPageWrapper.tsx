@@ -13,19 +13,6 @@ import { WisdomObj } from '../../models/WisdomObj.model';
 import styles from './wisdomPage.module.css';
 import { useParams } from 'react-router';
 
-//////////////////////////////////////////
-// localStorage
-//////////////////////////////////////////
-// const getStoredWisdoms = () => {
-//   const wisdomsString: string | null = localStorage.getItem('myWisdoms');
-//   if (wisdomsString) {
-//     return JSON.parse(wisdomsString);
-//   } else {
-//     return [];
-//   }
-// };
-//////////////////////////////////////////
-
 const WisdomPageWrapper: React.FC = () => {
   const { wisdomid }: { wisdomid: string } = useParams();
   const [loading, setLoading] = useState(false);
@@ -46,18 +33,6 @@ const WisdomPageWrapper: React.FC = () => {
     ? storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!
     : null;
   ///////////////////////////////////////////////
-
-  //////////////////////////////////////////
-  // localStorage
-  // const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(
-  //   getStoredWisdoms()
-  // );
-  //////////////////////////////////////////
-
-  //////////////////////////////////////////
-  // firebase
-  // const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(); // default value should be props.currentWisdom
-  //////////////////////////////////////////
 
   //////////////////////////////////////////
   // firebase useEffect

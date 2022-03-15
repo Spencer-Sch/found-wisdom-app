@@ -23,7 +23,6 @@ interface PropsData {
 const WisdomPage: React.FC<PropsData> = ({ currentWisdom, storedWisdoms }) => {
   const [showEdit, setShowEdit] = useState(false);
 
-  // return <div>WisdomPage {`${currentWisdom.text}`}</div>;
   return (
     <IonPage>
       {!showEdit ? (
