@@ -39,26 +39,4 @@
 //   }
 // }, [storedWisdoms]);
 
-/////////////////////////////////////
-// LOCAL STORAGE FUNCTIONS
-/////////////////////////////////////
-
-//////////////////////////////////////////
-// const getStoredWisdoms = () => {
-//   const wisdomsString: string | null = localStorage.getItem('myWisdoms');
-//   if (wisdomsString) {
-//     return JSON.parse(wisdomsString);
-//   } else {
-//     return [];
-//   }
-// };
-//////////////////////////////////////////
-
-//////////////////////////////////////////
-// localStorage
-// const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[]>(
-//   getStoredWisdoms()
-// );
-//////////////////////////////////////////
-
 export const firebaseActions = 'firebaseActions placeholder';
