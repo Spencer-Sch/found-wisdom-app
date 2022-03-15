@@ -74,20 +74,37 @@ const WisdomPageWrapper: React.FC = () => {
 
   //////////////////////////////////////////
 
-  // const wisdomData = {
+  // const wisdomViewData = {
   //   currentWisdom,
-  //   storedWisdoms,
   // };
 
+  // const wisdomEditData = {
+  //   currentWisdom,
+  //   storedWisdoms,
+  //   wisdomid: wisdomid,
+  // };
+
+  const wisdomData =
+    currentWisdom && storedWisdoms
+      ? {
+          currentWisdom,
+          storedWisdoms,
+          wisdomid: wisdomid,
+        }
+      : null;
+
   return currentWisdom && storedWisdoms ? (
-    <WisdomPage currentWisdom={currentWisdom} storedWisdoms={storedWisdoms} />
+    <WisdomPage wisdomData={wisdomData!} />
   ) : (
-    // <WisdomPage wisdomData={wisdomData} />
+    // <WisdomPage
+    //   wisdomViewData={wisdomViewData}
+    //   wisdomEditData={wisdomEditData}
+    // />
+    // <WisdomPage currentWisdom={currentWisdom} storedWisdoms={storedWisdoms} />
     // further error handeling???
     // add a timer to time out and kick back to home page?
     <IonLoading
       isOpen={true}
-      // isOpen={loading}
       spinner="lines-sharp"
       cssClass={styles.my_custom_spinner}
       message="logging in..."

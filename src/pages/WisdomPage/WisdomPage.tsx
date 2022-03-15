@@ -15,17 +15,29 @@ import styles from './wisdomPage.module.css';
 //   text: string;
 // }
 
-interface PropsData {
-  currentWisdom: WisdomObj;
-  storedWisdoms: WisdomObj[];
-}
+// interface PropsData {
+//   currentWisdom: WisdomObj;
+//   storedWisdoms: WisdomObj[];
+// }
 
 // interface PropsData {
-//   wisdomData: {
+//   wisdomViewData: {
+//     currentWisdom: WisdomObj;
+//   };
+//   wisdomEditData: {
 //     currentWisdom: WisdomObj;
 //     storedWisdoms: WisdomObj[];
-//   }
+//     wisdomid: string;
+//   };
 // }
+
+interface PropsData {
+  wisdomData: {
+    currentWisdom: WisdomObj;
+    storedWisdoms: WisdomObj[];
+    wisdomid: string;
+  };
+}
 
 // interface PassingData {
 //   currentWisdom: WisdomObj;
@@ -33,9 +45,10 @@ interface PropsData {
 //   setShowEdit: (value: boolean) => void;
 // }
 
-const WisdomPage: React.FC<PropsData> = ({ currentWisdom, storedWisdoms }) => {
+// const WisdomPage: React.FC<PropsData> = ({ currentWisdom, storedWisdoms }) => {
+const WisdomPage: React.FC<PropsData> = ({ wisdomData }) => {
   const [showEdit, setShowEdit] = useState(false);
-  // const { currentWisdom } = wisdomData;
+  const { currentWisdom } = wisdomData;
 
   // const passingData: PassingData = {
   //   ...wisdomData,
@@ -47,11 +60,7 @@ const WisdomPage: React.FC<PropsData> = ({ currentWisdom, storedWisdoms }) => {
       {!showEdit ? (
         <WisdomView currentWisdom={currentWisdom} setShowEdit={setShowEdit} />
       ) : (
-        <WisdomEdit
-          currentWisdom={currentWisdom}
-          storedWisdoms={storedWisdoms}
-          setShowEdit={setShowEdit}
-        />
+        <WisdomEdit {...wisdomData} setShowEdit={setShowEdit} />
         // <WisdomEdit passingData={passingData} />
       )}
       {/* {!showEdit ? (

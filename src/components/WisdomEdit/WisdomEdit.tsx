@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -11,6 +11,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonLoading,
   IonTextarea,
   IonTitle,
   IonToolbar,
@@ -42,6 +43,7 @@ interface PropsData {
   currentWisdom: WisdomObj;
   storedWisdoms: WisdomObj[];
   setShowEdit: (value: boolean) => void;
+  wisdomid: string;
 }
 
 // const WisdomEdit: React.FC<PropsData> = ({
@@ -53,7 +55,9 @@ const WisdomEdit: React.FC<PropsData> = ({
   currentWisdom,
   storedWisdoms,
   setShowEdit,
+  wisdomid,
 }) => {
+  const [loading, setLoading] = useState(false);
   const { source, text } = currentWisdom;
 
   const formik = useFormik({
@@ -66,19 +70,18 @@ const WisdomEdit: React.FC<PropsData> = ({
       text: Yup.string().required('some text is required'),
     }),
     onSubmit: (values) => {
+      setLoading(true);
       const args = {
         values,
         storedWisdoms,
-        // this would need to be passed through props
-        wisdomid: '123',
-        ///////////////////////
-        setShowEdit,
+        wisdomid: wisdomid,
       };
-      handleEdit(args);
-      ///////////////////
-      // OLD CODE
-      // handleEdit(values);
-      ///////////////////
+      // See data restructure idea for Firestore (luke shared google doc)
+      const updatedWisdoms = handleEdit(args);
+      // updateWisdomCollection()
+      // update storedWisdoms locally to avoid another fetch when returning to Home?
+      setLoading(false);
+      setShowEdit(false);
     },
   });
 
@@ -136,6 +139,12 @@ const WisdomEdit: React.FC<PropsData> = ({
             cancel
           </IonButton>
         </IonList>
+        <IonLoading
+          isOpen={loading}
+          spinner="lines-sharp"
+          cssClass={styles.my_custom_spinner}
+          message="logging in..."
+        />
       </IonContent>
     </>
   );
