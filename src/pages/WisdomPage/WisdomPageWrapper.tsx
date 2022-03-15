@@ -74,9 +74,15 @@ const WisdomPageWrapper: React.FC = () => {
 
   //////////////////////////////////////////
 
+  // const wisdomData = {
+  //   currentWisdom,
+  //   storedWisdoms,
+  // };
+
   return currentWisdom && storedWisdoms ? (
     <WisdomPage currentWisdom={currentWisdom} storedWisdoms={storedWisdoms} />
   ) : (
+    // <WisdomPage wisdomData={wisdomData} />
     // further error handeling???
     // add a timer to time out and kick back to home page?
     <IonLoading

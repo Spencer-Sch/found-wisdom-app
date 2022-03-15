@@ -20,8 +20,27 @@ interface PropsData {
   storedWisdoms: WisdomObj[];
 }
 
+// interface PropsData {
+//   wisdomData: {
+//     currentWisdom: WisdomObj;
+//     storedWisdoms: WisdomObj[];
+//   }
+// }
+
+// interface PassingData {
+//   currentWisdom: WisdomObj;
+//   storedWisdoms: WisdomObj[];
+//   setShowEdit: (value: boolean) => void;
+// }
+
 const WisdomPage: React.FC<PropsData> = ({ currentWisdom, storedWisdoms }) => {
   const [showEdit, setShowEdit] = useState(false);
+  // const { currentWisdom } = wisdomData;
+
+  // const passingData: PassingData = {
+  //   ...wisdomData,
+  //   setShowEdit,
+  // };
 
   return (
     <IonPage>
@@ -33,7 +52,17 @@ const WisdomPage: React.FC<PropsData> = ({ currentWisdom, storedWisdoms }) => {
           storedWisdoms={storedWisdoms}
           setShowEdit={setShowEdit}
         />
+        // <WisdomEdit passingData={passingData} />
       )}
+      {/* {!showEdit ? (
+        <WisdomView currentWisdom={currentWisdom} setShowEdit={setShowEdit} />
+      ) : (
+        <WisdomEdit
+          currentWisdom={currentWisdom}
+          storedWisdoms={storedWisdoms}
+          setShowEdit={setShowEdit}
+        />
+      )} */}
     </IonPage>
   );
 };

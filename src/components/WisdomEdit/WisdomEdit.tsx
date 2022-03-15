@@ -31,6 +31,13 @@ interface FormikValues {
 //   handleEdit: (values: FormikValues) => void;
 //   setShowEdit: (value: boolean) => void;
 // }
+// interface PropsData {
+//   passingData: {
+//     currentWisdom: WisdomObj;
+//     storedWisdoms: WisdomObj[];
+//     setShowEdit: (value: boolean) => void;
+//   }
+// }
 interface PropsData {
   currentWisdom: WisdomObj;
   storedWisdoms: WisdomObj[];
