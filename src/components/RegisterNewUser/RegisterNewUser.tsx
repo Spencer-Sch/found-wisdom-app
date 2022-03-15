@@ -10,9 +10,6 @@ import {
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { firebase, firestoreDB } from '../../firebase/firebase';
-import { addDoc, collection } from 'firebase/firestore';
-
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -59,8 +56,6 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
   });
 
   const submitForm = ({ email, password }: ValuesData) => {
-    createUserCollection(email);
-
     registerNewUser!(email, password)
       .then(() => {
         history.replace('/');
@@ -69,25 +64,6 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
       .catch((error) => {
         console.log('register user: ', error);
       });
-  };
-
-  const createUserCollection = (userEmail: string) => {
-    const userCollection = collection(firestoreDB, userEmail);
-
-    addDoc(userCollection, {
-      userInfo: {
-        userEmail,
-      },
-      userWisdoms: [
-        {
-          id: '123',
-          source: 'me',
-          date: '12/5/22',
-          text: 'a saying',
-          next: false,
-        },
-      ],
-    }).catch((error) => console.log('Error from create userInfo doc: ', error));
   };
 
   return (

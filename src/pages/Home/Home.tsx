@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { firebase, firestoreDB } from '../../firebase/firebase';
-import { getDocs, collection, query } from 'firebase/firestore';
-
 import {
   IonContent,
   IonFab,
@@ -65,47 +62,13 @@ const Home: React.FC = () => {
   //////////////////////////////////////////
   // localStorage useEffect
   //////////////////////////////////////////
-  // useEffect(() => {
-  //   const wisdomsString: string | null = localStorage.getItem('myWisdoms');
-  //   if (wisdomsString) {
-  //     const wisdomsArr: WisdomObj[] = JSON.parse(wisdomsString);
-  //     setStoredWisdoms(wisdomsArr);
-  //   }
-  // }, []);
-
-  //////////////////////////////////////////
-  // firebase useEffect
-  //////////////////////////////////////////
   useEffect(() => {
-    if (!currentUser) {
-      console.error('currentUser is null!');
-      return;
+    const wisdomsString: string | null = localStorage.getItem('myWisdoms');
+    if (wisdomsString) {
+      const wisdomsArr: WisdomObj[] = JSON.parse(wisdomsString);
+      setStoredWisdoms(wisdomsArr);
     }
-
-    if (storedWisdoms.length === 0) {
-      setLoading(true);
-
-      const userCollection = collection(firestoreDB, currentUser.email!);
-      // const userCollection = collection(firestoreDB, 'test1@test.com');
-
-      const q = query(userCollection);
-      getDocs(q)
-        .then((snapshot) => {
-          const userDoc = snapshot.docs.map((item) => ({
-            ...item.data(),
-          }));
-          const userObj = userDoc[0];
-          const userWisdoms = userObj.userWisdoms;
-          setStoredWisdoms(userWisdoms);
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [storedWisdoms]);
+  }, []);
 
   const pushNotification = () => {
     //////////////////////////////////////////

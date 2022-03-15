@@ -94,7 +94,7 @@ const WisdomPage: React.FC = () => {
 
   return (
     <IonPage>
-      {!showEdit && (
+      {!showEdit ? (
         <WisdomView
           showDeleteModal={showDeleteModal}
           setShowEdit={setShowEdit}
@@ -102,8 +102,7 @@ const WisdomPage: React.FC = () => {
           setShowDeleteModal={setShowDeleteModal}
           currentWisdom={currentWisdom}
         />
-      )}
-      {showEdit && (
+      ) : (
         <WisdomEdit
           currentWisdom={currentWisdom}
           handleEdit={handleEdit}
