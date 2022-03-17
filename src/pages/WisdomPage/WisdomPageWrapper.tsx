@@ -1,8 +1,8 @@
 import { IonLoading } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 
-import { firestoreDB } from '../../firebase/firebase';
-import { getDocs, collection, query } from 'firebase/firestore';
+// import { firestoreDB } from '../../firebase/firebase';
+// import { getDocs, collection, query } from 'firebase/firestore';
 
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -18,9 +18,9 @@ const WisdomPageWrapper: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
 
-  // const [currentWisdom, setCurrentWisdom] = useState<WisdomObj>([]);
+  const [currentWisdom, setCurrentWisdom] = useState<WisdomObj | null>(null);
 
-  const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[] | null>(null); //Firestore data stored here
+  // const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[] | null>(null); //Firestore data stored here
   // const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[] | null>([]); //Firestore data stored here
 
   ///////////////////////////////////////////////
@@ -29,48 +29,34 @@ const WisdomPageWrapper: React.FC = () => {
   //   (wisdom) => wisdom.id === wisdomid
   // )!;
   ///////////////////////////////////////////////
-  const currentWisdom = storedWisdoms
-    ? storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!
-    : null;
+  // MOST RECENTLY USED CODE
+  // const currentWisdom = storedWisdoms
+  //   ? storedWisdoms.find((wisdom) => wisdom.id === wisdomid)!
+  //   : null;
   ///////////////////////////////////////////////
-
-  //////////////////////////////////////////
-  // firebase useEffect
-  //////////////////////////////////////////
 
   useEffect(() => {
     console.log('WisdomPageWrapper useEffect running...');
 
-    if (!storedWisdoms) {
+    if (!currentUser) {
+      console.error(
+        'from useEffect in WisdomPageWrapper: currentUser is null!'
+      );
+      return;
+    }
+
+    if (!currentWisdom) {
       console.log('getting data from firebase...');
       setLoading(true);
+      //////////////////
+      // commented out for a moment
+      // async code? need addtional handling?
+      // setCurrentWisdom(fetchWisdomById(wisdomid)); // query wisdomsCollection
+      //////////////////
 
-      const userCollection = collection(firestoreDB, currentUser!.email!);
-      // const userCollection = collection(firestoreDB, 'test1@test.com');
-
-      // console.log('userCollection: ', userCollection);
-
-      const q = query(userCollection);
-      getDocs(q)
-        .then((snapshot) => {
-          console.log('processing data checkpoint 1');
-          const userDoc = snapshot.docs.map((item) => ({
-            ...item.data(),
-          }));
-          const userObj = userDoc[0];
-          const userWisdoms = userObj.userWisdoms;
-          console.log('setting StoredWisdoms state');
-          setStoredWisdoms(userWisdoms);
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          console.log('processing data checkpoint 2');
-          setLoading(false);
-        });
+      setLoading(false);
     }
-  }, [storedWisdoms]);
+  }, []); // set storedWisdoms as a dependency???
 
   //////////////////////////////////////////
 
@@ -84,16 +70,15 @@ const WisdomPageWrapper: React.FC = () => {
   //   wisdomid: wisdomid,
   // };
 
-  const wisdomData =
-    currentWisdom && storedWisdoms
-      ? {
-          currentWisdom,
-          storedWisdoms,
-          wisdomid: wisdomid,
-        }
-      : null;
+  const wisdomData = currentWisdom
+    ? {
+        currentWisdom,
+        wisdomid: wisdomid,
+      }
+    : null;
 
-  return currentWisdom && storedWisdoms ? (
+  // return currentWisdom && storedWisdoms ? (
+  return currentWisdom ? (
     <WisdomPage wisdomData={wisdomData!} />
   ) : (
     // <WisdomPage
