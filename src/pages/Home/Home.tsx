@@ -22,6 +22,7 @@ import { WisdomObj } from '../../models/WisdomObj.model';
 
 import WisdomList from '../../components/WisdomList/WisdomList';
 import { useAuth } from '../../contexts/AuthContext';
+import { fetchUserData, fetchWisdomsById } from '../../actions/firebaseActions';
 
 import styles from './home.module.css';
 
@@ -50,9 +51,6 @@ const Home: React.FC = () => {
 
   console.log('Home rendering...');
 
-  //////////////////////////////////////////
-  // firebase useEffect
-  //////////////////////////////////////////
   useEffect(() => {
     if (!currentUser) {
       console.error('from useEffect in Home: currentUser is null!');
@@ -60,32 +58,20 @@ const Home: React.FC = () => {
     }
 
     if (!storedWisdoms) {
-      console.log('from useEffect in Home: fetching data...');
+      getDataToDisplay();
+    }
+
+    async function getDataToDisplay() {
       setLoading(true);
 
-      const userCollection = collection(firestoreDB, currentUser.email!);
+      const userData = await fetchUserData(currentUser!.email!); // query usersCollection
+      const defaultCollection = userData.wisdomCollections.default;
+      const userWisdoms = await fetchWisdomsById(defaultCollection);
 
-      const q = query(userCollection);
-      // extract getDocs, userCollection/query out to thier own functions
-      getDocs(q)
-        .then((snapshot) => {
-          const userDoc = snapshot.docs.map((item) => ({
-            ...item.data(),
-          }));
-          const userObj = userDoc[0];
-          const userWisdoms = userObj.userWisdoms;
-          setStoredWisdoms(userWisdoms);
-        })
-        .catch((error) => {
-          // If error then setStoredWisdoms() to a placeholder wisdom with error message inside
-          console.error(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      setStoredWisdoms(userWisdoms);
+      setLoading(false);
     }
-  }, [storedWisdoms]);
-  //////////////////////////////////////////
+  }, [storedWisdoms]); // set storedWisdoms as a dependency???
 
   const pushNotification = () => {
     //////////////////////////////////////////
