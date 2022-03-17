@@ -20,7 +20,10 @@ import {
 import styles from './wisdomEdit.module.css';
 
 import { WisdomObj } from '../../models/WisdomObj.model';
-import { handleEdit } from '../../functions/wisdomFunctions';
+/////////////////////
+// commented out for a moment
+// import { handleEdit } from '../../functions/wisdomFunctions';
+/////////////////////
 
 interface FormikValues {
   source: string;
@@ -73,11 +76,13 @@ const WisdomEdit: React.FC<PropsData> = ({
       setLoading(true);
       const args = {
         values,
-        storedWisdoms,
         wisdomid: wisdomid,
       };
       // See data restructure idea for Firestore (luke shared google doc)
-      const updatedWisdoms = handleEdit(args);
+      ////////////////////////
+      // commented out for a moment
+      // const updatedWisdoms = handleEdit(args);
+      ////////////////////////
       // updateWisdomCollection()
       // update storedWisdoms locally to avoid another fetch when returning to Home?
       setLoading(false);
