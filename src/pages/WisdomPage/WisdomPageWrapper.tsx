@@ -72,7 +72,7 @@ const WisdomPageWrapper: React.FC = () => {
   const wisdomData = currentWisdom
     ? {
         currentWisdom,
-        wisdomid: wisdomid,
+        setCurrentWisdom,
       }
     : null;
 

@@ -34,7 +34,7 @@ import styles from './wisdomPage.module.css';
 interface PropsData {
   wisdomData: {
     currentWisdom: WisdomObj;
-    wisdomid: string;
+    setCurrentWisdom: (value: WisdomObj) => void;
   };
 }
 
@@ -49,20 +49,14 @@ const WisdomPage: React.FC<PropsData> = ({ wisdomData }) => {
   const [showEdit, setShowEdit] = useState(false);
   const { currentWisdom } = wisdomData;
 
-  // const passingData: PassingData = {
-  //   ...wisdomData,
-  //   setShowEdit,
-  // };
-
   return (
     <IonPage>
       {
         !showEdit ? (
           <WisdomView currentWisdom={currentWisdom} setShowEdit={setShowEdit} />
-        ) : //////////////////
-        // commented out for a moment
-        null
-        // <WisdomEdit {...wisdomData} setShowEdit={setShowEdit} />
+        ) : (
+          <WisdomEdit {...wisdomData} setShowEdit={setShowEdit} />
+        )
         //////////////////
         // <WisdomEdit passingData={passingData} />
       }
