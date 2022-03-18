@@ -1,4 +1,4 @@
-import { HandleEditArgs } from '../models/models';
+import { HandleEdit } from '../models/models';
 
 // const transferNextValue = () => {
 //   let nextWisdom: WisdomObj;
@@ -48,28 +48,12 @@ import { HandleEditArgs } from '../models/models';
 //   window.location.replace(`/`);
 // };
 
-// export const handleEdit = (values: FormikValues) => {
-///////////////////////
-// commented out for a moment
-// export const handleEdit = ({
-//   values,
-//   wisdomid,
-// }: HandleEditArgs) => {
-//   //////////////////////////////
-//   // If I restructure the firestore collections according to Luke's suggestion then this
-//   // function will simply edit the currentWisdom object, return it, then another function will
-//   // send it to update the wisdomCollection on firestore.
-//   // There will be no need to iterate over storedWisdoms unless I'm going to update also update
-//   // storedWisdoms locally to avoid another fetch call.
-//   //////////////////////////////
-//   storedWisdoms.forEach((item) => {
-//     // also grab index
-//     if (item.id === wisdomid) {
-//       // store index of correct item
-//       item.text = values.text;
-//       item.source = values.source === '' ? 'unknown' : values.source;
-//     } // after editing the item, find that item (using the index) in the array and replace just that one item? This instead of re-uploading the entire array of wisdoms
-//   });
-//   return storedWisdoms;
-// };
-///////////////////////
+export const handleEdit: HandleEdit = (values, currentWisdom) => {
+  const editedWisdom = {
+    ...currentWisdom,
+    id: currentWisdom.id,
+    text: values.text,
+    source: values.source === '' ? 'unknown' : values.source,
+  };
+  return editedWisdom;
+};
