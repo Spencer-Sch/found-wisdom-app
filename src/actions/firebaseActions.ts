@@ -1,5 +1,5 @@
-import { firestoreDB } from '../firebase/firebase';
-import { getDocs, collection, query } from 'firebase/firestore';
+import { firestoreDB, wisdomsCollectionDocId } from '../firebase/firebase';
+import { doc, getDocs, updateDoc, collection, query } from 'firebase/firestore';
 
 import { WisdomObj } from '../models/models';
 
@@ -34,17 +34,17 @@ interface UserData {
   };
 }
 
-interface UserWisdom {
-  // keep for potential future use. rename for clarity.
-  createdBy: string;
-  wisdomData: {
-    date: string;
-    id: string;
-    next: boolean;
-    source: string;
-    text: string;
-  };
-}
+// interface UserWisdom {
+//   // keep for potential future use. rename for clarity.
+//   createdBy: string;
+//   wisdomData: {
+//     date: string;
+//     id: string;
+//     next: boolean;
+//     source: string;
+//     text: string;
+//   };
+// }
 
 /////////////////////////////////////
 // TYPES
@@ -53,6 +53,7 @@ interface UserWisdom {
 type FetchUserData = (userEmail: string) => Promise<UserData>;
 type FetchWisdomsById = (wisdomIds: string[]) => Promise<WisdomObj[] | null>;
 type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomObj | null>;
+type UploadEditedWisdom = (editedWisdom: WisdomObj) => void;
 
 /////////////////////////////////////
 // FIREBASE FUNCTIONS
@@ -130,6 +131,18 @@ export const fetchCurrentWisdom: FetchCurrentWisdom = (wisdomid) => {
       console.error(error);
       return null;
     });
+};
+
+export const uploadEditedWisdom: UploadEditedWisdom = async (editedWisdom) => {
+  console.log('uploadEditedWisdom running...');
+
+  const wisdomPath = `${editedWisdom.id}.wisdomData`;
+
+  const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
+  ///////////////////////
+  // This should work now. Double check once firestore lets me write/read again
+  await updateDoc(docRef, { [`${wisdomPath}`]: { ...editedWisdom } });
+  ///////////////////////
 };
 
 export const firebaseActions = 'firebaseActions placeholder';
