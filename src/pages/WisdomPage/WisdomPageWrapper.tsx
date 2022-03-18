@@ -1,10 +1,8 @@
 import { IonLoading } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 
-// import { firestoreDB } from '../../firebase/firebase';
-// import { getDocs, collection, query } from 'firebase/firestore';
-
 import { useAuth } from '../../contexts/AuthContext';
+import { fetchCurrentWisdom } from '../../actions/firebaseActions';
 
 import WisdomPage from './WisdomPage';
 
@@ -36,9 +34,10 @@ const WisdomPageWrapper: React.FC = () => {
   ///////////////////////////////////////////////
 
   useEffect(() => {
-    console.log('WisdomPageWrapper useEffect running...');
+    // console.log('WisdomPageWrapper useEffect running...');
 
     if (!currentUser) {
+      // improve error handeling!!!
       console.error(
         'from useEffect in WisdomPageWrapper: currentUser is null!'
       );
@@ -46,17 +45,17 @@ const WisdomPageWrapper: React.FC = () => {
     }
 
     if (!currentWisdom) {
-      console.log('getting data from firebase...');
-      setLoading(true);
-      //////////////////
-      // commented out for a moment
-      // async code? need addtional handling?
-      // setCurrentWisdom(fetchWisdomById(wisdomid)); // query wisdomsCollection
-      //////////////////
+      getSelectedWisdom();
+    }
 
+    async function getSelectedWisdom() {
+      // console.log('getting data from firebase...');
+      setLoading(true);
+      const returnedWisdom = await fetchCurrentWisdom(wisdomid);
+      setCurrentWisdom(returnedWisdom);
       setLoading(false);
     }
-  }, []); // set storedWisdoms as a dependency???
+  }, [currentUser, currentWisdom, wisdomid]);
 
   //////////////////////////////////////////
 
