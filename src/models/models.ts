@@ -3,6 +3,21 @@ export interface FormikValues {
   text: string;
 }
 
+// export interface EditedWisdom {
+//   wisdomData: {
+//     date: string;
+//     id: string;
+//     next: boolean;
+//     source: string;
+//     text: string;
+//   };
+// }
+export interface EditedWisdom {
+  id: string;
+  source: string;
+  text: string;
+}
+
 export interface WisdomObj {
   id: string;
   source: string;
@@ -13,7 +28,10 @@ export interface WisdomObj {
 
 export interface HandleEditArgs {
   values: FormikValues;
-  storedWisdoms: WisdomObj[];
-  wisdomid: string;
-  // setShowEdit: (value: boolean) => void;
+  currentWisdom: WisdomObj;
 }
+
+export type HandleEdit = (
+  values: FormikValues,
+  currentWisdom: WisdomObj
+) => WisdomObj;
