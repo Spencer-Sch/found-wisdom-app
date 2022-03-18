@@ -20,45 +20,21 @@ import {
 import styles from './wisdomEdit.module.css';
 
 import { WisdomObj } from '../../models/WisdomObj.model';
-/////////////////////
-// commented out for a moment
-// import { handleEdit } from '../../functions/wisdomFunctions';
-/////////////////////
 
-interface FormikValues {
-  source: string;
-  text: string;
-}
+import { handleEdit } from '../../functions/wisdomFunctions';
 
-// interface PropsData {
-//   currentWisdom: WisdomObj;
-//   handleEdit: (values: FormikValues) => void;
-//   setShowEdit: (value: boolean) => void;
-// }
-// interface PropsData {
-//   passingData: {
-//     currentWisdom: WisdomObj;
-//     storedWisdoms: WisdomObj[];
-//     setShowEdit: (value: boolean) => void;
-//   }
-// }
+import { uploadEditedWisdom } from '../../actions/firebaseActions';
+
 interface PropsData {
   currentWisdom: WisdomObj;
-  storedWisdoms: WisdomObj[];
   setShowEdit: (value: boolean) => void;
-  wisdomid: string;
+  setCurrentWisdom: (value: WisdomObj) => void;
 }
 
-// const WisdomEdit: React.FC<PropsData> = ({
-//   currentWisdom,
-//   handleEdit,
-//   setShowEdit,
-// }) => {
 const WisdomEdit: React.FC<PropsData> = ({
   currentWisdom,
-  storedWisdoms,
   setShowEdit,
-  wisdomid,
+  setCurrentWisdom,
 }) => {
   const [loading, setLoading] = useState(false);
   const { source, text } = currentWisdom;
@@ -72,19 +48,11 @@ const WisdomEdit: React.FC<PropsData> = ({
       source: Yup.string(),
       text: Yup.string().required('some text is required'),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       setLoading(true);
-      const args = {
-        values,
-        wisdomid: wisdomid,
-      };
-      // See data restructure idea for Firestore (luke shared google doc)
-      ////////////////////////
-      // commented out for a moment
-      // const updatedWisdoms = handleEdit(args);
-      ////////////////////////
-      // updateWisdomCollection()
-      // update storedWisdoms locally to avoid another fetch when returning to Home?
+      const editedWisdom = handleEdit(values, currentWisdom);
+      await uploadEditedWisdom(editedWisdom);
+      setCurrentWisdom(editedWisdom);
       setLoading(false);
       setShowEdit(false);
     },
