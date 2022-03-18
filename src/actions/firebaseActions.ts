@@ -10,6 +10,12 @@ import { WisdomObj } from '../models/models';
 const USERS_COLLECTION = 'usersCollection';
 const WISDOMS_COLLECTION = 'wisdomsCollection';
 
+const wisdomsCollection = collection(firestoreDB, WISDOMS_COLLECTION);
+const usersCollection = collection(firestoreDB, USERS_COLLECTION);
+
+const Q_WISDOM_COLLECTION = query(wisdomsCollection);
+const Q_USER_COLLECTION = query(usersCollection);
+
 /////////////////////////////////////
 // INTERFACES
 /////////////////////////////////////
@@ -29,6 +35,7 @@ interface UserData {
 }
 
 interface UserWisdom {
+  // keep for potential future use. rename for clarity.
   createdBy: string;
   wisdomData: {
     date: string;
@@ -45,19 +52,35 @@ interface UserWisdom {
 
 type FetchUserData = (userEmail: string) => Promise<UserData>;
 type FetchWisdomsById = (wisdomIds: string[]) => Promise<WisdomObj[] | null>;
+type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomObj | null>;
 
 /////////////////////////////////////
 // FIREBASE FUNCTIONS
 /////////////////////////////////////
 
-export const fetchUserData: FetchUserData = (userEmail: string) => {
-  console.log('fetchUserData running...');
-  const usersCollection = collection(firestoreDB, USERS_COLLECTION);
-  const q = query(usersCollection);
+////////////////////////////////////
+// THIS CODE IS TO PRE-LOAD WISDOMS SO I DON'T
+// HAVE TO KEEP DOING IT MANUALLY DURING DEVELOPMENT
+////////////////////////////////////
 
-  return getDocs(q)
+// import { wisdomData } from './wisdomData';
+
+// const loadWisdoms = () => {
+//   const wisdomsToUpload: WisdomObj[] = getStoredWisdoms();
+//   wisdomData.forEach((item) => {
+//     wisdomsToUpload.push(item);
+//   });
+//   localStorage.setItem('myWisdoms', JSON.stringify(wisdomsToUpload));
+// };
+// loadWisdoms();
+
+////////////////////////////////////
+
+export const fetchUserData: FetchUserData = (userEmail) => {
+  // console.log('fetchUserData running...');
+  return getDocs(Q_USER_COLLECTION)
     .then((snapshot) => {
-      console.log('processing data checkpoint 1');
+      // console.log('processing data checkpoint 1');
       const userDocs = snapshot.docs.map((item) => ({
         ...item.data(),
       }));
@@ -68,14 +91,11 @@ export const fetchUserData: FetchUserData = (userEmail: string) => {
     });
 };
 
-export const fetchWisdomsById: FetchWisdomsById = (wisdomIds: string[]) => {
-  console.log('fetchWisdomsById running...');
-  const wisdomsCollection = collection(firestoreDB, WISDOMS_COLLECTION);
-  const q = query(wisdomsCollection);
-
-  return getDocs(q)
+export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
+  // console.log('fetchWisdomsById running...');
+  return getDocs(Q_WISDOM_COLLECTION)
     .then((snapshot) => {
-      console.log('processing data checkpoint 1');
+      // console.log('processing data checkpoint 1');
       const wisdomsDoc = snapshot.docs.map((item) => ({
         ...item.data(),
       }));
@@ -87,47 +107,30 @@ export const fetchWisdomsById: FetchWisdomsById = (wisdomIds: string[]) => {
       return userWisdoms.length > 0 ? userWisdoms : null;
     })
     .catch((error) => {
+      // improve error handeling!!!
       console.error(error);
       return null;
     });
 };
 
-/////////////////////////////////////
-// turn into a function to be imported into the useEffect in WisdomPageWrapper
-/////////////////////////////////////
-// useEffect(() => {
-//   console.log('WisdomPage useEffect running...');
+export const fetchCurrentWisdom: FetchCurrentWisdom = (wisdomid) => {
+  console.log('fetchCurrentWisdom running...');
 
-//   if (!storedWisdoms) {
-//     console.log('getting data from firebase...');
-//     setLoading(true);
+  return getDocs(Q_WISDOM_COLLECTION)
+    .then((snapshot) => {
+      // console.log('processing data checkpoint 1');
+      const wisdomsDoc = snapshot.docs.map((item) => ({
+        ...item.data(),
+      }));
 
-//     const userCollection = collection(firestoreDB, currentUser!.email!);
-//     // const userCollection = collection(firestoreDB, 'test1@test.com');
-
-//     // console.log('userCollection: ', userCollection);
-
-//     const q = query(userCollection);
-//     getDocs(q)
-//       .then((snapshot) => {
-//         console.log('processing data checkpoint 1');
-//         const userDoc = snapshot.docs.map((item) => ({
-//           ...item.data(),
-//         }));
-//         const userObj = userDoc[0];
-//         const userWisdoms = userObj.userWisdoms;
-//         console.log('setting StoredWisdoms state');
-//         setStoredWisdoms(userWisdoms);
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       })
-//       .finally(() => {
-//         console.log('processing data checkpoint 2');
-//         setLoading(false);
-//       });
-//   }
-// }, [storedWisdoms]);
+      return wisdomsDoc[0][wisdomid]['wisdomData'];
+    })
+    .catch((error) => {
+      // improve error handeling!!!
+      console.error(error);
+      return null;
+    });
+};
 
 export const firebaseActions = 'firebaseActions placeholder';
 
