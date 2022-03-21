@@ -18,12 +18,17 @@ export interface EditedWisdom {
   text: string;
 }
 
-export interface WisdomObj {
-  id: string;
-  source: string;
+export interface WisdomData {
   date: string;
-  text: string;
+  id: string;
   next: boolean;
+  source: string;
+  text: string;
+}
+
+export interface WisdomObj {
+  createdBy: string;
+  wisdomData: WisdomData;
 }
 
 export interface HandleEditArgs {
@@ -33,5 +38,5 @@ export interface HandleEditArgs {
 
 export type HandleEdit = (
   values: FormikValues,
-  currentWisdom: WisdomObj
-) => WisdomObj;
+  currentWisdom: WisdomData
+) => WisdomData;

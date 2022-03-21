@@ -6,10 +6,10 @@ import WisdomCard from '../WisdomCard/WisdomCard';
 
 import styles from './WisdomList.module.css';
 
-import { WisdomObj } from '../../models/WisdomObj.model';
+import { WisdomData } from '../../models/models';
 
 interface PropsData {
-  storedWisdoms: WisdomObj[] | null;
+  storedWisdoms: WisdomData[] | null;
 }
 
 const WisdomList: React.FC<PropsData> = ({ storedWisdoms }) => {

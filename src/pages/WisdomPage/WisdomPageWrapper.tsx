@@ -6,7 +6,7 @@ import { fetchCurrentWisdom } from '../../actions/firebaseActions';
 
 import WisdomPage from './WisdomPage';
 
-import { WisdomObj } from '../../models/WisdomObj.model';
+import { WisdomData } from '../../models/models';
 
 import styles from './wisdomPage.module.css';
 import { useParams } from 'react-router';
@@ -16,7 +16,7 @@ const WisdomPageWrapper: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
 
-  const [currentWisdom, setCurrentWisdom] = useState<WisdomObj | null>(null);
+  const [currentWisdom, setCurrentWisdom] = useState<WisdomData | null>(null);
 
   // const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[] | null>(null); //Firestore data stored here
   // const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[] | null>([]); //Firestore data stored here
@@ -69,7 +69,7 @@ const WisdomPageWrapper: React.FC = () => {
   //   wisdomid: wisdomid,
   // };
 
-  const wisdomData = currentWisdom
+  const passingData = currentWisdom
     ? {
         currentWisdom,
         setCurrentWisdom,
@@ -78,7 +78,7 @@ const WisdomPageWrapper: React.FC = () => {
 
   // return currentWisdom && storedWisdoms ? (
   return currentWisdom ? (
-    <WisdomPage wisdomData={wisdomData!} />
+    <WisdomPage passingData={passingData!} />
   ) : (
     // <WisdomPage
     //   wisdomViewData={wisdomViewData}

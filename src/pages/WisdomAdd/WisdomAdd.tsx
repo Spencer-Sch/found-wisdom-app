@@ -23,7 +23,7 @@ import {
 
 import styles from './wisdomAdd.module.css';
 
-import { WisdomObj } from '../../models/WisdomObj.model';
+import { WisdomData } from '../../models/models';
 
 const getStoredWisdoms = () => {
   console.log('WisdomAdd getItem');
@@ -37,7 +37,7 @@ const getStoredWisdoms = () => {
 
 const WisdomAdd: React.FC = () => {
   console.log('WisdomAdd Render');
-  const storedWisdoms: WisdomObj[] = getStoredWisdoms();
+  const storedWisdoms: WisdomData[] = getStoredWisdoms();
 
   const formik = useFormik({
     initialValues: {

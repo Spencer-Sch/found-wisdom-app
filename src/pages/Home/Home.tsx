@@ -15,7 +15,7 @@ import {
 
 import { add, alertSharp } from 'ionicons/icons';
 
-import { WisdomObj } from '../../models/WisdomObj.model';
+import { WisdomData } from '../../models/models';
 
 import WisdomList from '../../components/WisdomList/WisdomList';
 import { useAuth } from '../../contexts/AuthContext';
@@ -24,7 +24,7 @@ import { fetchUserData, fetchWisdomsById } from '../../actions/firebaseActions';
 import styles from './home.module.css';
 
 const Home: React.FC = () => {
-  const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[] | null>(null);
+  const [storedWisdoms, setStoredWisdoms] = useState<WisdomData[] | null>(null);
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
 
@@ -62,8 +62,8 @@ const Home: React.FC = () => {
       return;
     }
     //////////////////////////////////////////
-    let wisdomToShow: WisdomObj;
-    let nextWisdom: WisdomObj;
+    let wisdomToShow: WisdomData;
+    let nextWisdom: WisdomData;
     const editedState = [...storedWisdoms];
 
     storedWisdoms.forEach((item, idx) => {

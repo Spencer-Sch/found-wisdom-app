@@ -1,7 +1,7 @@
 import { firestoreDB, wisdomsCollectionDocId } from '../firebase/firebase';
 import { doc, getDocs, updateDoc, collection, query } from 'firebase/firestore';
 
-import { WisdomObj } from '../models/models';
+import { WisdomData } from '../models/models';
 
 /////////////////////////////////////
 // CONSTANTS
@@ -51,9 +51,9 @@ interface UserData {
 /////////////////////////////////////
 
 type FetchUserData = (userEmail: string) => Promise<UserData>;
-type FetchWisdomsById = (wisdomIds: string[]) => Promise<WisdomObj[] | null>;
-type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomObj | null>;
-type UploadEditedWisdom = (editedWisdom: WisdomObj) => void;
+type FetchWisdomsById = (wisdomIds: string[]) => Promise<WisdomData[] | null>;
+type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomData | null>;
+type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
 
 /////////////////////////////////////
 // FIREBASE FUNCTIONS
@@ -100,7 +100,7 @@ export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
         ...item.data(),
       }));
 
-      const userWisdoms: WisdomObj[] | [] = wisdomIds.map((item) => {
+      const userWisdoms: WisdomData[] | [] = wisdomIds.map((item) => {
         return wisdomsDoc[0][item]['wisdomData'];
       });
 

@@ -19,16 +19,16 @@ import {
 
 import styles from './wisdomEdit.module.css';
 
-import { WisdomObj } from '../../models/WisdomObj.model';
+import { WisdomData } from '../../models/models';
 
 import { handleEdit } from '../../functions/wisdomFunctions';
 
 import { uploadEditedWisdom } from '../../actions/firebaseActions';
 
 interface PropsData {
-  currentWisdom: WisdomObj;
+  currentWisdom: WisdomData;
   setShowEdit: (value: boolean) => void;
-  setCurrentWisdom: (value: WisdomObj) => void;
+  setCurrentWisdom: (value: WisdomData) => void;
 }
 
 const WisdomEdit: React.FC<PropsData> = ({

@@ -2,13 +2,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { format } from 'date-fns';
 
-import { WisdomObj } from '../../models/WisdomObj.model';
+import { WisdomData } from '../../models/models';
 
 //////////////////////////////////////////
 // THIS FILE IS FOR DEVELOPMENT ONLY
 //////////////////////////////////////////
 
-export const wisdomData: WisdomObj[] = [
+export const wisdomData: WisdomData[] = [
   {
     id: uuidv4(),
     date: format(new Date(), 'MMM dd, yyyy'),

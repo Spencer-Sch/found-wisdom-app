@@ -6,7 +6,7 @@ import { IonPage } from '@ionic/react';
 import WisdomView from '../../components/WisdomView/WisdomView';
 import WisdomEdit from '../../components/WisdomEdit/WisdomEdit';
 
-import { WisdomObj } from '../../models/WisdomObj.model';
+import { WisdomData } from '../../models/models';
 
 import styles from './wisdomPage.module.css';
 
@@ -16,38 +16,38 @@ import styles from './wisdomPage.module.css';
 // }
 
 // interface PropsData {
-//   currentWisdom: WisdomObj;
-//   storedWisdoms: WisdomObj[];
+//   currentWisdom: WisdomData;
+//   storedWisdoms: WisdomData[];
 // }
 
 // interface PropsData {
 //   wisdomViewData: {
-//     currentWisdom: WisdomObj;
+//     currentWisdom: WisdomData;
 //   };
 //   wisdomEditData: {
-//     currentWisdom: WisdomObj;
-//     storedWisdoms: WisdomObj[];
+//     currentWisdom: WisdomData;
+//     storedWisdoms: WisdomData[];
 //     wisdomid: string;
 //   };
 // }
 
 interface PropsData {
-  wisdomData: {
-    currentWisdom: WisdomObj;
-    setCurrentWisdom: (value: WisdomObj) => void;
+  passingData: {
+    currentWisdom: WisdomData;
+    setCurrentWisdom: (value: WisdomData) => void;
   };
 }
 
 // interface PassingData {
-//   currentWisdom: WisdomObj;
-//   storedWisdoms: WisdomObj[];
+//   currentWisdom: WisdomData;
+//   storedWisdoms: WisdomData[];
 //   setShowEdit: (value: boolean) => void;
 // }
 
 // const WisdomPage: React.FC<PropsData> = ({ currentWisdom, storedWisdoms }) => {
-const WisdomPage: React.FC<PropsData> = ({ wisdomData }) => {
+const WisdomPage: React.FC<PropsData> = ({ passingData }) => {
   const [showEdit, setShowEdit] = useState(false);
-  const { currentWisdom } = wisdomData;
+  const { currentWisdom } = passingData;
 
   return (
     <IonPage>
@@ -55,7 +55,7 @@ const WisdomPage: React.FC<PropsData> = ({ wisdomData }) => {
         !showEdit ? (
           <WisdomView currentWisdom={currentWisdom} setShowEdit={setShowEdit} />
         ) : (
-          <WisdomEdit {...wisdomData} setShowEdit={setShowEdit} />
+          <WisdomEdit {...passingData} setShowEdit={setShowEdit} />
         )
         //////////////////
         // <WisdomEdit passingData={passingData} />
@@ -80,7 +80,7 @@ const WisdomPage: React.FC<PropsData> = ({ wisdomData }) => {
 //   const [showEdit, setShowEdit] = useState(false);
 //   // const [loading, setLoading] = useState(false);
 
-//   // const [currentWisdom, setCurrentWisdom] = useState<WisdomObj>(); // Do I need to re-store it?
+//   // const [currentWisdom, setCurrentWisdom] = useState<WisdomData>(); // Do I need to re-store it?
 
 //   // const { currentUser } = useAuth();
 

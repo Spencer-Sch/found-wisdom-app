@@ -20,17 +20,17 @@ import {
 
 import { home } from 'ionicons/icons';
 
-import { WisdomObj } from '../../models/WisdomObj.model';
+import { WisdomData } from '../../models/models';
 
 // interface PropsData {
 //   showDeleteModal: boolean;
-//   currentWisdom: WisdomObj;
+//   currentWisdom: WisdomData;
 //   handleDelete: () => void;
 //   setShowDeleteModal: (value: boolean) => void;
 //   setShowEdit: (value: boolean) => void;
 // }
 interface PropsData {
-  currentWisdom: WisdomObj;
+  currentWisdom: WisdomData;
   setShowEdit: (value: boolean) => void;
 }
 
