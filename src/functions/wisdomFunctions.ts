@@ -1,5 +1,9 @@
 import { HandleEdit } from '../models/models';
 
+import { v4 as uuidv4 } from 'uuid';
+
+import { format } from 'date-fns';
+
 // const transferNextValue = () => {
 //   let nextWisdom: WisdomObj;
 //   const stateCopy = [...storedWisdoms];
@@ -56,4 +60,18 @@ export const handleEdit: HandleEdit = (values, currentWisdom) => {
     source: values.source === '' ? 'unknown' : values.source,
   };
   return editedWisdom;
+};
+
+export const buildNewWisdom = (values) => {
+  const newWisdom = {
+    createdby: userName,
+    wisdomData: {
+      ...values,
+      source: values.source === '' ? 'unknown' : values.source,
+      date: format(new Date(), 'MMM dd, yyyy'),
+      id: uuidv4(),
+      next: false,
+    },
+  };
+  return newWisdom;
 };
