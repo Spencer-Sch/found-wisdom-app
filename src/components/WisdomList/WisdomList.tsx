@@ -21,13 +21,8 @@ const WisdomList: React.FC<PropsData> = ({ storedWisdoms }) => {
   return (
     <div style={{ overflow: 'scroll' }}>
       {storedWisdoms.length > 0 ? (
-        storedWisdoms.map((item: WisdomObj) => (
-          <WisdomCard
-            key={item.id}
-            id={item.id}
-            source={item.source}
-            text={item.text}
-          />
+        storedWisdoms.map((item: WisdomData) => (
+          <WisdomCard key={item.id} id={item.id} text={item.text} />
         ))
       ) : (
         <IonGrid>
