@@ -14,7 +14,6 @@ interface PropsData {
 
 const WisdomList: React.FC<PropsData> = ({ storedWisdoms }) => {
   if (!storedWisdoms) {
-    console.log('from WisdomList: storedWisdoms is null!');
     storedWisdoms = [];
   }
 
