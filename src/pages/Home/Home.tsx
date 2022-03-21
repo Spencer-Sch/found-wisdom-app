@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { firebase, firestoreDB } from '../../firebase/firebase';
-import { getDocs, collection, query } from 'firebase/firestore';
-
 import {
   IonContent,
   IonFab,
@@ -26,34 +23,16 @@ import { fetchUserData, fetchWisdomsById } from '../../actions/firebaseActions';
 
 import styles from './home.module.css';
 
-////////////////////////////////////
-// THIS CODE IS TO PRE-LOAD WISDOMS SO I DON'T
-// HAVE TO KEEP DOING IT MANUALLY DURING DEVELOPMENT
-////////////////////////////////////
-
-// import { wisdomData } from './wisdomData';
-
-// const loadWisdoms = () => {
-//   const wisdomsToUpload: WisdomObj[] = getStoredWisdoms();
-//   wisdomData.forEach((item) => {
-//     wisdomsToUpload.push(item);
-//   });
-//   localStorage.setItem('myWisdoms', JSON.stringify(wisdomsToUpload));
-// };
-// loadWisdoms();
-
-////////////////////////////////////
-
 const Home: React.FC = () => {
   const [storedWisdoms, setStoredWisdoms] = useState<WisdomObj[] | null>(null);
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
 
-  console.log('Home rendering...');
+  // console.log('Home rendering...');
 
   useEffect(() => {
     if (!currentUser) {
-      console.error('from useEffect in Home: currentUser is null!');
+      // console.error('from useEffect in Home: currentUser is null!');
       return;
     }
 
@@ -64,20 +43,21 @@ const Home: React.FC = () => {
     async function getDataToDisplay() {
       setLoading(true);
 
-      const userData = await fetchUserData(currentUser!.email!); // query usersCollection
+      const userData = await fetchUserData(currentUser!.email!);
       const defaultCollection = userData.wisdomCollections.default;
       const userWisdoms = await fetchWisdomsById(defaultCollection);
 
       setStoredWisdoms(userWisdoms);
       setLoading(false);
     }
-  }, [storedWisdoms]); // set storedWisdoms as a dependency???
+  }, [storedWisdoms, currentUser]);
 
   const pushNotification = () => {
     //////////////////////////////////////////
     // REFACTOR???
     //////////////////////////////////////////
     if (!storedWisdoms) {
+      // improve error handeling!!!
       console.error('from pushNotification in Home: storedWisdoms is null!');
       return;
     }

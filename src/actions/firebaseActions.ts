@@ -81,13 +81,13 @@ export const fetchUserData: FetchUserData = (userEmail) => {
   // console.log('fetchUserData running...');
   return getDocs(Q_USER_COLLECTION)
     .then((snapshot) => {
-      // console.log('processing data checkpoint 1');
       const userDocs = snapshot.docs.map((item) => ({
         ...item.data(),
       }));
       return userDocs[0][userEmail];
     })
     .catch((error) => {
+      // improve error handeling!!!
       console.error(error);
     });
 };
@@ -96,7 +96,6 @@ export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
   // console.log('fetchWisdomsById running...');
   return getDocs(Q_WISDOM_COLLECTION)
     .then((snapshot) => {
-      // console.log('processing data checkpoint 1');
       const wisdomsDoc = snapshot.docs.map((item) => ({
         ...item.data(),
       }));
@@ -115,11 +114,10 @@ export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
 };
 
 export const fetchCurrentWisdom: FetchCurrentWisdom = (wisdomid) => {
-  console.log('fetchCurrentWisdom running...');
+  // console.log('fetchCurrentWisdom running...');
 
   return getDocs(Q_WISDOM_COLLECTION)
     .then((snapshot) => {
-      // console.log('processing data checkpoint 1');
       const wisdomsDoc = snapshot.docs.map((item) => ({
         ...item.data(),
       }));
@@ -134,18 +132,13 @@ export const fetchCurrentWisdom: FetchCurrentWisdom = (wisdomid) => {
 };
 
 export const uploadEditedWisdom: UploadEditedWisdom = async (editedWisdom) => {
-  console.log('uploadEditedWisdom running...');
+  // console.log('uploadEditedWisdom running...');
 
   const wisdomPath = `${editedWisdom.id}.wisdomData`;
 
   const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
-  ///////////////////////
-  // This should work now. Double check once firestore lets me write/read again
   await updateDoc(docRef, { [`${wisdomPath}`]: { ...editedWisdom } });
-  ///////////////////////
 };
-
-export const firebaseActions = 'firebaseActions placeholder';
 
 /////////////////////////////
 // Firestore useEffect backup
