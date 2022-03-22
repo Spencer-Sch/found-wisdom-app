@@ -4,10 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-// import { v4 as uuidv4 } from 'uuid';
-
-// import { format } from 'date-fns';
-
 import {
   IonButton,
   IonContent,
@@ -27,6 +23,7 @@ import styles from './wisdomAdd.module.css';
 
 import { WisdomData } from '../../models/models';
 import { buildNewWisdom } from '../../functions/wisdomFunctions';
+import { useAuth } from '../../contexts/AuthContext';
 
 const getStoredWisdoms = () => {
   console.log('WisdomAdd getItem');
@@ -44,6 +41,8 @@ const WisdomAdd: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
+  const { currentUser } = useAuth();
+
   const storedWisdoms: WisdomData[] = getStoredWisdoms();
 
   const formik = useFormik({
@@ -57,19 +56,17 @@ const WisdomAdd: React.FC = () => {
     }),
     onSubmit: (values) => {
       setLoading(true);
-      const newWisdom = buildNewWisdom(values);
+      const newWisdom = buildNewWisdom(values, currentUser!.displayName!);
+      console.log(newWisdom);
       ///////////////////////////////////////////////////
-      // Where do I check and alter the 'next' propery of the new wisdom?
-      // I need to check if this is the first wisdom to be added to a users wisdomCollections
       // PROBLEM:
-      // If, in the future, multiple users can have access to the same wisdom in the usersCollection doc, how do I keep each user's 'next' property unique?
-      // POSSIBLE SOLUTION:
-      // the 'next' property isn't a property on the wisdomData object, it's a property somewhere inside the user object. It would contain the uuid of the next wisdom to be pushed and would update each time that user is pushed.
+      // I need to check if this is the first wisdom to be added to a users wisdomCollections
       ///////////////////////////////////////////////////
       // uploadNewWisdom(newWisdom)
       // updateUsersWisdomCollections(wisdomID)
 
       setLoading(false);
+      history.replace('/');
       ///////////////////////////////////////////////////////////
       // const valuesToSave = {
       //   ...values,
@@ -79,14 +76,13 @@ const WisdomAdd: React.FC = () => {
       //   next: false,
       // };
 
-      if (storedWisdoms.length > 0) {
-        storedWisdoms.push(valuesToSave);
-        localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms));
-      } else {
-        const wisdomsArr = [{ ...valuesToSave, next: true }];
-        localStorage.setItem('myWisdoms', JSON.stringify(wisdomsArr));
-      }
-      history.replace('/');
+      // if (storedWisdoms.length > 0) {
+      //   storedWisdoms.push(valuesToSave);
+      //   localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms));
+      // } else {
+      //   const wisdomsArr = [{ ...valuesToSave, next: true }];
+      //   localStorage.setItem('myWisdoms', JSON.stringify(wisdomsArr));
+      // }
       // window.location.replace('/');
     },
   });
