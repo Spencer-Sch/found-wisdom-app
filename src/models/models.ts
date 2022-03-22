@@ -1,3 +1,7 @@
+///////////////////
+// INTERFACES
+///////////////////
+
 export interface FormikValues {
   source: string;
   text: string;
@@ -12,6 +16,7 @@ export interface FormikValues {
 //     text: string;
 //   };
 // }
+
 export interface EditedWisdom {
   id: string;
   source: string;
@@ -21,7 +26,6 @@ export interface EditedWisdom {
 export interface WisdomData {
   date: string;
   id: string;
-  next: boolean;
   source: string;
   text: string;
 }
@@ -36,7 +40,37 @@ export interface HandleEditArgs {
   currentWisdom: WisdomObj;
 }
 
+export interface UsersCollectionUserObj {
+  userId: string;
+  userInfo: {
+    username: string;
+    email: string;
+    password: string;
+    dateJoined: string;
+  };
+  wisdomCollections: {
+    nextWisdomToPush: string | null;
+    default: string[];
+    userCreatedCategory?: string[];
+  };
+}
+
+///////////////////
+// TYPES
+///////////////////
+
 export type HandleEdit = (
   values: FormikValues,
   currentWisdom: WisdomData
 ) => WisdomData;
+
+export type BuildNewWisdom = (
+  values: FormikValues,
+  username: string
+) => WisdomObj;
+
+export type CreateNewUserObj = (
+  username: string,
+  email: string,
+  password: string
+) => UsersCollectionUserObj;
