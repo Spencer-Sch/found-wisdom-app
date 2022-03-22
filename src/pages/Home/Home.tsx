@@ -42,9 +42,17 @@ const Home: React.FC = () => {
 
     async function getDataToDisplay() {
       setLoading(true);
-
-      const userData = await fetchUserData(currentUser!.email!);
+      //////////////////////////////////////////////////////////////
+      // How do I have a currentUser object, with a correct displayName property
+      // but currentUser.displayName comes back as null?
+      // A reload of the component fixes the issue...why?
+      console.log('currentUser: ', currentUser);
+      console.log('current userName: ', currentUser!.displayName!);
+      const userData = await fetchUserData(currentUser!.displayName!);
+      //////////////////////////////////////////////////////////////
+      console.log('userData: ', userData);
       const defaultCollection = userData.wisdomCollections.default;
+      console.log('defaultCollection: ', defaultCollection);
       const userWisdoms = await fetchWisdomsById(defaultCollection);
 
       setStoredWisdoms(userWisdoms);
@@ -52,52 +60,52 @@ const Home: React.FC = () => {
     }
   }, [storedWisdoms, currentUser]);
 
-  const pushNotification = () => {
-    //////////////////////////////////////////
-    // REFACTOR???
-    //////////////////////////////////////////
-    if (!storedWisdoms) {
-      // improve error handeling!!!
-      console.error('from pushNotification in Home: storedWisdoms is null!');
-      return;
-    }
-    //////////////////////////////////////////
-    let wisdomToShow: WisdomData;
-    let nextWisdom: WisdomData;
-    const editedState = [...storedWisdoms];
+  // const pushNotification = () => {
+  //   //////////////////////////////////////////
+  //   // REFACTOR???
+  //   //////////////////////////////////////////
+  //   if (!storedWisdoms) {
+  //     // improve error handeling!!!
+  //     console.error('from pushNotification in Home: storedWisdoms is null!');
+  //     return;
+  //   }
+  //   //////////////////////////////////////////
+  //   let wisdomToShow: WisdomData;
+  //   let nextWisdom: WisdomData;
+  //   const editedState = [...storedWisdoms];
 
-    storedWisdoms.forEach((item, idx) => {
-      if (item.next === true) {
-        wisdomToShow = {
-          ...item,
-          next: false,
-        };
+  //   storedWisdoms.forEach((item, idx) => {
+  //     if (item.next === true) {
+  //       wisdomToShow = {
+  //         ...item,
+  //         next: false,
+  //       };
 
-        editedState[idx] = { ...wisdomToShow };
+  //       editedState[idx] = { ...wisdomToShow };
 
-        if (idx === storedWisdoms.length - 1) {
-          nextWisdom = {
-            ...storedWisdoms[0],
-            next: true,
-          };
+  //       if (idx === storedWisdoms.length - 1) {
+  //         nextWisdom = {
+  //           ...storedWisdoms[0],
+  //           next: true,
+  //         };
 
-          editedState[0] = { ...nextWisdom };
-        } else {
-          nextWisdom = {
-            ...storedWisdoms[idx + 1],
-            next: true,
-          };
+  //         editedState[0] = { ...nextWisdom };
+  //       } else {
+  //         nextWisdom = {
+  //           ...storedWisdoms[idx + 1],
+  //           next: true,
+  //         };
 
-          editedState[idx + 1] = { ...nextWisdom };
-        }
-      }
-    });
+  //         editedState[idx + 1] = { ...nextWisdom };
+  //       }
+  //     }
+  //   });
 
-    localStorage.setItem('myWisdoms', JSON.stringify(editedState));
-    setStoredWisdoms(editedState);
+  //   localStorage.setItem('myWisdoms', JSON.stringify(editedState));
+  //   setStoredWisdoms(editedState);
 
-    alert(wisdomToShow!.text);
-  };
+  //   alert(wisdomToShow!.text);
+  // };
 
   return (
     <IonPage>
@@ -120,11 +128,11 @@ const Home: React.FC = () => {
         </IonFabButton>
       </IonFab>
       {/* Temp button to activate "push notification" functionality */}
-      <IonFab vertical="bottom" horizontal="start" slot="fixed">
+      {/* <IonFab vertical="bottom" horizontal="start" slot="fixed">
         <IonFabButton color="tertiary" onClick={pushNotification}>
           <IonIcon icon={alertSharp} />
         </IonFabButton>
-      </IonFab>
+      </IonFab> */}
       {/* /////////////////////////////////////////////////////// */}
       {/* </IonContent> */}
       {loading && (
