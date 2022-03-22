@@ -11,7 +11,8 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { firebase, firestoreDB } from '../../firebase/firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { usersCollection, addUserToDB } from '../../actions/firebaseActions';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -28,20 +29,23 @@ interface ValuesData {
   email: string;
   password: string;
   confirmPassword: string;
+  username: string;
 }
 
 const RegisterNewUser: React.FC<PropsData> = (props: any) => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  const { registerNewUser } = useAuth();
+  const { registerNewUser, updateUserProfile } = useAuth();
 
   const formik = useFormik({
     initialValues: {
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
     validationSchema: Yup.object({
+      username: Yup.string().trim().required('username is required'),
       email: Yup.string()
         .trim()
         .email('Invalid email address')
@@ -58,36 +62,17 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
     },
   });
 
-  const submitForm = ({ email, password }: ValuesData) => {
-    createUserCollection(email);
-
-    registerNewUser!(email, password)
-      .then(() => {
-        history.replace('/');
-        // props.history.replace('/');
-      })
-      .catch((error) => {
-        console.log('register user: ', error);
-      });
-  };
-
-  const createUserCollection = (userEmail: string) => {
-    const userCollection = collection(firestoreDB, userEmail);
-
-    addDoc(userCollection, {
-      userInfo: {
-        userEmail,
-      },
-      userWisdoms: [
-        {
-          id: '123',
-          source: 'me',
-          date: '12/5/22',
-          text: 'a saying',
-          next: false,
-        },
-      ],
-    }).catch((error) => console.log('Error from create userInfo doc: ', error));
+  const submitForm = async ({ username, email, password }: ValuesData) => {
+    try {
+      await registerNewUser!(email, password);
+      addUserToDB(username, email, password);
+      updateUserProfile!(username);
+    } catch (error) {
+      console.log('register user: ', error);
+    } finally {
+      setLoading(false);
+      history.replace('/');
+    }
   };
 
   return (
@@ -99,6 +84,24 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
         <IonText color="dark" className="ion-text-center">
           <h2>Please Enter Your Info</h2>
         </IonText>
+
+        <IonItem>
+          <IonLabel position="stacked"></IonLabel>
+          <IonInput
+            id="username"
+            name="username"
+            type="text"
+            onIonChange={formik.handleChange}
+            onIonBlur={formik.handleBlur}
+            value={formik.values.username}
+            placeholder="Enter Username Here"
+          />
+        </IonItem>
+        {formik.touched.username && formik.errors.username ? (
+          <div className={`${styles.ss_form_error_label} ion-text-center`}>
+            {formik.errors.username}
+          </div>
+        ) : null}
 
         <IonItem>
           <IonLabel position="stacked"></IonLabel>
