@@ -1,56 +1,32 @@
-import { firestoreDB, wisdomsCollectionDocId } from '../firebase/firebase';
+import {
+  firestoreDB,
+  wisdomsCollectionDocId,
+  usersCollectionDocId,
+} from '../firebase/firebase';
 import { doc, getDocs, updateDoc, collection, query } from 'firebase/firestore';
 
-import { WisdomData } from '../models/models';
+import { createNewUserObj } from '../functions/userFunctions';
+import { WisdomData, UsersCollectionUserObj } from '../models/models';
 
 /////////////////////////////////////
 // CONSTANTS
 /////////////////////////////////////
+// MOVE TO FIREBASE.TS ???
 
 const USERS_COLLECTION = 'usersCollection';
 const WISDOMS_COLLECTION = 'wisdomsCollection';
 
-const wisdomsCollection = collection(firestoreDB, WISDOMS_COLLECTION);
-const usersCollection = collection(firestoreDB, USERS_COLLECTION);
+export const wisdomsCollection = collection(firestoreDB, WISDOMS_COLLECTION);
+export const usersCollection = collection(firestoreDB, USERS_COLLECTION);
 
-const Q_WISDOM_COLLECTION = query(wisdomsCollection);
-const Q_USER_COLLECTION = query(usersCollection);
-
-/////////////////////////////////////
-// INTERFACES
-/////////////////////////////////////
-
-interface UserData {
-  userId: string;
-  userInfo: {
-    username: string;
-    userEmail: string;
-    userPassword: string;
-    dateJoined: string;
-  };
-  wisdomCollections: {
-    default: string[];
-    userGeneratedCollection?: string[];
-  };
-}
-
-// interface UserWisdom {
-//   // keep for potential future use. rename for clarity.
-//   createdBy: string;
-//   wisdomData: {
-//     date: string;
-//     id: string;
-//     next: boolean;
-//     source: string;
-//     text: string;
-//   };
-// }
+const Q_WISDOMS_COLLECTION = query(wisdomsCollection);
+const Q_USERS_COLLECTION = query(usersCollection);
 
 /////////////////////////////////////
 // TYPES
 /////////////////////////////////////
 
-type FetchUserData = (userEmail: string) => Promise<UserData>;
+type FetchUserData = (username: string) => Promise<UsersCollectionUserObj>;
 type FetchWisdomsById = (wisdomIds: string[]) => Promise<WisdomData[] | null>;
 type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomData | null>;
 type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
@@ -59,42 +35,41 @@ type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
 // FIREBASE FUNCTIONS
 /////////////////////////////////////
 
-////////////////////////////////////
-// THIS CODE IS TO PRE-LOAD WISDOMS SO I DON'T
-// HAVE TO KEEP DOING IT MANUALLY DURING DEVELOPMENT
-////////////////////////////////////
+export const addUserToDB = async (
+  username: string,
+  email: string,
+  password: string
+) => {
+  const newUserObj = createNewUserObj(username, email, password);
 
-// import { wisdomData } from './wisdomData';
+  const docRef = doc(usersCollection, usersCollectionDocId);
+  await updateDoc(docRef, { [`${username}`]: { ...newUserObj } });
+  // try {
+  // } catch (error) {
+  //   console.error('Error from create addUserToDB: ', error);
+  // }
+};
 
-// const loadWisdoms = () => {
-//   const wisdomsToUpload: WisdomObj[] = getStoredWisdoms();
-//   wisdomData.forEach((item) => {
-//     wisdomsToUpload.push(item);
-//   });
-//   localStorage.setItem('myWisdoms', JSON.stringify(wisdomsToUpload));
-// };
-// loadWisdoms();
-
-////////////////////////////////////
-
-export const fetchUserData: FetchUserData = (userEmail) => {
+export const fetchUserData: FetchUserData = (username) => {
+  console.log('fetchUserData -> username: ', username);
   // console.log('fetchUserData running...');
-  return getDocs(Q_USER_COLLECTION)
+  return getDocs(Q_USERS_COLLECTION)
     .then((snapshot) => {
       const userDocs = snapshot.docs.map((item) => ({
         ...item.data(),
       }));
-      return userDocs[0][userEmail];
+      console.log('fetchUserData return value: ', userDocs[0]);
+      return userDocs[0][`${username}`];
     })
     .catch((error) => {
       // improve error handeling!!!
-      console.error(error);
+      console.error('fetchUserData Error:', error);
     });
 };
 
 export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
   // console.log('fetchWisdomsById running...');
-  return getDocs(Q_WISDOM_COLLECTION)
+  return getDocs(Q_WISDOMS_COLLECTION)
     .then((snapshot) => {
       const wisdomsDoc = snapshot.docs.map((item) => ({
         ...item.data(),
@@ -116,7 +91,7 @@ export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
 export const fetchCurrentWisdom: FetchCurrentWisdom = (wisdomid) => {
   // console.log('fetchCurrentWisdom running...');
 
-  return getDocs(Q_WISDOM_COLLECTION)
+  return getDocs(Q_WISDOMS_COLLECTION)
     .then((snapshot) => {
       const wisdomsDoc = snapshot.docs.map((item) => ({
         ...item.data(),
