@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   UserCredential,
   signOut,
+  updateProfile,
   User as FirebaseUser, // User type from firebase
 } from 'firebase/auth';
 
@@ -19,6 +20,7 @@ interface AuthContextResult {
     password: string
   ) => Promise<UserCredential>;
   signOutUser?: () => Promise<void>;
+  updateUserProfile?: (username: string) => void;
 }
 
 const defaultState = {
@@ -39,6 +41,21 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const registerNewUser = (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  const updateUserProfile = (username: string) => {
+    // console.log('inside updateUserProfile');
+    updateProfile(auth.currentUser!, {
+      displayName: username,
+      // photoURL: 'https://example.com/jane-q-user/profile.jpg',
+    })
+      .then(() => {
+        console.log('AuthContext -> updateUserProfile says: Profile Updated!');
+      })
+      .catch((error) => {
+        // better error handeling!!!
+        console.error('AuthContext/updateUserProfile error: ', error);
+      });
   };
 
   const signIn = (email: string, password: string) => {
@@ -63,6 +80,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     signIn,
     registerNewUser,
     signOutUser,
+    updateUserProfile,
   };
 
   return (
