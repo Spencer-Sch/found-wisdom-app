@@ -15,15 +15,15 @@
 
 ## Description
 
-#### The Inspiration
+### The Inspiration
 
 Throughout my journey of self-improvement, I have collected many inspirational quotes and helpful thoughts in the notes app on my phone.
 
-#### The Problem
+### The Problem
 
 I am a very visually organized person. If I don't see something on a regular basis I forget about it. I have all of this _**found wisdom**_ on my phone meant to encourage me throughout my days that I never see because it's hidden.
 
-#### The Solution
+### The Solution
 
 I am building this app to regular injection these encouraging words into my life. I hope others will also find it useful.
 
@@ -38,6 +38,7 @@ I am building this app to regular injection these encouraging words into my life
 ✅ Yup </br>
 ✅ date-fns </br>
 ✅ uuid </br>
+✅ Firebase Auth & Firestore </br>
 
 [Back To The Top](#found-wisdom)
 
