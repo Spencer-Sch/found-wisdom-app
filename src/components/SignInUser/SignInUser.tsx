@@ -29,11 +29,11 @@ interface ValuesData {
 const SignInUser: React.FC<PropsData> = (props: any) => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  const { signIn } = useAuth();
+  const { signIn, setRenderHome } = useAuth();
 
   const formik = useFormik({
     initialValues: {
-      email: 'test1@test.com',
+      email: 'spencer@test.com',
       password: 'password',
     },
     validationSchema: Yup.object({
@@ -51,8 +51,8 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
   const submitForm = ({ email, password }: ValuesData) => {
     signIn!(email, password)
       .then(() => {
+        setRenderHome!(true);
         history.replace('/');
-        // props.history.replace('/');
       })
       .catch((error) => {
         console.log('register user: ', error);
