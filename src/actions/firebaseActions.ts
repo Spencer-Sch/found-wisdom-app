@@ -27,7 +27,9 @@ const Q_USERS_COLLECTION = query(usersCollection);
 /////////////////////////////////////
 
 type FetchUserData = (username: string) => Promise<UsersCollectionUserObj>;
-type FetchWisdomsById = (wisdomIds: string[]) => Promise<WisdomData[] | null>;
+type FetchWisdomsById = (
+  wisdomIds: string[]
+) => Promise<WisdomData[] | null> | [];
 type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomData | null>;
 type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
 
@@ -58,7 +60,7 @@ export const fetchUserData: FetchUserData = (username) => {
       const userDocs = snapshot.docs.map((item) => ({
         ...item.data(),
       }));
-      console.log('fetchUserData return value: ', userDocs[0]);
+      console.log('fetchUserData return value: ', userDocs[0][`${username}`]);
       return userDocs[0][`${username}`];
     })
     .catch((error) => {
@@ -69,6 +71,9 @@ export const fetchUserData: FetchUserData = (username) => {
 
 export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
   // console.log('fetchWisdomsById running...');
+  if (wisdomIds.length === 0) {
+    return [];
+  }
   return getDocs(Q_WISDOMS_COLLECTION)
     .then((snapshot) => {
       const wisdomsDoc = snapshot.docs.map((item) => ({
