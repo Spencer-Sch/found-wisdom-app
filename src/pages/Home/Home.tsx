@@ -13,7 +13,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
-import { add, alertSharp } from 'ionicons/icons';
+import { add } from 'ionicons/icons';
 
 import { WisdomData } from '../../models/models';
 
@@ -28,11 +28,11 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
 
-  // console.log('Home rendering...');
+  console.log('Home rendering...');
 
   useEffect(() => {
     if (!currentUser) {
-      // console.error('from useEffect in Home: currentUser is null!');
+      console.error('from useEffect in Home: currentUser is null!');
       return;
     }
 
@@ -42,17 +42,9 @@ const Home: React.FC = () => {
 
     async function getDataToDisplay() {
       setLoading(true);
-      //////////////////////////////////////////////////////////////
-      // How do I have a currentUser object, with a correct displayName property
-      // but currentUser.displayName comes back as null?
-      // A reload of the component fixes the issue...why?
-      console.log('currentUser: ', currentUser);
       console.log('current userName: ', currentUser!.displayName!);
       const userData = await fetchUserData(currentUser!.displayName!);
-      //////////////////////////////////////////////////////////////
-      console.log('userData: ', userData);
       const defaultCollection = userData.wisdomCollections.default;
-      console.log('defaultCollection: ', defaultCollection);
       const userWisdoms = await fetchWisdomsById(defaultCollection);
 
       setStoredWisdoms(userWisdoms);
@@ -121,7 +113,10 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       {/* Page Content Here */}
-      {!loading && <WisdomList storedWisdoms={storedWisdoms} />}
+      {/* ///////////////////////////// */}
+      <WisdomList storedWisdoms={storedWisdoms} />
+      {/* {!loading && <WisdomList storedWisdoms={storedWisdoms} />} */}
+      {/* ///////////////////////////// */}
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
         <IonFabButton color="secondary" href="wisdom/add">
           <IonIcon icon={add} />
