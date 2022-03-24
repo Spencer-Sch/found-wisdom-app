@@ -50,6 +50,7 @@ const WisdomPageWrapper: React.FC = () => {
 
     async function getSelectedWisdom() {
       // console.log('getting data from firebase...');
+      // is this setLoading necessary?
       setLoading(true);
       const returnedWisdom = await fetchCurrentWisdom(wisdomid);
       setCurrentWisdom(returnedWisdom);
