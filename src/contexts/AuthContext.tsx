@@ -21,10 +21,13 @@ interface AuthContextResult {
   ) => Promise<UserCredential>;
   signOutUser?: () => Promise<void>;
   updateUserProfile?: (username: string) => void;
+  setRenderHome?: (value: boolean) => void;
+  renderHome: boolean;
 }
 
 const defaultState = {
   currentUser: null,
+  renderHome: false,
 };
 
 const AuthContext = createContext<AuthContextResult>(defaultState);
@@ -38,19 +41,21 @@ export function useAuth() {
 export const AuthProvider: React.FC = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [renderHome, setRenderHome] = useState(false);
 
   const registerNewUser = (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const updateUserProfile = (username: string) => {
-    // console.log('inside updateUserProfile');
+    console.log('inside updateUserProfile');
     updateProfile(auth.currentUser!, {
       displayName: username,
       // photoURL: 'https://example.com/jane-q-user/profile.jpg',
     })
       .then(() => {
         console.log('AuthContext -> updateUserProfile says: Profile Updated!');
+        setRenderHome(true);
       })
       .catch((error) => {
         // better error handeling!!!
@@ -81,6 +86,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     registerNewUser,
     signOutUser,
     updateUserProfile,
+    setRenderHome,
+    renderHome,
   };
 
   return (
