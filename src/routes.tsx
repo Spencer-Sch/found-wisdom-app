@@ -28,6 +28,7 @@ import './theme/variables.css';
 
 import Header from './components/Header/Header';
 import Home from './pages/Home/Home';
+import HomeWrapper from './pages/Home/HomeWrapper';
 import AuthGuard from './components/HOC/AuthGuard';
 import SignInOrRegister from './pages/SignInOrRegister';
 import WisdomPageWrapper from './pages/WisdomPage/WisdomPageWrapper';
@@ -64,7 +65,7 @@ const Routes: React.FC = () => {
               path="/sign_in"
               component={(props: any) => <SignInOrRegister {...props} />}
             />
-            <Route exact path="/" component={AuthGuard(Home)} />
+            <Route exact path="/" component={AuthGuard(HomeWrapper)} />
           </IonRouterOutlet>
         </IonReactRouter>
       </IonContent>
