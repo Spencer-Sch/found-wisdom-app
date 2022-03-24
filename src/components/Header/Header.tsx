@@ -1,4 +1,5 @@
 import React from 'react';
+// import { useHistory } from 'react-router-dom';
 
 import {
   IonButtons,
@@ -15,38 +16,23 @@ import {
 } from '@ionic/react';
 import { home, person, cog, key } from 'ionicons/icons';
 
-import { firebase } from '../../firebase/firebase';
-import { getAuth, signOut } from 'firebase/auth';
-
 import { useAuth } from '../../contexts/AuthContext';
 
 import styles from './header.module.css';
 
-import { useHistory } from 'react-router-dom';
-
 const Header: React.FC = () => {
-  const { signOutUser } = useAuth();
-  const history = useHistory();
+  const { signOutUser, setRenderHome } = useAuth();
+  // const history = useHistory();
 
   const logoutHandler = () => {
     signOutUser!()
       .then(() => {
+        setRenderHome!(false);
         // history.replace('/sign_in');
       })
       .catch((error) => {
         console.log('log out: ', error);
       });
-
-    // const auth = getAuth(firebase);
-    // signOut(auth)
-    //   .then(() => {
-    //     console.log('logging out...');
-    //     // showSuccessToast('Goodbye!');
-    //   })
-    //   .catch((error) => {
-    //     console.log('log out: ', error);
-    //     // showErrorToast(error.message);
-    //   });
   };
 
   return (
