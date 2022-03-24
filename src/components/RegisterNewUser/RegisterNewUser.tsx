@@ -10,9 +10,7 @@ import {
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { firebase, firestoreDB } from '../../firebase/firebase';
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
-import { usersCollection, addUserToDB } from '../../actions/firebaseActions';
+import { addUserToDB } from '../../actions/firebaseActions';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -63,16 +61,14 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
   });
 
   const submitForm = async ({ username, email, password }: ValuesData) => {
-    try {
-      await registerNewUser!(email, password);
-      addUserToDB(username, email, password);
-      updateUserProfile!(username);
-    } catch (error) {
-      console.log('register user: ', error);
-    } finally {
-      setLoading(false);
-      history.replace('/');
-    }
+    await addUserToDB(username, email, password);
+    registerNewUser!(email, password)
+      .then(() => {
+        updateUserProfile!(username);
+      })
+      .catch((e) => {
+        console.log('register user: ', e);
+      });
   };
 
   return (
