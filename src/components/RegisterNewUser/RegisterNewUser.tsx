@@ -176,7 +176,7 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
             isOpen={loading}
             spinner="lines-sharp"
             cssClass={styles.my_custom_spinner}
-            message="logging in..."
+            message="creating user account..."
           />
         )}
       </form>

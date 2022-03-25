@@ -135,7 +135,7 @@ const Home: React.FC = () => {
           isOpen={loading}
           spinner="lines-sharp"
           cssClass={styles.my_custom_spinner}
-          message="logging in..."
+          message="home fetching data..."
         />
       )}
     </IonPage>

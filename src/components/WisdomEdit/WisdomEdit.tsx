@@ -116,7 +116,7 @@ const WisdomEdit: React.FC<PropsData> = ({
           isOpen={loading}
           spinner="lines-sharp"
           cssClass={styles.my_custom_spinner}
-          message="logging in..."
+          message="editing wisdom..."
         />
       </IonContent>
     </>

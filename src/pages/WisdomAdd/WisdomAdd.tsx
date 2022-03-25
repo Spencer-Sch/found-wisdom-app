@@ -148,7 +148,7 @@ const WisdomAdd: React.FC = () => {
           isOpen={loading}
           spinner="lines-sharp"
           cssClass={styles.my_custom_spinner}
-          message="logging in..."
+          message="uploading wisdom..."
         />
       )}
       {/* </IonContent> */}

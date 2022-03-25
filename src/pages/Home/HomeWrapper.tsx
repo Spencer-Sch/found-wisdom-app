@@ -20,7 +20,7 @@ const HomeWrapper: React.FC = () => {
       isOpen={true}
       spinner="lines-sharp"
       cssClass={styles.my_custom_spinner}
-      message="logging in..."
+      message="loading home..."
     />
   );
 };
