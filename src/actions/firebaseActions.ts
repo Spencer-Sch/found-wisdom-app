@@ -6,7 +6,11 @@ import {
 import { doc, getDocs, updateDoc, collection, query } from 'firebase/firestore';
 
 import { createNewUserObj } from '../functions/userFunctions';
-import { WisdomData, UsersCollectionUserObj } from '../models/models';
+import {
+  WisdomData,
+  WisdomObj,
+  UsersCollectionUserObj,
+} from '../models/models';
 
 /////////////////////////////////////
 // CONSTANTS
@@ -33,6 +37,7 @@ type FetchWisdomsById = (
 ) => Promise<WisdomData[] | null> | [];
 type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomData | null>;
 type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
+type UploadNewWisdom = (newWisdom: WisdomObj) => void;
 
 /////////////////////////////////////
 // FIREBASE FUNCTIONS
@@ -115,6 +120,11 @@ export const uploadEditedWisdom: UploadEditedWisdom = async (editedWisdom) => {
 
   const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
   await updateDoc(docRef, { [`${wisdomPath}`]: { ...editedWisdom } });
+};
+
+export const uploadNewWisdom: UploadNewWisdom = async (newWisdom) => {
+  const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
+  await updateDoc(docRef, { [newWisdom.wisdomData.id]: { ...newWisdom } });
 };
 
 /////////////////////////////
