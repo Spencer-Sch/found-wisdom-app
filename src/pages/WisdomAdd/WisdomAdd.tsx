@@ -24,6 +24,7 @@ import styles from './wisdomAdd.module.css';
 import { WisdomData } from '../../models/models';
 import { buildNewWisdom } from '../../functions/wisdomFunctions';
 import { useAuth } from '../../contexts/AuthContext';
+import { uploadNewWisdom } from '../../actions/firebaseActions';
 
 const getStoredWisdoms = () => {
   console.log('WisdomAdd getItem');
@@ -54,10 +55,11 @@ const WisdomAdd: React.FC = () => {
       source: Yup.string(),
       text: Yup.string().required('some text is required'),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       setLoading(true);
       const newWisdom = buildNewWisdom(values, currentUser!.displayName!);
-      console.log(newWisdom);
+      const wisdomId = newWisdom.wisdomData.id;
+      await uploadNewWisdom(newWisdom);
       ///////////////////////////////////////////////////
       // PROBLEM:
       // I need to check if this is the first wisdom to be added to a users wisdomCollections
