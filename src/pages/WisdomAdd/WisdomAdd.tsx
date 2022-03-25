@@ -42,9 +42,7 @@ const WisdomAdd: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
-  const { currentUser } = useAuth();
-
-  const storedWisdoms: WisdomData[] = getStoredWisdoms();
+  const { currentUser, setRenderHome } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -68,6 +66,7 @@ const WisdomAdd: React.FC = () => {
       // updateUsersWisdomCollections(wisdomID)
 
       setLoading(false);
+      setRenderHome!(true);
       history.replace('/');
       ///////////////////////////////////////////////////////////
       // const valuesToSave = {
