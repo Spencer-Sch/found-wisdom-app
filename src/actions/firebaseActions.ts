@@ -38,6 +38,15 @@ type FetchWisdomsById = (
 type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomData | null>;
 type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
 type UploadNewWisdom = (newWisdom: WisdomObj) => void;
+type UpdateUserObj = (
+  username: string,
+  wisdomId: string,
+  userWisdomCollections: {
+    default: string[];
+    nextWisdomToPush: string | null;
+    userCreatedCategory?: string[] | undefined;
+  }
+) => void;
 
 /////////////////////////////////////
 // FIREBASE FUNCTIONS
@@ -118,6 +127,30 @@ export const uploadNewWisdom: UploadNewWisdom = async (newWisdom) => {
   await updateDoc(docRef, { [newWisdom.wisdomData.id]: { ...newWisdom } });
 };
 
+export const updateUserObj: UpdateUserObj = async (
+  username,
+  wisdomId,
+  userWisdomCollections
+) => {
+  const docRef = doc(usersCollection, usersCollectionDocId);
+  const userWisdomCollectionsPath = `${username}.wisdomCollections`;
+
+  if (userWisdomCollections.nextWisdomToPush === null) {
+    await updateDoc(docRef, {
+      [userWisdomCollectionsPath]: {
+        default: [...userWisdomCollections.default, wisdomId],
+        nextWisdomToPush: wisdomId,
+      },
+    });
+  } else {
+    await updateDoc(docRef, {
+      [userWisdomCollectionsPath]: {
+        default: [...userWisdomCollections.default, wisdomId],
+        nextWisdomToPush: userWisdomCollections.nextWisdomToPush,
+      },
+    });
+  }
+};
 /////////////////////////////
 // Firestore useEffect backup
 /////////////////////////////
