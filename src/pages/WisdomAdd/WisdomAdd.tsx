@@ -67,29 +67,9 @@ const WisdomAdd: React.FC = () => {
       // }
       // updateUsersWisdomCollections(wisdomId)
       ///////////////////////////////////////////////////
-      // uploadNewWisdom(newWisdom)
-      // updateUsersWisdomCollections(wisdomID)
-
       setLoading(false);
       setRenderHome!(true);
       history.replace('/');
-      ///////////////////////////////////////////////////////////
-      // const valuesToSave = {
-      //   ...values,
-      //   source: values.source === '' ? 'unknown' : values.source,
-      //   date: format(new Date(), 'MMM dd, yyyy'),
-      //   id: uuidv4(),
-      //   next: false,
-      // };
-
-      // if (storedWisdoms.length > 0) {
-      //   storedWisdoms.push(valuesToSave);
-      //   localStorage.setItem('myWisdoms', JSON.stringify(storedWisdoms));
-      // } else {
-      //   const wisdomsArr = [{ ...valuesToSave, next: true }];
-      //   localStorage.setItem('myWisdoms', JSON.stringify(wisdomsArr));
-      // }
-      // window.location.replace('/');
     },
   });
 
