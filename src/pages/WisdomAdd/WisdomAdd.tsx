@@ -24,7 +24,11 @@ import styles from './wisdomAdd.module.css';
 import { WisdomData } from '../../models/models';
 import { buildNewWisdom } from '../../functions/wisdomFunctions';
 import { useAuth } from '../../contexts/AuthContext';
-import { uploadNewWisdom } from '../../actions/firebaseActions';
+import {
+  uploadNewWisdom,
+  fetchUserData,
+  updateUserObj,
+} from '../../actions/firebaseActions';
 
 const getStoredWisdoms = () => {
   console.log('WisdomAdd getItem');
@@ -55,16 +59,13 @@ const WisdomAdd: React.FC = () => {
     }),
     onSubmit: async (values) => {
       setLoading(true);
-      const newWisdom = buildNewWisdom(values, currentUser!.displayName!);
-      const wisdomId = newWisdom.wisdomData.id;
+      const username = currentUser!.displayName!;
+      const userData = await fetchUserData(username);
+      const newWisdom = buildNewWisdom(values, username);
       await uploadNewWisdom(newWisdom);
-      ///////////////////////////////////////////////////
-      // PROBLEM:
-      // I need to check if this is the first wisdom to be added to a users wisdomCollections
-      // const isFirstWisdom = checkIfFirstWisdom()
-      // if (isFirstWisdom) {
-      //   updateUserNext(wisdomId);
-      // }
+      const wisdomId = newWisdom.wisdomData.id;
+      const userWisdomCollections = userData.wisdomCollections;
+      updateUserObj(username, wisdomId, userWisdomCollections);
       // updateUsersWisdomCollections(wisdomId)
       ///////////////////////////////////////////////////
       setLoading(false);
