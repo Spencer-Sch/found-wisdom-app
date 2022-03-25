@@ -55,14 +55,11 @@ export const addUserToDB: AddUserToDB = async (username, email, password) => {
 };
 
 export const fetchUserData: FetchUserData = (username) => {
-  console.log('fetchUserData -> username: ', username);
-  // console.log('fetchUserData running...');
   return getDocs(Q_USERS_COLLECTION)
     .then((snapshot) => {
       const userDocs = snapshot.docs.map((item) => ({
         ...item.data(),
       }));
-      console.log('fetchUserData return value: ', userDocs[0][`${username}`]);
       return userDocs[0][`${username}`];
     })
     .catch((error) => {
@@ -72,7 +69,6 @@ export const fetchUserData: FetchUserData = (username) => {
 };
 
 export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
-  // console.log('fetchWisdomsById running...');
   if (wisdomIds.length === 0) {
     return [];
   }
@@ -96,8 +92,6 @@ export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
 };
 
 export const fetchCurrentWisdom: FetchCurrentWisdom = (wisdomid) => {
-  // console.log('fetchCurrentWisdom running...');
-
   return getDocs(Q_WISDOMS_COLLECTION)
     .then((snapshot) => {
       const wisdomsDoc = snapshot.docs.map((item) => ({
@@ -114,10 +108,7 @@ export const fetchCurrentWisdom: FetchCurrentWisdom = (wisdomid) => {
 };
 
 export const uploadEditedWisdom: UploadEditedWisdom = async (editedWisdom) => {
-  // console.log('uploadEditedWisdom running...');
-
   const wisdomPath = `${editedWisdom.id}.wisdomData`;
-
   const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
   await updateDoc(docRef, { [`${wisdomPath}`]: { ...editedWisdom } });
 };
