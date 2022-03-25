@@ -61,6 +61,11 @@ const WisdomAdd: React.FC = () => {
       ///////////////////////////////////////////////////
       // PROBLEM:
       // I need to check if this is the first wisdom to be added to a users wisdomCollections
+      // const isFirstWisdom = checkIfFirstWisdom()
+      // if (isFirstWisdom) {
+      //   updateUserNext(wisdomId);
+      // }
+      // updateUsersWisdomCollections(wisdomId)
       ///////////////////////////////////////////////////
       // uploadNewWisdom(newWisdom)
       // updateUsersWisdomCollections(wisdomID)
