@@ -26,6 +26,7 @@ const Q_USERS_COLLECTION = query(usersCollection);
 // TYPES
 /////////////////////////////////////
 
+type AddUserToDB = (username: string, email: string, password: string) => void;
 type FetchUserData = (username: string) => Promise<UsersCollectionUserObj>;
 type FetchWisdomsById = (
   wisdomIds: string[]
@@ -37,11 +38,7 @@ type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
 // FIREBASE FUNCTIONS
 /////////////////////////////////////
 
-export const addUserToDB = async (
-  username: string,
-  email: string,
-  password: string
-) => {
+export const addUserToDB: AddUserToDB = async (username, email, password) => {
   const newUserObj = createNewUserObj(username, email, password);
 
   const docRef = doc(usersCollection, usersCollectionDocId);
