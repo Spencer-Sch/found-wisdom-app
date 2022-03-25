@@ -50,8 +50,8 @@ const WisdomAdd: React.FC = () => {
       text: '',
     },
     validationSchema: Yup.object({
-      source: Yup.string(),
-      text: Yup.string().required('some text is required'),
+      source: Yup.string().trim(),
+      text: Yup.string().trim().required('some text is required'),
     }),
     onSubmit: async (values) => {
       setLoading(true);
