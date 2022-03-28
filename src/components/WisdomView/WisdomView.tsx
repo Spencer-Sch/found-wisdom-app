@@ -113,6 +113,7 @@ const WisdomPage: React.FC<PropsData> = ({
         {/* confirm delete modal */}
         {showDeleteModal && (
           <WisdomPageModal
+            wisdomId={currentWisdom.id}
             handleDelete={handleDelete}
             setShowDeleteModal={setShowDeleteModal}
           />
