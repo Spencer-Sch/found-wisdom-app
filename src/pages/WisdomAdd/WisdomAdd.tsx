@@ -66,8 +66,6 @@ const WisdomAdd: React.FC = () => {
       const wisdomId = newWisdom.wisdomData.id;
       const userWisdomCollections = userData.wisdomCollections;
       updateUserObj(username, wisdomId, userWisdomCollections);
-      // updateUsersWisdomCollections(wisdomId)
-      ///////////////////////////////////////////////////
       setLoading(false);
       setRenderHome!(true);
       history.replace('/');
