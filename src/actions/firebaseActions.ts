@@ -11,6 +11,7 @@ import {
   WisdomObj,
   UsersCollectionUserObj,
 } from '../models/models';
+import { filterDeletedItem } from '../functions/wisdomFunctions';
 
 /////////////////////////////////////
 // CONSTANTS
@@ -47,7 +48,7 @@ type UpdateUserObj = (
     userCreatedCategory?: string[] | undefined;
   }
 ) => void;
-type HandleDelete = () => void;
+export type HandleDelete = (username: string, wisdomId: string) => void;
 
 /////////////////////////////////////
 // FIREBASE FUNCTIONS
@@ -153,8 +154,20 @@ export const updateUserObj: UpdateUserObj = async (
   }
 };
 
-export const handleDelete: HandleDelete = () => {
+export const handleDelete: HandleDelete = async (username, wisdomId) => {
   console.log('deleteing wisdom...');
+  const userObj = await fetchUserData(username);
+  const userWisdoms = userObj.wisdomCollections.default;
+  const filteredCollection = filterDeletedItem(userWisdoms, wisdomId);
+  /////////////////
+  // rename updateUserObj to something like updateUserWisdomCollections
+  // and alter it to be used by both add and delete?
+  // function would accept an object of props with a bunch being optional
+  // this would help to guide the function to either add or delete logic
+  /////////////////
+  // updateUserWisdomCollections
+  // checkUserNextWisdomToPush
+  // removeWisdomFromWisdomsCollection
 };
 
 // const handleDelete = () => {
