@@ -74,3 +74,5 @@ export type CreateNewUserObj = (
   email: string,
   password: string
 ) => UsersCollectionUserObj;
+
+export type AddNewWisdom = (values: FormikValues) => Promise<void>;

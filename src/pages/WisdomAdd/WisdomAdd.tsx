@@ -21,7 +21,7 @@ import {
 
 import styles from './wisdomAdd.module.css';
 
-import { WisdomData } from '../../models/models';
+import { AddNewWisdom } from '../../models/models';
 import { buildNewWisdom } from '../../functions/wisdomFunctions';
 import { useAuth } from '../../contexts/AuthContext';
 import {
@@ -29,16 +29,6 @@ import {
   fetchUserData,
   updateUserObj,
 } from '../../actions/firebaseActions';
-
-const getStoredWisdoms = () => {
-  console.log('WisdomAdd getItem');
-  const wisdomsString: string | null = localStorage.getItem('myWisdoms');
-  if (wisdomsString) {
-    return JSON.parse(wisdomsString);
-  } else {
-    return [];
-  }
-};
 
 const WisdomAdd: React.FC = () => {
   console.log('WisdomAdd Render');
@@ -59,18 +49,25 @@ const WisdomAdd: React.FC = () => {
     }),
     onSubmit: async (values) => {
       setLoading(true);
-      const username = currentUser!.displayName!;
-      const userData = await fetchUserData(username);
-      const newWisdom = buildNewWisdom(values, username);
-      await uploadNewWisdom(newWisdom);
-      const wisdomId = newWisdom.wisdomData.id;
-      const userWisdomCollections = userData.wisdomCollections;
-      updateUserObj(username, wisdomId, userWisdomCollections);
+      addNewWisdom(values);
       setLoading(false);
       setRenderHome!(true);
       history.replace('/');
     },
   });
+
+  const addNewWisdom: AddNewWisdom = async (values) => {
+    // create and upload new wisdom to wisdomsCollection
+    const username = currentUser!.displayName!;
+    const userData = await fetchUserData(username);
+    const newWisdom = buildNewWisdom(values, username);
+    await uploadNewWisdom(newWisdom);
+
+    // upload new wisdom to user's wisdomCollections
+    const userWisdomCollections = userData.wisdomCollections;
+    const wisdomId = newWisdom.wisdomData.id;
+    updateUserObj(username, wisdomId, userWisdomCollections);
+  };
 
   return (
     <IonPage>
