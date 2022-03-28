@@ -47,6 +47,7 @@ type UpdateUserObj = (
     userCreatedCategory?: string[] | undefined;
   }
 ) => void;
+type HandleDelete = () => void;
 
 /////////////////////////////////////
 // FIREBASE FUNCTIONS
@@ -151,6 +152,25 @@ export const updateUserObj: UpdateUserObj = async (
     });
   }
 };
+
+export const handleDelete: HandleDelete = () => {
+  console.log('deleteing wisdom...');
+};
+
+// const handleDelete = () => {
+//   if (currentWisdom.next === true && storedWisdoms.length > 1) {
+//     const editedState = transferNextValue();
+//     const filteredState = filterDeletedItem(editedState);
+//     updateLocalStorage(filteredState);
+//     setStoredWisdoms(filteredState);
+//   } else {
+//     const filteredState = filterDeletedItem(storedWisdoms);
+//     updateLocalStorage(filteredState);
+//   }
+//   setShowDeleteModal(false);
+//   window.location.replace(`/`);
+// };
+
 /////////////////////////////
 // Firestore useEffect backup
 /////////////////////////////
