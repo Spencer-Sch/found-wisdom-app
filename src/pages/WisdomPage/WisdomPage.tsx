@@ -47,13 +47,19 @@ interface PropsData {
 // const WisdomPage: React.FC<PropsData> = ({ currentWisdom, storedWisdoms }) => {
 const WisdomPage: React.FC<PropsData> = ({ passingData }) => {
   const [showEdit, setShowEdit] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { currentWisdom } = passingData;
 
   return (
     <IonPage>
       {
         !showEdit ? (
-          <WisdomView currentWisdom={currentWisdom} setShowEdit={setShowEdit} />
+          <WisdomView
+            currentWisdom={currentWisdom}
+            setShowEdit={setShowEdit}
+            setShowDeleteModal={setShowDeleteModal}
+            showDeleteModal={showDeleteModal}
+          />
         ) : (
           <WisdomEdit {...passingData} setShowEdit={setShowEdit} />
         )
