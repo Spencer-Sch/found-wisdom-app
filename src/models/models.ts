@@ -76,3 +76,8 @@ export type CreateNewUserObj = (
 ) => UsersCollectionUserObj;
 
 export type AddNewWisdom = (values: FormikValues) => Promise<void>;
+
+export type FilterDeletedItem = (
+  collectionToFilter: string[],
+  wisdomId: string
+) => string[];

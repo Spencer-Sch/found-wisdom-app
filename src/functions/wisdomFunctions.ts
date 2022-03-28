@@ -1,4 +1,4 @@
-import { HandleEdit } from '../models/models';
+import { FilterDeletedItem, HandleEdit } from '../models/models';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -29,8 +29,10 @@ import { WisdomObj, BuildNewWisdom } from '../models/models';
 //   return stateCopy;
 // };
 
-// const filterDeletedItem = (stateToFilter: WisdomObj[]) =>
-//   stateToFilter.filter((item) => item.id !== wisdomid);
+export const filterDeletedItem: FilterDeletedItem = (
+  collectionToFilter,
+  wisdomId
+) => collectionToFilter.filter((item) => item !== wisdomId);
 
 // const updateLocalStorage = (filteredWisdoms: WisdomObj[]) => {
 //   if (filteredWisdoms.length > 0) {
