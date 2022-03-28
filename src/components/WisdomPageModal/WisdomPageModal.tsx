@@ -9,16 +9,23 @@ import {
 } from '@ionic/react';
 
 import styles from './WisdomPageModal.module.css';
+import { HandleDelete } from '../../actions/firebaseActions';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface ModalProps {
-  handleDelete: () => void;
+  handleDelete: HandleDelete;
   setShowDeleteModal: (value: boolean) => void;
+  wisdomId: string;
 }
 
 const WisdomPage_Modal: React.FC<ModalProps> = ({
   handleDelete,
   setShowDeleteModal,
+  wisdomId,
 }) => {
+  const { currentUser } = useAuth();
+  const username = currentUser!.displayName!;
+
   return (
     <>
       <IonBackdrop
@@ -42,7 +49,7 @@ const WisdomPage_Modal: React.FC<ModalProps> = ({
               color="secondary"
               expand="full"
               className="ion-text-uppercase"
-              onClick={() => handleDelete()}
+              onClick={() => handleDelete(username, wisdomId)}
             >
               Yes, delete
             </IonButton>
