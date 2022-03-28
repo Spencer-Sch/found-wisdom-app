@@ -40,20 +40,6 @@ import { WisdomObj, BuildNewWisdom } from '../models/models';
 //   }
 // };
 
-// const handleDelete = () => {
-//   if (currentWisdom.next === true && storedWisdoms.length > 1) {
-//     const editedState = transferNextValue();
-//     const filteredState = filterDeletedItem(editedState);
-//     updateLocalStorage(filteredState);
-//     setStoredWisdoms(filteredState);
-//   } else {
-//     const filteredState = filterDeletedItem(storedWisdoms);
-//     updateLocalStorage(filteredState);
-//   }
-//   setShowDeleteModal(false);
-//   window.location.replace(`/`);
-// };
-
 export const handleEdit: HandleEdit = (values, currentWisdom) => {
   const editedWisdom = {
     ...currentWisdom,
