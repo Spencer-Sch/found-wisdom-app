@@ -1,4 +1,8 @@
-import { FilterDeletedItem, HandleEdit } from '../models/models';
+import {
+  FilterDeletedItem,
+  GetNextWisdomId,
+  HandleEdit,
+} from '../models/models';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -6,28 +10,18 @@ import { format } from 'date-fns';
 
 import { WisdomObj, BuildNewWisdom } from '../models/models';
 
-// const transferNextValue = () => {
-//   let nextWisdom: WisdomObj;
-//   const stateCopy = [...storedWisdoms];
+export const getNextWisdomId: GetNextWisdomId = (wisdomId, userWisdoms) => {
+  let nextWisdomId = '';
+  const currentWisdomIdx = userWisdoms.indexOf(wisdomId);
 
-//   // const currentWisdomIdx = currentWisdom ? storedWisdoms.indexOf(currentWisdom) : null;
-//   const currentWisdomIdx = storedWisdoms.indexOf(currentWisdom);
+  if (currentWisdomIdx === userWisdoms.length - 1) {
+    nextWisdomId = userWisdoms[0];
+  } else {
+    nextWisdomId = userWisdoms[currentWisdomIdx + 1];
+  }
 
-//   if (currentWisdomIdx === storedWisdoms.length - 1) {
-//     nextWisdom = {
-//       ...storedWisdoms[0],
-//       next: true,
-//     };
-//     stateCopy[0] = { ...nextWisdom };
-//   } else {
-//     nextWisdom = {
-//       ...storedWisdoms[currentWisdomIdx + 1],
-//       next: true,
-//     };
-//     stateCopy[currentWisdomIdx + 1] = { ...nextWisdom };
-//   }
-//   return stateCopy;
-// };
+  return nextWisdomId;
+};
 
 export const filterDeletedItem: FilterDeletedItem = (
   collectionToFilter,

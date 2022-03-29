@@ -80,4 +80,9 @@ export type AddNewWisdom = (values: FormikValues) => Promise<void>;
 export type FilterDeletedItem = (
   collectionToFilter: string[],
   wisdomId: string
-) => string[];
+) => string[] | [];
+
+export type GetNextWisdomId = (
+  wisdomId: string,
+  userWisdoms: string[]
+) => string;
