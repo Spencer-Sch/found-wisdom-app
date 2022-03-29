@@ -27,7 +27,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import {
   uploadNewWisdom,
   fetchUserData,
-  updateUserObj,
+  addToUserWisdomCollections,
 } from '../../actions/firebaseActions';
 
 const WisdomAdd: React.FC = () => {
@@ -49,7 +49,7 @@ const WisdomAdd: React.FC = () => {
     }),
     onSubmit: async (values) => {
       setLoading(true);
-      addNewWisdom(values);
+      await addNewWisdom(values);
       setLoading(false);
       setRenderHome!(true);
       history.replace('/');
@@ -61,12 +61,12 @@ const WisdomAdd: React.FC = () => {
     const username = currentUser!.displayName!;
     const userData = await fetchUserData(username);
     const newWisdom = buildNewWisdom(values, username);
-    await uploadNewWisdom(newWisdom);
+    uploadNewWisdom(newWisdom);
 
     // upload new wisdom to user's wisdomCollections
     const userWisdomCollections = userData.wisdomCollections;
     const wisdomId = newWisdom.wisdomData.id;
-    updateUserObj(username, wisdomId, userWisdomCollections);
+    addToUserWisdomCollections(username, wisdomId, userWisdomCollections);
   };
 
   return (
