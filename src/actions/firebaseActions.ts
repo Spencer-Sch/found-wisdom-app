@@ -3,7 +3,14 @@ import {
   wisdomsCollectionDocId,
   usersCollectionDocId,
 } from '../firebase/firebase';
-import { doc, getDocs, updateDoc, collection, query } from 'firebase/firestore';
+import {
+  doc,
+  getDocs,
+  updateDoc,
+  collection,
+  query,
+  deleteField,
+} from 'firebase/firestore';
 
 import { createNewUserObj } from '../functions/userFunctions';
 import {
@@ -11,7 +18,10 @@ import {
   WisdomObj,
   UsersCollectionUserObj,
 } from '../models/models';
-import { filterDeletedItem } from '../functions/wisdomFunctions';
+import {
+  filterDeletedItem,
+  getNextWisdomId,
+} from '../functions/wisdomFunctions';
 
 /////////////////////////////////////
 // CONSTANTS
@@ -48,6 +58,13 @@ type AddToUserWisdomCollections = (
     userCreatedCategory?: string[] | undefined;
   }
 ) => void;
+type RemoveFromUserWisdomCollections = (
+  username: string,
+  filteredCollection: string[] | [],
+  userNextWisdomToPush: string | null,
+  newNextWisdomToPush: string | null
+) => void;
+type RemoveWisdomFromWisdomsCollection = (wisdomId: string) => void;
 export type HandleDelete = (username: string, wisdomId: string) => void;
 
 /////////////////////////////////////
@@ -154,69 +171,67 @@ export const addToUserWisdomCollections: AddToUserWisdomCollections = async (
   }
 };
 
+export const removeFromUserWisdomCollections: RemoveFromUserWisdomCollections =
+  async (
+    username,
+    filteredCollection,
+    userNextWisdomToPush,
+    newNextWisdomToPush
+  ) => {
+    const docRef = doc(usersCollection, usersCollectionDocId);
+    const userWisdomCollectionsPath = `${username}.wisdomCollections`;
+
+    if (newNextWisdomToPush === '') {
+      await updateDoc(docRef, {
+        [userWisdomCollectionsPath]: {
+          default: [...filteredCollection],
+          nextWisdomToPush: userNextWisdomToPush,
+        },
+      });
+    } else {
+      await updateDoc(docRef, {
+        [userWisdomCollectionsPath]: {
+          default: [...filteredCollection],
+          nextWisdomToPush: newNextWisdomToPush,
+        },
+      });
+    }
+  };
+
+export const removeWisdomFromWisdomsCollection: RemoveWisdomFromWisdomsCollection =
+  async (wisdomId) => {
+    const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
+    await updateDoc(docRef, { [wisdomId]: deleteField() });
+  };
+
 export const handleDelete: HandleDelete = async (username, wisdomId) => {
+  // setShowLoading(true);
+  // setShowDeleteModal(false);
   console.log('deleteing wisdom...');
-  const userObj = await fetchUserData(username);
-  const userWisdoms = userObj.wisdomCollections.default;
+  const { wisdomCollections } = await fetchUserData(username);
+  const userNextWisdomToPush = wisdomCollections.nextWisdomToPush;
+  const userWisdoms = wisdomCollections.default;
+  let newNextWisdomToPush: string | null = '';
+
+  if (userNextWisdomToPush === wisdomId && userWisdoms.length > 1) {
+    newNextWisdomToPush = getNextWisdomId(wisdomId, userWisdoms);
+  }
+
+  if (userNextWisdomToPush === wisdomId && userWisdoms.length === 1) {
+    newNextWisdomToPush = null;
+  }
+
   const filteredCollection = filterDeletedItem(userWisdoms, wisdomId);
-  /////////////////
-  // rename updateUserObj to something like updateUserWisdomCollections
-  // and alter it to be used by both add and delete?
-  // function would accept an object of props with a bunch being optional
-  // this would help to guide the function to either add or delete logic
-  /////////////////
-  // updateUserWisdomCollections
-  // checkUserNextWisdomToPush
-  // removeWisdomFromWisdomsCollection
+
+  await removeFromUserWisdomCollections(
+    username,
+    filteredCollection,
+    userNextWisdomToPush,
+    newNextWisdomToPush
+  );
+
+  await removeWisdomFromWisdomsCollection(wisdomId);
+  // setShowLoading(false);
+  // setRenderHome!(true);
+  // history.replace('/');
 };
-
-// const handleDelete = () => {
-//   if (currentWisdom.next === true && storedWisdoms.length > 1) {
-//     const editedState = transferNextValue();
-//     const filteredState = filterDeletedItem(editedState);
-//     updateLocalStorage(filteredState);
-//     setStoredWisdoms(filteredState);
-//   } else {
-//     const filteredState = filterDeletedItem(storedWisdoms);
-//     updateLocalStorage(filteredState);
-//   }
-//   setShowDeleteModal(false);
-//   window.location.replace(`/`);
-// };
-
-/////////////////////////////
-// Firestore useEffect backup
-/////////////////////////////
-// useEffect(() => {
-//   console.log('WisdomPageWrapper useEffect running...');
-
-//   if (!storedWisdoms) {
-//     console.log('getting data from firebase...');
-//     setLoading(true);
-
-//     const userCollection = collection(firestoreDB, currentUser!.email!);
-//     // const userCollection = collection(firestoreDB, 'test1@test.com');
-
-//     // console.log('userCollection: ', userCollection);
-
-//     const q = query(userCollection);
-//     getDocs(q)
-//       .then((snapshot) => {
-//         console.log('processing data checkpoint 1');
-//         const userDoc = snapshot.docs.map((item) => ({
-//           ...item.data(),
-//         }));
-//         const userObj = userDoc[0];
-//         const userWisdoms = userObj.userWisdoms;
-//         console.log('setting StoredWisdoms state');
-//         setStoredWisdoms(userWisdoms);
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       })
-//       .finally(() => {
-//         console.log('processing data checkpoint 2');
-//         setLoading(false);
-//       });
-//   }
-// }, [storedWisdoms]);
