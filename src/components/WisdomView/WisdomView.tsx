@@ -21,7 +21,6 @@ import {
 import { home } from 'ionicons/icons';
 
 import { WisdomData } from '../../models/models';
-import { handleDelete } from '../../actions/firebaseActions';
 
 // interface PropsData {
 //   showDeleteModal: boolean;
@@ -114,7 +113,6 @@ const WisdomPage: React.FC<PropsData> = ({
         {showDeleteModal && (
           <WisdomPageModal
             wisdomId={currentWisdom.id}
-            handleDelete={handleDelete}
             setShowDeleteModal={setShowDeleteModal}
           />
         )}

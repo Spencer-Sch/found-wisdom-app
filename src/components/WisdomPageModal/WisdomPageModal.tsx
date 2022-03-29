@@ -8,18 +8,18 @@ import {
   IonText,
 } from '@ionic/react';
 
-import styles from './WisdomPageModal.module.css';
-import { HandleDelete } from '../../actions/firebaseActions';
 import { useAuth } from '../../contexts/AuthContext';
 
+import { handleDelete } from '../../actions/firebaseActions';
+
+import styles from './WisdomPageModal.module.css';
+
 interface ModalProps {
-  handleDelete: HandleDelete;
   setShowDeleteModal: (value: boolean) => void;
   wisdomId: string;
 }
 
 const WisdomPage_Modal: React.FC<ModalProps> = ({
-  handleDelete,
   setShowDeleteModal,
   wisdomId,
 }) => {
