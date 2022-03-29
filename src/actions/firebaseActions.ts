@@ -39,7 +39,7 @@ type FetchWisdomsById = (
 type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomData | null>;
 type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
 type UploadNewWisdom = (newWisdom: WisdomObj) => void;
-type UpdateUserObj = (
+type AddToUserWisdomCollections = (
   username: string,
   wisdomId: string,
   userWisdomCollections: {
@@ -129,7 +129,7 @@ export const uploadNewWisdom: UploadNewWisdom = async (newWisdom) => {
   await updateDoc(docRef, { [newWisdom.wisdomData.id]: { ...newWisdom } });
 };
 
-export const updateUserObj: UpdateUserObj = async (
+export const addToUserWisdomCollections: AddToUserWisdomCollections = async (
   username,
   wisdomId,
   userWisdomCollections
