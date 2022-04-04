@@ -72,7 +72,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      if (user) {
+      if (user?.displayName) {
         setRenderHome(true);
       }
       setLoading(false);
