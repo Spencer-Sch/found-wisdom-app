@@ -60,10 +60,10 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
     },
   });
 
-  const submitForm = async ({ username, email, password }: ValuesData) => {
-    await addUserToDB(username, email, password);
+  const submitForm = ({ username, email, password }: ValuesData) => {
     registerNewUser!(email, password)
-      .then(() => {
+      .then(async () => {
+        await addUserToDB(username, email, password);
         updateUserProfile!(username);
       })
       .catch((e) => {
