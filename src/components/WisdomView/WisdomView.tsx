@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import WisdomPageModal from '../../components/WisdomPageModal/WisdomPageModal';
 
@@ -12,15 +13,19 @@ import {
   IonHeader,
   IonIcon,
   IonItemDivider,
+  IonLoading,
   IonRow,
   IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
 
+import { deleteWisdomFromFirestore } from '../../actions/firebaseActions';
+
 import { home } from 'ionicons/icons';
 
 import { WisdomData } from '../../models/models';
+import { useAuth } from '../../contexts/AuthContext';
 
 // interface PropsData {
 //   showDeleteModal: boolean;
@@ -49,6 +54,19 @@ const WisdomView: React.FC<PropsData> = ({
   setShowDeleteModal,
   showDeleteModal,
 }) => {
+  const { currentUser } = useAuth();
+  const username = currentUser!.displayName!;
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async () => {
+    setLoading(true);
+    setShowDeleteModal(false);
+    await deleteWisdomFromFirestore(username, currentWisdom.id);
+    setLoading(false);
+    history.replace('/');
+  };
+
   return (
     <>
       {/* <IonHeader>
@@ -112,8 +130,16 @@ const WisdomView: React.FC<PropsData> = ({
         {/* confirm delete modal */}
         {showDeleteModal && (
           <WisdomPageModal
-            wisdomId={currentWisdom.id}
+            handleDelete={handleDelete}
             setShowDeleteModal={setShowDeleteModal}
+          />
+        )}
+        {loading && (
+          <IonLoading
+            isOpen={loading}
+            spinner="lines-sharp"
+            cssClass={styles.my_custom_spinner}
+            message="WisdomView deleting wisdom..."
           />
         )}
       </IonContent>
