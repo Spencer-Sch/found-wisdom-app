@@ -31,7 +31,7 @@ import {
 } from '../../actions/firebaseActions';
 
 const WisdomAdd: React.FC = () => {
-  console.log('WisdomAdd Render');
+  // console.log('WisdomAdd Render');
 
   const [loading, setLoading] = useState(false);
   const history = useHistory();

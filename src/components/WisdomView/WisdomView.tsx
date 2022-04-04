@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import WisdomPageModal from '../../components/WisdomPageModal/WisdomPageModal';
-
-import styles from './WisdomView.module.css';
-
 import {
   IonButton,
   IonCol,
@@ -20,20 +16,15 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
-import { deleteWisdomFromFirestore } from '../../actions/firebaseActions';
-
 import { home } from 'ionicons/icons';
 
+import { deleteWisdomFromFirestore } from '../../actions/firebaseActions';
+import WisdomPageModal from '../../components/WisdomPageModal/WisdomPageModal';
 import { WisdomData } from '../../models/models';
 import { useAuth } from '../../contexts/AuthContext';
 
-// interface PropsData {
-//   showDeleteModal: boolean;
-//   currentWisdom: WisdomData;
-//   handleDelete: () => void;
-//   setShowDeleteModal: (value: boolean) => void;
-//   setShowEdit: (value: boolean) => void;
-// }
+import styles from './WisdomView.module.css';
+
 interface PropsData {
   currentWisdom: WisdomData;
   setShowEdit: (value: boolean) => void;
@@ -41,13 +32,6 @@ interface PropsData {
   showDeleteModal: boolean;
 }
 
-// const WisdomPage: React.FC<PropsData> = ({
-//   showDeleteModal,
-//   currentWisdom,
-//   handleDelete,
-//   setShowDeleteModal,
-//   setShowEdit,
-// }) => {
 const WisdomView: React.FC<PropsData> = ({
   currentWisdom,
   setShowEdit,
@@ -134,6 +118,7 @@ const WisdomView: React.FC<PropsData> = ({
             setShowDeleteModal={setShowDeleteModal}
           />
         )}
+        {/* Loading Spinner */}
         {loading && (
           <IonLoading
             isOpen={loading}

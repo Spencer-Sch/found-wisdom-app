@@ -2,25 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Routes from './routes';
 
-import { firebase } from './firebase/firebase';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
 import { AuthProvider } from './contexts/AuthContext';
 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
-
-// interface PropsData {
-//   user: any;
-// }
-
-//////////////////////////////
-// Auth Context Branch
-//////////////////////////////
-
-// const App: React.FC<PropsData> = (props) => {
-//   return <Routes {...props} />;
-// };
 
 const App: React.FC = () => {
   return (
@@ -29,13 +14,6 @@ const App: React.FC = () => {
     </AuthProvider>
   );
 };
-
-// const auth = getAuth(firebase);
-
-// onAuthStateChanged(auth, (user) => {
-//   console.log(user);
-//   ReactDOM.render(<App user={user} />, document.getElementById('root'));
-// });
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
