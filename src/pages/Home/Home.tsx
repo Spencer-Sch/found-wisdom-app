@@ -42,9 +42,8 @@ const Home: React.FC = () => {
 
     async function getDataToDisplay() {
       setLoading(true);
-      console.log('current userName: ', currentUser!.displayName!);
       const userData = await fetchUserData(currentUser!.displayName!);
-      const defaultCollection = userData.wisdomCollections.default;
+      const defaultCollection: string[] = userData.wisdomCollections.default;
       const userWisdoms = await fetchWisdomsById(defaultCollection);
 
       setStoredWisdoms(userWisdoms);
