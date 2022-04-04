@@ -28,14 +28,6 @@ export const filterDeletedItem: FilterDeletedItem = (
   wisdomId
 ) => collectionToFilter.filter((item) => item !== wisdomId);
 
-// const updateLocalStorage = (filteredWisdoms: WisdomObj[]) => {
-//   if (filteredWisdoms.length > 0) {
-//     localStorage.setItem('myWisdoms', JSON.stringify(filteredWisdoms));
-//   } else {
-//     localStorage.setItem('myWisdoms', JSON.stringify([]));
-//   }
-// };
-
 export const handleEdit: HandleEdit = (values, currentWisdom) => {
   const editedWisdom = {
     ...currentWisdom,
