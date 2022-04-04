@@ -36,8 +36,6 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-//////////////////////////////
-
 export const AuthProvider: React.FC = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
@@ -74,19 +72,11 @@ export const AuthProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      ///////////////////////
-      // Does this fix the bug where HomeWrapper doesn't load Home after hitting refresh?
-      // if (user) {
-      //   setRenderHome(true);
-      // }
+      if (user) {
+        setRenderHome(true);
+      }
       setLoading(false);
     });
-
-    ///////////////////////
-    // Would putting the code here do anything different?
-    // if (user) {
-    //   setRenderHome(true);
-    // }
 
     return unsubscribe;
   }, []);
