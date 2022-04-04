@@ -65,7 +65,10 @@ type RemoveFromUserWisdomCollections = (
   newNextWisdomToPush: string | null
 ) => void;
 type RemoveWisdomFromWisdomsCollection = (wisdomId: string) => void;
-export type HandleDelete = (username: string, wisdomId: string) => void;
+export type DeleteWisdomFromFirestore = (
+  username: string,
+  wisdomId: string
+) => void;
 
 /////////////////////////////////////
 // FIREBASE FUNCTIONS
@@ -204,8 +207,11 @@ export const removeWisdomFromWisdomsCollection: RemoveWisdomFromWisdomsCollectio
     await updateDoc(docRef, { [wisdomId]: deleteField() });
   };
 
-export const handleDelete: HandleDelete = async (username, wisdomId) => {
-  console.log('deleteing wisdom...');
+export const deleteWisdomFromFirestore: DeleteWisdomFromFirestore = async (
+  username,
+  wisdomId
+) => {
+  // console.log('deleteing wisdom...');
   const { wisdomCollections } = await fetchUserData(username);
   const userNextWisdomToPush = wisdomCollections.nextWisdomToPush;
   const userWisdoms = wisdomCollections.default;
