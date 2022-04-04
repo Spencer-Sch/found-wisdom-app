@@ -49,12 +49,9 @@ const WisdomPageWrapper: React.FC = () => {
     }
 
     async function getSelectedWisdom() {
-      // console.log('getting data from firebase...');
-      // is this setLoading necessary?
-      setLoading(true);
+      console.log('WisdoomPageWrapper: getting data from firebase...');
       const returnedWisdom = await fetchCurrentWisdom(wisdomid);
       setCurrentWisdom(returnedWisdom);
-      setLoading(false);
     }
   }, [currentUser, currentWisdom, wisdomid]);
 
@@ -92,7 +89,7 @@ const WisdomPageWrapper: React.FC = () => {
       isOpen={true}
       spinner="lines-sharp"
       cssClass={styles.my_custom_spinner}
-      message="logging in..."
+      message="WisdomPageWrapper -> loading WisdomPage..."
     />
   );
 };
