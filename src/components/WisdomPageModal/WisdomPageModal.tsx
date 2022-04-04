@@ -53,7 +53,6 @@ const WisdomPage_Modal: React.FC<ModalProps> = ({
               className="ion-text-uppercase"
               onClick={async () => {
                 await handleDelete(username, wisdomId);
-                setRenderHome!(true);
                 history.replace('/');
               }}
             >
