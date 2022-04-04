@@ -3,3 +3,7 @@
   font-weight: 600;
   margin: 10px 0px;
 }
+
+.my_custom_spinner {
+  color: var(--ion-color-primary);
+}
