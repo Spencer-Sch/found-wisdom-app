@@ -205,8 +205,6 @@ export const removeWisdomFromWisdomsCollection: RemoveWisdomFromWisdomsCollectio
   };
 
 export const handleDelete: HandleDelete = async (username, wisdomId) => {
-  // setShowLoading(true);
-  // setShowDeleteModal(false);
   console.log('deleteing wisdom...');
   const { wisdomCollections } = await fetchUserData(username);
   const userNextWisdomToPush = wisdomCollections.nextWisdomToPush;
@@ -231,7 +229,4 @@ export const handleDelete: HandleDelete = async (username, wisdomId) => {
   );
 
   await removeWisdomFromWisdomsCollection(wisdomId);
-  // setShowLoading(false);
-  // setRenderHome!(true);
-  // history.replace('/');
 };
