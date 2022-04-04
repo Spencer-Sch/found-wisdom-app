@@ -7,16 +7,6 @@ export interface FormikValues {
   text: string;
 }
 
-// export interface EditedWisdom {
-//   wisdomData: {
-//     date: string;
-//     id: string;
-//     next: boolean;
-//     source: string;
-//     text: string;
-//   };
-// }
-
 export interface EditedWisdom {
   id: string;
   source: string;
@@ -55,6 +45,18 @@ export interface UsersCollectionUserObj {
   };
 }
 
+interface RegisterFormData {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  username: string;
+}
+
+interface SignInFormData {
+  email: string;
+  password: string;
+}
+
 ///////////////////
 // TYPES
 ///////////////////
@@ -86,3 +88,7 @@ export type GetNextWisdomId = (
   wisdomId: string,
   userWisdoms: string[]
 ) => string;
+
+export type SubmitRegistrationForm = (values: RegisterFormData) => void;
+
+export type SubmitSignInForm = (values: SignInFormData) => void;

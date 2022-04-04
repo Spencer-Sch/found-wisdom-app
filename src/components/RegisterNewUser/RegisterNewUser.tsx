@@ -8,14 +8,13 @@ import {
   IonText,
 } from '@ionic/react';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-
-import { addUserToDB } from '../../actions/firebaseActions';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { useAuth } from '../../contexts/AuthContext';
+import { addUserToDB } from '../../actions/firebaseActions';
+import { SubmitRegistrationForm } from '../../models/models';
 
 import styles from './registerNewUser.module.css';
 
@@ -23,16 +22,8 @@ interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
 }
 
-interface ValuesData {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  username: string;
-}
-
-const RegisterNewUser: React.FC<PropsData> = (props: any) => {
+const RegisterNewUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
   const { registerNewUser, updateUserProfile } = useAuth();
 
   const formik = useFormik({
@@ -60,7 +51,11 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
     },
   });
 
-  const submitForm = ({ username, email, password }: ValuesData) => {
+  const submitForm: SubmitRegistrationForm = ({
+    username,
+    email,
+    password,
+  }) => {
     registerNewUser!(email, password)
       .then(async () => {
         await addUserToDB(username, email, password);
@@ -165,7 +160,7 @@ const RegisterNewUser: React.FC<PropsData> = (props: any) => {
           already have an account?{' '}
           <span
             className={styles.ss_span}
-            onClick={() => props.setShowRegisterForm(false)}
+            onClick={() => setShowRegisterForm(false)}
           >
             log in here
           </span>

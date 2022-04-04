@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { useAuth } from '../../contexts/AuthContext';
+import { SubmitSignInForm } from '../../models/models';
 
 import styles from './signInUser.module.css';
 
@@ -21,12 +22,7 @@ interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
 }
 
-interface ValuesData {
-  email: string;
-  password: string;
-}
-
-const SignInUser: React.FC<PropsData> = (props: any) => {
+const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { signIn, setRenderHome } = useAuth();
@@ -48,7 +44,7 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
     },
   });
 
-  const submitForm = ({ email, password }: ValuesData) => {
+  const submitForm: SubmitSignInForm = ({ email, password }) => {
     signIn!(email, password)
       .then(() => {
         setRenderHome!(true);
@@ -118,7 +114,7 @@ const SignInUser: React.FC<PropsData> = (props: any) => {
           new user?{' '}
           <span
             className={styles.ss_span}
-            onClick={() => props.setShowRegisterForm(true)}
+            onClick={() => setShowRegisterForm(true)}
           >
             register here
           </span>
