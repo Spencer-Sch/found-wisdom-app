@@ -43,7 +43,7 @@ interface PropsData {
 //   setShowDeleteModal,
 //   setShowEdit,
 // }) => {
-const WisdomPage: React.FC<PropsData> = ({
+const WisdomView: React.FC<PropsData> = ({
   currentWisdom,
   setShowEdit,
   setShowDeleteModal,
@@ -121,4 +121,4 @@ const WisdomPage: React.FC<PropsData> = ({
   );
 };
 
-export default WisdomPage;
+export default WisdomView;
