@@ -51,53 +51,6 @@ const Home: React.FC = () => {
     }
   }, [storedWisdoms, currentUser]);
 
-  // const pushNotification = () => {
-  //   //////////////////////////////////////////
-  //   // REFACTOR???
-  //   //////////////////////////////////////////
-  //   if (!storedWisdoms) {
-  //     // improve error handeling!!!
-  //     console.error('from pushNotification in Home: storedWisdoms is null!');
-  //     return;
-  //   }
-  //   //////////////////////////////////////////
-  //   let wisdomToShow: WisdomData;
-  //   let nextWisdom: WisdomData;
-  //   const editedState = [...storedWisdoms];
-
-  //   storedWisdoms.forEach((item, idx) => {
-  //     if (item.next === true) {
-  //       wisdomToShow = {
-  //         ...item,
-  //         next: false,
-  //       };
-
-  //       editedState[idx] = { ...wisdomToShow };
-
-  //       if (idx === storedWisdoms.length - 1) {
-  //         nextWisdom = {
-  //           ...storedWisdoms[0],
-  //           next: true,
-  //         };
-
-  //         editedState[0] = { ...nextWisdom };
-  //       } else {
-  //         nextWisdom = {
-  //           ...storedWisdoms[idx + 1],
-  //           next: true,
-  //         };
-
-  //         editedState[idx + 1] = { ...nextWisdom };
-  //       }
-  //     }
-  //   });
-
-  //   localStorage.setItem('myWisdoms', JSON.stringify(editedState));
-  //   setStoredWisdoms(editedState);
-
-  //   alert(wisdomToShow!.text);
-  // };
-
   return (
     <IonPage>
       {/* <IonHeader>
@@ -112,22 +65,12 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       {/* Page Content Here */}
-      {/* ///////////////////////////// */}
       <WisdomList storedWisdoms={storedWisdoms} />
-      {/* {!loading && <WisdomList storedWisdoms={storedWisdoms} />} */}
-      {/* ///////////////////////////// */}
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
         <IonFabButton color="secondary" href="wisdom/add">
           <IonIcon icon={add} />
         </IonFabButton>
       </IonFab>
-      {/* Temp button to activate "push notification" functionality */}
-      {/* <IonFab vertical="bottom" horizontal="start" slot="fixed">
-        <IonFabButton color="tertiary" onClick={pushNotification}>
-          <IonIcon icon={alertSharp} />
-        </IonFabButton>
-      </IonFab> */}
-      {/* /////////////////////////////////////////////////////// */}
       {/* </IonContent> */}
       {loading && (
         <IonLoading
