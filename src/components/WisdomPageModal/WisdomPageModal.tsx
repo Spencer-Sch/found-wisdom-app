@@ -8,26 +8,17 @@ import {
   IonText,
 } from '@ionic/react';
 
-import { useAuth } from '../../contexts/AuthContext';
-
-import { handleDelete } from '../../actions/firebaseActions';
-
 import styles from './WisdomPageModal.module.css';
-import { useHistory } from 'react-router-dom';
 
 interface ModalProps {
   setShowDeleteModal: (value: boolean) => void;
-  wisdomId: string;
+  handleDelete: () => void;
 }
 
 const WisdomPage_Modal: React.FC<ModalProps> = ({
   setShowDeleteModal,
-  wisdomId,
+  handleDelete,
 }) => {
-  const { currentUser, setRenderHome } = useAuth();
-  const username = currentUser!.displayName!;
-  const history = useHistory();
-
   return (
     <>
       <IonBackdrop
@@ -51,9 +42,8 @@ const WisdomPage_Modal: React.FC<ModalProps> = ({
               color="secondary"
               expand="full"
               className="ion-text-uppercase"
-              onClick={async () => {
-                await handleDelete(username, wisdomId);
-                history.replace('/');
+              onClick={() => {
+                handleDelete();
               }}
             >
               Yes, delete
