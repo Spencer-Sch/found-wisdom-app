@@ -72,14 +72,12 @@ const Home: React.FC = () => {
         </IonFabButton>
       </IonFab>
       {/* </IonContent> */}
-      {loading && (
-        <IonLoading
-          isOpen={loading}
-          spinner="lines-sharp"
-          cssClass={styles.my_custom_spinner}
-          message="home fetching data..."
-        />
-      )}
+      <IonLoading
+        isOpen={loading}
+        spinner="lines-sharp"
+        cssClass={styles.my_custom_spinner}
+        message="home fetching data..."
+      />
     </IonPage>
   );
 };

@@ -166,14 +166,12 @@ const RegisterNewUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
           </span>
         </div>
 
-        {loading && (
-          <IonLoading
-            isOpen={loading}
-            spinner="lines-sharp"
-            cssClass={styles.my_custom_spinner}
-            message="creating user account..."
-          />
-        )}
+        <IonLoading
+          isOpen={loading}
+          spinner="lines-sharp"
+          cssClass={styles.my_custom_spinner}
+          message="creating user account..."
+        />
       </form>
     </IonGrid>
   );

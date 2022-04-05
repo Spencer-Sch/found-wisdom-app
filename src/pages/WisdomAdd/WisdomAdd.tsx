@@ -125,14 +125,12 @@ const WisdomAdd: React.FC = () => {
           cancel
         </IonButton>
       </IonList>
-      {loading && (
-        <IonLoading
-          isOpen={loading}
-          spinner="lines-sharp"
-          cssClass={styles.my_custom_spinner}
-          message="uploading wisdom..."
-        />
-      )}
+      <IonLoading
+        isOpen={loading}
+        spinner="lines-sharp"
+        cssClass={styles.my_custom_spinner}
+        message="uploading wisdom..."
+      />
       {/* </IonContent> */}
     </IonPage>
   );

@@ -120,14 +120,12 @@ const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
           </span>
         </div>
 
-        {loading && (
-          <IonLoading
-            isOpen={loading}
-            spinner="lines-sharp"
-            cssClass={styles.my_custom_spinner}
-            message="signing in..."
-          />
-        )}
+        <IonLoading
+          isOpen={loading}
+          spinner="lines-sharp"
+          cssClass={styles.my_custom_spinner}
+          message="signing in..."
+        />
       </form>
     </IonGrid>
   );

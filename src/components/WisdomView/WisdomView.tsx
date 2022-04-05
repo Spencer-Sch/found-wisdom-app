@@ -119,14 +119,12 @@ const WisdomView: React.FC<PropsData> = ({
           />
         )}
         {/* Loading Spinner */}
-        {loading && (
-          <IonLoading
-            isOpen={loading}
-            spinner="lines-sharp"
-            cssClass={styles.my_custom_spinner}
-            message="WisdomView deleting wisdom..."
-          />
-        )}
+        <IonLoading
+          isOpen={loading}
+          spinner="lines-sharp"
+          cssClass={styles.my_custom_spinner}
+          message="WisdomView deleting wisdom..."
+        />
       </IonContent>
     </>
   );
