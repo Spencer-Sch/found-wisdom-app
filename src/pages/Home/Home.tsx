@@ -28,7 +28,7 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
 
-  console.log('Home rendering...');
+  // console.log('Home rendering...');
 
   useEffect(() => {
     if (!currentUser) {
