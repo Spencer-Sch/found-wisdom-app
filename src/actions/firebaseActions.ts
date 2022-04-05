@@ -156,19 +156,21 @@ export const addToUserWisdomCollections: AddToUserWisdomCollections = async (
 ) => {
   const docRef = doc(usersCollection, usersCollectionDocId);
   const userWisdomCollectionsPath = `${username}.wisdomCollections`;
+  const nextWisdomToPush = userWisdomCollections.nextWisdomToPush;
+  const defaultCollection = userWisdomCollections.default;
 
-  if (userWisdomCollections.nextWisdomToPush === null) {
+  if (nextWisdomToPush === null) {
     await updateDoc(docRef, {
       [userWisdomCollectionsPath]: {
-        default: [...userWisdomCollections.default, wisdomId],
+        default: [...defaultCollection, wisdomId],
         nextWisdomToPush: wisdomId,
       },
     });
   } else {
     await updateDoc(docRef, {
       [userWisdomCollectionsPath]: {
-        default: [...userWisdomCollections.default, wisdomId],
-        nextWisdomToPush: userWisdomCollections.nextWisdomToPush,
+        default: [...defaultCollection, wisdomId],
+        nextWisdomToPush: nextWisdomToPush,
       },
     });
   }
