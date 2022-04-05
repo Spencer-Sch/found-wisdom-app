@@ -46,13 +46,11 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   const updateUserProfile = (username: string) => {
-    console.log('inside updateUserProfile');
     updateProfile(auth.currentUser!, {
       displayName: username,
       // photoURL: 'https://example.com/jane-q-user/profile.jpg',
     })
       .then(() => {
-        console.log('AuthContext -> updateUserProfile says: Profile Updated!');
         setRenderHome(true);
       })
       .catch((error) => {
