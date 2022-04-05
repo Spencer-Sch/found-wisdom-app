@@ -227,14 +227,14 @@ export const deleteWisdomFromFirestore: DeleteWisdomFromFirestore = async (
 
   const filteredCollection = filterDeletedItem(userWisdoms, wisdomId);
 
-  await removeFromUserWisdomCollections(
+  removeFromUserWisdomCollections(
     username,
     filteredCollection,
     userNextWisdomToPush,
     newNextWisdomToPush
   );
 
-  await removeWisdomFromWisdomsCollection(wisdomId);
+  removeWisdomFromWisdomsCollection(wisdomId);
 };
 
 ////////////////////////////////////////
