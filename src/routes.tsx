@@ -40,37 +40,64 @@ import { useAuth } from './contexts/AuthContext';
 setupIonicReact();
 
 const Routes: React.FC = () => {
-  const { currentUser } = useAuth();
+  // const { currentUser } = useAuth();
 
   return (
     <IonApp>
-      {/* ///////////////////////////////// */}
-      {/* {currentUser ? <Header /> : null} */}
-      <Header />
-      {/* ///////////////////////////////// */}
-      <IonContent id="main-content">
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Route
-              exact
-              path="/wisdom/:wisdomid"
-              component={AuthGuard(WisdomPageWrapper)}
-            />
-            <Route exact path="/wisdom/add" component={AuthGuard(WisdomAdd)} />
-            <Route exact path="/home">
-              <Redirect to="/" />
-            </Route>
-            <Route
-              exact
-              path="/sign_in"
-              component={(props: any) => <SignInOrRegister {...props} />}
-            />
-            <Route exact path="/" component={AuthGuard(HomeWrapper)} />
-          </IonRouterOutlet>
-        </IonReactRouter>
-      </IonContent>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route
+            exact
+            path="/wisdom/:wisdomid"
+            component={AuthGuard(WisdomPageWrapper)}
+          />
+          <Route exact path="/wisdom/add" component={AuthGuard(WisdomAdd)} />
+          <Route exact path="/home">
+            <Redirect to="/" />
+          </Route>
+          <Route
+            exact
+            path="/sign_in"
+            component={(props: any) => <SignInOrRegister {...props} />}
+          />
+          <Route exact path="/" component={AuthGuard(HomeWrapper)} />
+        </IonRouterOutlet>
+      </IonReactRouter>
     </IonApp>
   );
+  // return (
+  //   <IonApp>
+  //     {/* ///////////////////////////////// */}
+  //     {/* {currentUser ? <Header /> : null} */}
+  //     <Header />
+  //     <IonContent id="main-content">
+  //     {/* ///////////////////////////////// */}
+  //       <IonReactRouter>
+  //     {/* ///////////////////////////////// */}
+  //        <Header />
+  //        <IonRouterOutlet id="main-content">
+  //        {/* <IonRouterOutlet> */}
+  //     {/* ///////////////////////////////// */}
+  //           <Route
+  //             exact
+  //             path="/wisdom/:wisdomid"
+  //             component={AuthGuard(WisdomPageWrapper)}
+  //           />
+  //           <Route exact path="/wisdom/add" component={AuthGuard(WisdomAdd)} />
+  //           <Route exact path="/home">
+  //             <Redirect to="/" />
+  //           </Route>
+  //           <Route
+  //             exact
+  //             path="/sign_in"
+  //             component={(props: any) => <SignInOrRegister {...props} />}
+  //           />
+  //           <Route exact path="/" component={AuthGuard(HomeWrapper)} />
+  //         </IonRouterOutlet>
+  //       </IonReactRouter>
+  //     </IonContent>
+  //   </IonApp>
+  // );
 };
 
 export default Routes;
