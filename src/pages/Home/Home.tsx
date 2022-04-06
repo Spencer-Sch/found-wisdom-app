@@ -17,6 +17,7 @@ import { add } from 'ionicons/icons';
 
 import { WisdomData } from '../../models/models';
 
+import Header from '../../components/Header/Header';
 import WisdomList from '../../components/WisdomList/WisdomList';
 import { useAuth } from '../../contexts/AuthContext';
 import { fetchUserData, fetchWisdomsById } from '../../actions/firebaseActions';
@@ -53,31 +54,21 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      {/* <IonHeader>
-        <IonToolbar>
-          <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
-        </IonToolbar>
-      </IonHeader> */}
-      {/* <IonContent fullscreen> */}
-      <IonHeader collapse="condense">
-        <IonToolbar>
-          <IonTitle size="large">Wisdom</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      {/* Page Content Here */}
-      <WisdomList storedWisdoms={storedWisdoms} />
-      <IonFab vertical="bottom" horizontal="end" slot="fixed">
-        <IonFabButton color="secondary" href="wisdom/add">
-          <IonIcon icon={add} />
-        </IonFabButton>
-      </IonFab>
-      {/* </IonContent> */}
-      <IonLoading
-        isOpen={loading}
-        spinner="lines-sharp"
-        cssClass={styles.my_custom_spinner}
-        message="home fetching data..."
-      />
+      <Header />
+      <IonContent id="page-content" fullscreen>
+        <WisdomList storedWisdoms={storedWisdoms} />
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton color="secondary" href="wisdom/add">
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
+        <IonLoading
+          isOpen={loading}
+          spinner="lines-sharp"
+          cssClass={styles.my_custom_spinner}
+          message="home fetching data..."
+        />
+      </IonContent>
     </IonPage>
   );
 };
