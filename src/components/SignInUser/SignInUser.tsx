@@ -56,78 +56,79 @@ const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   };
 
   return (
-    <IonGrid
-      className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}
-      style={{ padding: '1rem' }}
-    >
-      <form onSubmit={formik.handleSubmit} className={styles.ss_form}>
-        <IonText color="dark" className="ion-text-center">
-          <h2>Please Log In</h2>
-        </IonText>
+    <>
+      <IonGrid
+        className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}
+        style={{ padding: '1rem' }}
+      >
+        <form onSubmit={formik.handleSubmit} className={styles.ss_form}>
+          <IonText color="dark" className="ion-text-center">
+            <h2>Please Log In</h2>
+          </IonText>
 
-        <IonItem>
-          <IonLabel position="stacked"></IonLabel>
-          <IonInput
-            id="email"
-            name="email"
-            type="text"
-            onIonChange={formik.handleChange}
-            onIonBlur={formik.handleBlur}
-            value={formik.values.email}
-            placeholder="Enter Email Here"
-          />
-        </IonItem>
-        {formik.touched.email && formik.errors.email ? (
-          <div className={`${styles.ss_form_error_label} ion-text-center`}>
-            {formik.errors.email}
-          </div>
-        ) : null}
+          <IonItem>
+            <IonLabel position="stacked"></IonLabel>
+            <IonInput
+              id="email"
+              name="email"
+              type="text"
+              onIonChange={formik.handleChange}
+              onIonBlur={formik.handleBlur}
+              value={formik.values.email}
+              placeholder="Enter Email Here"
+            />
+          </IonItem>
+          {formik.touched.email && formik.errors.email ? (
+            <div className={`${styles.ss_form_error_label} ion-text-center`}>
+              {formik.errors.email}
+            </div>
+          ) : null}
 
-        <IonItem>
-          <IonLabel position="stacked"></IonLabel>
-          <IonInput
-            id="password"
-            name="password"
-            type="password"
-            onIonChange={formik.handleChange}
-            onIonBlur={formik.handleBlur}
-            value={formik.values.password}
-            placeholder="Enter Password Here"
-          />
-        </IonItem>
-        {formik.touched.password && formik.errors.password ? (
-          <div className={`${styles.ss_form_error_label} ion-text-center`}>
-            {formik.errors.password}
-          </div>
-        ) : null}
+          <IonItem>
+            <IonLabel position="stacked"></IonLabel>
+            <IonInput
+              id="password"
+              name="password"
+              type="password"
+              onIonChange={formik.handleChange}
+              onIonBlur={formik.handleBlur}
+              value={formik.values.password}
+              placeholder="Enter Password Here"
+            />
+          </IonItem>
+          {formik.touched.password && formik.errors.password ? (
+            <div className={`${styles.ss_form_error_label} ion-text-center`}>
+              {formik.errors.password}
+            </div>
+          ) : null}
 
-        <IonButton
-          expand="block"
-          type="submit"
-          color="primary"
-          disabled={loading}
-          className="ion-text-uppercase"
-        >
-          log in
-        </IonButton>
-        <div className={`ion-text-center ${styles.ss_div}`}>
-          new user?{' '}
-          <span
-            className={styles.ss_span}
-            onClick={() => setShowRegisterForm(true)}
+          <IonButton
+            expand="block"
+            type="submit"
+            color="primary"
+            disabled={loading}
+            className="ion-text-uppercase"
           >
-            register here
-          </span>
-        </div>
-
-        <IonLoading
-          isOpen={loading}
-          spinner="lines-sharp"
-          cssClass={styles.my_custom_spinner}
-          message="signing in..."
-        />
-      </form>
-    </IonGrid>
+            log in
+          </IonButton>
+          <div className={`ion-text-center ${styles.ss_div}`}>
+            new user?{' '}
+            <span
+              className={styles.ss_span}
+              onClick={() => setShowRegisterForm(true)}
+            >
+              register here
+            </span>
+          </div>
+        </form>
+      </IonGrid>
+      <IonLoading
+        isOpen={loading}
+        spinner="lines-sharp"
+        cssClass={styles.my_custom_spinner}
+        message="signing in..."
+      />
+    </>
   );
 };
 
