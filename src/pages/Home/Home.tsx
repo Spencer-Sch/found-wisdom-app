@@ -4,13 +4,9 @@ import {
   IonContent,
   IonFab,
   IonFabButton,
-  IonHeader,
   IonIcon,
-  IonItem,
   IonLoading,
   IonPage,
-  IonTitle,
-  IonToolbar,
 } from '@ionic/react';
 
 import { add } from 'ionicons/icons';
@@ -58,7 +54,7 @@ const Home: React.FC = () => {
       <IonContent id="page-content" fullscreen>
         <WisdomList storedWisdoms={storedWisdoms} />
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color="secondary" href="wisdom/add">
+          <IonFabButton color="secondary" routerLink="wisdom/add">
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>
