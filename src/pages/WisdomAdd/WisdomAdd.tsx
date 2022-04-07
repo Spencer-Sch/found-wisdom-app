@@ -21,6 +21,7 @@ import {
 
 import styles from './wisdomAdd.module.css';
 
+import Header from '../../components/Header/Header';
 import { AddNewWisdom } from '../../models/models';
 import { buildNewWisdom } from '../../functions/wisdomFunctions';
 import { useAuth } from '../../contexts/AuthContext';
@@ -71,67 +72,63 @@ const WisdomAdd: React.FC = () => {
 
   return (
     <IonPage>
-      {/* <IonHeader>
-        <IonToolbar>
-          <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent> */}
-      <IonList>
-        <form onSubmit={formik.handleSubmit}>
-          <IonItem>
-            <IonLabel position="stacked"></IonLabel>
-            <IonInput
-              id="source"
-              name="source"
-              type="text"
-              onIonChange={formik.handleChange}
-              value={formik.values.source}
-              placeholder="Enter Source Here"
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel position="stacked"></IonLabel>
-            <IonTextarea
-              id="text"
-              name="text"
-              onIonChange={formik.handleChange}
-              onIonBlur={formik.handleBlur}
-              value={formik.values.text}
-              placeholder="Enter Wisdom Here"
-              autoGrow
-            ></IonTextarea>
-          </IonItem>
-          {formik.touched.text && formik.errors.text ? (
-            <div className={`${styles.ss_form_error_label} ion-text-center`}>
-              {formik.errors.text}
-            </div>
-          ) : null}
+      <Header />
+      <IonContent id="page-content" fullscreen>
+        <IonList>
+          <form onSubmit={formik.handleSubmit}>
+            <IonItem>
+              <IonLabel position="stacked"></IonLabel>
+              <IonInput
+                id="source"
+                name="source"
+                type="text"
+                onIonChange={formik.handleChange}
+                value={formik.values.source}
+                placeholder="Enter Source Here"
+              />
+            </IonItem>
+            <IonItem>
+              <IonLabel position="stacked"></IonLabel>
+              <IonTextarea
+                id="text"
+                name="text"
+                onIonChange={formik.handleChange}
+                onIonBlur={formik.handleBlur}
+                value={formik.values.text}
+                placeholder="Enter Wisdom Here"
+                autoGrow
+              ></IonTextarea>
+            </IonItem>
+            {formik.touched.text && formik.errors.text ? (
+              <div className={`${styles.ss_form_error_label} ion-text-center`}>
+                {formik.errors.text}
+              </div>
+            ) : null}
+            <IonButton
+              expand="full"
+              type="submit"
+              color="secondary"
+              className="ion-text-uppercase"
+            >
+              save
+            </IonButton>
+          </form>
           <IonButton
             expand="full"
-            type="submit"
-            color="secondary"
+            color="danger"
             className="ion-text-uppercase"
+            routerLink="/"
           >
-            save
+            cancel
           </IonButton>
-        </form>
-        <IonButton
-          expand="full"
-          color="danger"
-          className="ion-text-uppercase"
-          href="/"
-        >
-          cancel
-        </IonButton>
-      </IonList>
-      <IonLoading
-        isOpen={loading}
-        spinner="lines-sharp"
-        cssClass={styles.my_custom_spinner}
-        message="uploading wisdom..."
-      />
-      {/* </IonContent> */}
+        </IonList>
+        <IonLoading
+          isOpen={loading}
+          spinner="lines-sharp"
+          cssClass={styles.my_custom_spinner}
+          message="uploading wisdom..."
+        />
+      </IonContent>
     </IonPage>
   );
 };
