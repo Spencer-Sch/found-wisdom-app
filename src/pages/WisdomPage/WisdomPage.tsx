@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { IonPage } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 
 import WisdomView from '../../components/WisdomView/WisdomView';
 import WisdomEdit from '../../components/WisdomEdit/WisdomEdit';
 import { WisdomData } from '../../models/models';
 
 import styles from './wisdomPage.module.css';
+import Header from '../../components/Header/Header';
 
 interface PropsData {
   passingData: {
@@ -19,18 +20,22 @@ const WisdomPage: React.FC<PropsData> = ({ passingData }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { currentWisdom } = passingData;
 
+  // return (
   return (
     <IonPage>
-      {!showEdit ? (
-        <WisdomView
-          currentWisdom={currentWisdom}
-          setShowEdit={setShowEdit}
-          setShowDeleteModal={setShowDeleteModal}
-          showDeleteModal={showDeleteModal}
-        />
-      ) : (
-        <WisdomEdit {...passingData} setShowEdit={setShowEdit} />
-      )}
+      <Header />
+      <IonContent id="page-content" fullscreen>
+        {!showEdit ? (
+          <WisdomView
+            currentWisdom={currentWisdom}
+            setShowEdit={setShowEdit}
+            setShowDeleteModal={setShowDeleteModal}
+            showDeleteModal={showDeleteModal}
+          />
+        ) : (
+          <WisdomEdit {...passingData} setShowEdit={setShowEdit} />
+        )}
+      </IonContent>
     </IonPage>
   );
 };
