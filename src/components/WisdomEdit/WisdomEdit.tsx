@@ -5,16 +5,12 @@ import * as Yup from 'yup';
 
 import {
   IonButton,
-  IonContent,
-  IonHeader,
   IonInput,
   IonItem,
   IonLabel,
   IonList,
   IonLoading,
   IonTextarea,
-  IonTitle,
-  IonToolbar,
 } from '@ionic/react';
 
 import styles from './wisdomEdit.module.css';
@@ -60,65 +56,58 @@ const WisdomEdit: React.FC<PropsData> = ({
 
   return (
     <>
-      {/* <IonHeader>
-        <IonToolbar>
-          <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
-        </IonToolbar>
-      </IonHeader> */}
-      <IonContent>
-        <IonList>
-          <form onSubmit={formik.handleSubmit}>
-            <IonItem>
-              <IonLabel position="stacked">Source</IonLabel>
-              <IonInput
-                id="source"
-                name="source"
-                type="text"
-                onIonChange={formik.handleChange}
-                value={formik.values.source}
-              />
-            </IonItem>
-            <IonItem>
-              <IonLabel position="stacked">Your Wisdom</IonLabel>
-              <IonTextarea
-                id="text"
-                name="text"
-                onIonChange={formik.handleChange}
-                onIonBlur={formik.handleBlur}
-                value={formik.values.text}
-                autoGrow
-              ></IonTextarea>
-            </IonItem>
-            {formik.touched.text && formik.errors.text ? (
-              <div className={`${styles.ss_form_error_label} ion-text-center`}>
-                {formik.errors.text}
-              </div>
-            ) : null}
-            <IonButton
-              expand="full"
-              type="submit"
-              color="secondary"
-              className="ion-text-uppercase"
-            >
-              save
-            </IonButton>
-          </form>
+      <IonList>
+        <form onSubmit={formik.handleSubmit}>
+          <IonItem>
+            <IonLabel position="stacked">Source</IonLabel>
+            <IonInput
+              id="source"
+              name="source"
+              type="text"
+              onIonChange={formik.handleChange}
+              value={formik.values.source}
+            />
+          </IonItem>
+          <IonItem>
+            <IonLabel position="stacked">Your Wisdom</IonLabel>
+            <IonTextarea
+              id="text"
+              name="text"
+              onIonChange={formik.handleChange}
+              onIonBlur={formik.handleBlur}
+              value={formik.values.text}
+              autoGrow
+            ></IonTextarea>
+          </IonItem>
+          {formik.touched.text && formik.errors.text ? (
+            <div className={`${styles.ss_form_error_label} ion-text-center`}>
+              {formik.errors.text}
+            </div>
+          ) : null}
           <IonButton
             expand="full"
-            color="danger"
+            type="submit"
+            color="secondary"
             className="ion-text-uppercase"
-            onClick={() => setShowEdit(false)}
           >
-            cancel
+            save
           </IonButton>
-        </IonList>
-        <IonLoading
-          isOpen={loading}
-          spinner="lines-sharp"
-          cssClass={styles.my_custom_spinner}
-          message="editing wisdom..."
-        />
-      </IonContent>
+        </form>
+        <IonButton
+          expand="full"
+          color="danger"
+          className="ion-text-uppercase"
+          onClick={() => setShowEdit(false)}
+        >
+          cancel
+        </IonButton>
+      </IonList>
+      <IonLoading
+        isOpen={loading}
+        spinner="lines-sharp"
+        cssClass={styles.my_custom_spinner}
+        message="editing wisdom..."
+      />
     </>
   );
 };
