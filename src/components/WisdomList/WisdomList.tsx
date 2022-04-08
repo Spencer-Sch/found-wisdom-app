@@ -17,8 +17,10 @@ const WisdomList: React.FC<PropsData> = ({ storedWisdoms }) => {
     storedWisdoms = [];
   }
 
+  const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
+
   return (
-    <div style={{ overflow: 'scroll' }}>
+    <div style={{ overflow: 'scroll', marginTop: `${headerElHeight}px` }}>
       {storedWisdoms.length > 0 ? (
         storedWisdoms.map((item: WisdomData) => (
           <WisdomCard key={item.id} id={item.id} text={item.text} />
