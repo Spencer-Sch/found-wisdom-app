@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 
-import Header from '../../components/Header/Header';
 import WisdomView from '../../components/WisdomView/WisdomView';
 import WisdomEdit from '../../components/WisdomEdit/WisdomEdit';
 import { WisdomData } from '../../models/models';
@@ -22,7 +21,6 @@ const WisdomPage: React.FC<PropsData> = ({ passingData }) => {
 
   return (
     <IonPage>
-      <Header />
       <IonContent id="page-content" fullscreen>
         {!showEdit ? (
           <WisdomView
