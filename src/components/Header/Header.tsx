@@ -1,5 +1,5 @@
 import React from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import {
   IonButtons,
@@ -19,25 +19,33 @@ import { home, person, cog, key } from 'ionicons/icons';
 import { useAuth } from '../../contexts/AuthContext';
 
 import styles from './header.module.css';
+import { menuController } from '@ionic/core/components';
 
 const Header: React.FC = () => {
   const { signOutUser, setRenderHome } = useAuth();
-  // const history = useHistory();
+  const history = useHistory();
 
-  const logoutHandler = () => {
-    signOutUser!()
-      .then(() => {
-        setRenderHome!(false);
-        // history.replace('/sign_in');
-      })
-      .catch((error) => {
-        console.log('log out: ', error);
-      });
+  const logoutHandler = async () => {
+    await menuController.close();
+    history.replace('/sign_in');
+    setRenderHome!(false);
+    await signOutUser!();
+    // IMPROVED ERROR HANDLING!
+    // TRY / CATCH ???
+    // signOutUser!()
+    //   .then(() => {
+    //     setRenderHome!(false);
+    //     history.replace('/sign_in');
+    //   })
+    //   .catch((error) => {
+    //     console.log('log out: ', error);
+    //   });
   };
 
   return (
     <>
-      <IonMenu side="start" contentId="main-content">
+      <IonMenu side="start" contentId="ion-router-outlet">
+        {/* <IonMenu side="start" contentId="page-content"> */}
         <IonHeader>
           <IonToolbar>
             <IonTitle>Menu</IonTitle>
@@ -45,7 +53,16 @@ const Header: React.FC = () => {
         </IonHeader>
         <IonContent>
           <IonList>
-            <IonItem button={true} href="/">
+            <IonItem
+              button={true}
+              onClick={async () => {
+                // flip these calls for different visual order
+                await menuController.close();
+                setRenderHome!(true);
+                history.replace('/');
+              }}
+            >
+              {/* <IonItem button={true} routerLink="/"> */}
               <IonIcon slot="start" icon={home} />
               <IonLabel>Home</IonLabel>
             </IonItem>
