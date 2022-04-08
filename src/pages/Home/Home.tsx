@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import {
   IonContent,
@@ -13,7 +14,6 @@ import { add } from 'ionicons/icons';
 
 import { WisdomData } from '../../models/models';
 
-import Header from '../../components/Header/Header';
 import WisdomList from '../../components/WisdomList/WisdomList';
 import { useAuth } from '../../contexts/AuthContext';
 import { fetchUserData, fetchWisdomsById } from '../../actions/firebaseActions';
@@ -25,9 +25,12 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
 
-  // console.log('Home rendering...');
+  const history = useHistory();
+
+  console.log('Home rendering...');
 
   useEffect(() => {
+    console.log('Home useEffect...');
     if (!currentUser) {
       console.error('from useEffect in Home: currentUser is null!');
       return;
@@ -50,11 +53,16 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      <Header />
       <IonContent id="page-content" fullscreen>
         <WisdomList storedWisdoms={storedWisdoms} />
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton color="secondary" routerLink="wisdom/add">
+          <IonFabButton
+            color="secondary"
+            routerDirection="forward"
+            onClick={() => {
+              history.replace('/wisdom/add');
+            }}
+          >
             <IonIcon icon={add} />
           </IonFabButton>
         </IonFab>
