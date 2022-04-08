@@ -31,7 +31,9 @@ const WisdomAdd: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
-  const { currentUser, setRenderHome } = useAuth();
+  const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
+
+  const { currentUser } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -65,9 +67,8 @@ const WisdomAdd: React.FC = () => {
 
   return (
     <IonPage>
-      <Header />
-      <IonContent id="page-content" fullscreen>
-        <IonList>
+      <IonContent id="page-content">
+        <IonList style={{ marginTop: `${headerElHeight}px` }}>
           <form onSubmit={formik.handleSubmit}>
             <IonItem>
               <IonLabel position="stacked"></IonLabel>
