@@ -40,12 +40,13 @@ import { useAuth } from './contexts/AuthContext';
 setupIonicReact();
 
 const Routes: React.FC = () => {
-  // const { currentUser } = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <IonApp>
       <IonReactRouter>
-        <IonRouterOutlet>
+        {currentUser ? <Header /> : null}
+        <IonRouterOutlet id="ion-router-outlet">
           <Route
             exact
             path="/wisdom/:wisdomid"
