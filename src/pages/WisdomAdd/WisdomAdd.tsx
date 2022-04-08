@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 import {
   IonButton,
   IonContent,
-  IonHeader,
   IonInput,
   IonItem,
   IonLabel,
@@ -15,13 +14,10 @@ import {
   IonLoading,
   IonPage,
   IonTextarea,
-  IonTitle,
-  IonToolbar,
 } from '@ionic/react';
 
 import styles from './wisdomAdd.module.css';
 
-import Header from '../../components/Header/Header';
 import { AddNewWisdom } from '../../models/models';
 import { buildNewWisdom } from '../../functions/wisdomFunctions';
 import { useAuth } from '../../contexts/AuthContext';
@@ -32,8 +28,6 @@ import {
 } from '../../actions/firebaseActions';
 
 const WisdomAdd: React.FC = () => {
-  // console.log('WisdomAdd Render');
-
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
@@ -52,7 +46,6 @@ const WisdomAdd: React.FC = () => {
       setLoading(true);
       await addNewWisdom(values);
       setLoading(false);
-      setRenderHome!(true);
       history.replace('/');
     },
   });
@@ -117,7 +110,10 @@ const WisdomAdd: React.FC = () => {
             expand="full"
             color="danger"
             className="ion-text-uppercase"
-            routerLink="/"
+            routerDirection="back"
+            onClick={() => {
+              history.push('/');
+            }}
           >
             cancel
           </IonButton>
