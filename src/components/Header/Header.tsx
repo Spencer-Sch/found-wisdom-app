@@ -82,7 +82,7 @@ const Header: React.FC = () => {
         </IonContent>
       </IonMenu>
 
-      <IonHeader>
+      <IonHeader id="headerEl">
         <IonToolbar className={styles.toolbar}>
           <IonTitle className="ion-text-center">Found Wisdom</IonTitle>
           <IonButtons slot="primary" className={styles.ion_buttons}>
