@@ -39,6 +39,9 @@ const WisdomView: React.FC<PropsData> = ({
   const history = useHistory();
   const [loading, setLoading] = useState(false);
 
+  const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
+  const screenAvailHeight = window.screen.availHeight;
+
   const handleDelete = async () => {
     setLoading(true);
     setShowDeleteModal(false);
@@ -51,6 +54,10 @@ const WisdomView: React.FC<PropsData> = ({
     <>
       <IonGrid
         className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}
+        style={{
+          marginTop: `${headerElHeight}px`,
+          height: `${screenAvailHeight - headerElHeight!}px`,
+        }}
       >
         <IonRow>
           <IonRow className="ion-margin-horizontal">
