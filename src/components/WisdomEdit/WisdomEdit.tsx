@@ -35,6 +35,8 @@ const WisdomEdit: React.FC<PropsData> = ({
   const [loading, setLoading] = useState(false);
   const { source, text } = currentWisdom;
 
+  const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
+
   const formik = useFormik({
     initialValues: {
       source: source,
@@ -56,7 +58,7 @@ const WisdomEdit: React.FC<PropsData> = ({
 
   return (
     <>
-      <IonList>
+      <IonList style={{ marginTop: `${headerElHeight}px` }}>
         <form onSubmit={formik.handleSubmit}>
           <IonItem>
             <IonLabel position="stacked">Source</IonLabel>
