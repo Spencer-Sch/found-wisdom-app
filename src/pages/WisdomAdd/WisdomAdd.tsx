@@ -113,7 +113,7 @@ const WisdomAdd: React.FC = () => {
             className="ion-text-uppercase"
             routerDirection="back"
             onClick={() => {
-              history.push('/');
+              history.replace('/');
             }}
           >
             cancel
