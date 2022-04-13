@@ -107,6 +107,7 @@ const WisdomView: React.FC<PropsData> = ({
               expand="block"
               color="primary"
               routerLink="/"
+              routerDirection="back"
             >
               <IonIcon color="primary" slot="icon-only" icon={home} />
             </IonButton>
