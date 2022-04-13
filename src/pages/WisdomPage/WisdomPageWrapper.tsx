@@ -17,6 +17,7 @@ const WisdomPageWrapper: React.FC = () => {
   useEffect(() => {
     // console.log('WisdomPageWrapper useEffect running...');
 
+    // Is this if check necessary? This route is already being wrapped by authGuard.
     if (!currentUser) {
       // improve error handeling!!!
       console.error(
@@ -51,7 +52,7 @@ const WisdomPageWrapper: React.FC = () => {
       isOpen={true}
       spinner="lines-sharp"
       cssClass={styles.my_custom_spinner}
-      message="WisdomPageWrapper -> loading WisdomPage..."
+      message="WisdomPageWrapper -> loading wisdom..."
     />
   );
 };
