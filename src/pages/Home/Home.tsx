@@ -19,11 +19,13 @@ import { useAuth } from '../../contexts/AuthContext';
 import { fetchUserData, fetchWisdomsById } from '../../actions/firebaseActions';
 
 import styles from './home.module.css';
+import { useUtility } from '../../contexts/UtilityContext';
 
 const Home: React.FC = () => {
   const [storedWisdoms, setStoredWisdoms] = useState<WisdomData[] | null>(null);
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
+  const { didDelete, setDidDelete } = useUtility();
 
   const history = useHistory();
 
@@ -34,6 +36,10 @@ const Home: React.FC = () => {
     if (!currentUser) {
       console.error('from useEffect in Home: currentUser is null!');
       return;
+    }
+
+    if (didDelete) {
+      setStoredWisdoms(null);
     }
 
     if (!storedWisdoms) {
@@ -47,9 +53,12 @@ const Home: React.FC = () => {
       const userWisdoms = await fetchWisdomsById(defaultCollection);
 
       setStoredWisdoms(userWisdoms);
+      setDidDelete!(false);
       setLoading(false);
     }
-  }, [storedWisdoms, currentUser]);
+
+    return console.log('unmounting Home...');
+  }, [storedWisdoms, currentUser, didDelete]);
 
   return (
     <IonPage>

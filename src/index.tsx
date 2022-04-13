@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Routes from './routes';
 
 import { AuthProvider } from './contexts/AuthContext';
+import { UtilityProvider } from './contexts/UtilityContext';
 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
@@ -10,7 +11,9 @@ import reportWebVitals from './reportWebVitals';
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <Routes />
+      <UtilityProvider>
+        <Routes />
+      </UtilityProvider>
     </AuthProvider>
   );
 };

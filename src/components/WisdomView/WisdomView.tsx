@@ -20,6 +20,7 @@ import { WisdomData } from '../../models/models';
 import { useAuth } from '../../contexts/AuthContext';
 
 import styles from './WisdomView.module.css';
+import { useUtility } from '../../contexts/UtilityContext';
 
 interface PropsData {
   currentWisdom: WisdomData;
@@ -38,14 +39,16 @@ const WisdomView: React.FC<PropsData> = ({
   const username = currentUser!.displayName!;
   const history = useHistory();
   const [loading, setLoading] = useState(false);
+  const { setDidDelete } = useUtility();
 
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
   const screenAvailHeight = window.screen.availHeight;
 
   const handleDelete = async () => {
     setLoading(true);
-    setShowDeleteModal(false);
     await deleteWisdomFromFirestore(username, currentWisdom.id);
+    setShowDeleteModal(false);
+    setDidDelete!(true);
     setLoading(false);
     history.replace('/');
   };
