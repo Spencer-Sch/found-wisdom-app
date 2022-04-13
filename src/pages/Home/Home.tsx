@@ -60,7 +60,7 @@ const Home: React.FC = () => {
             color="secondary"
             routerDirection="forward"
             onClick={() => {
-              history.replace('/wisdom/add');
+              history.replace('/add');
             }}
           >
             <IonIcon icon={add} />
