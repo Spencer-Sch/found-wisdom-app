@@ -26,20 +26,13 @@ const Header: React.FC = () => {
   const history = useHistory();
 
   const logoutHandler = async () => {
-    await menuController.close();
-    history.replace('/sign_in');
-    setRenderHome!(false);
-    await signOutUser!();
-    // IMPROVED ERROR HANDLING!
-    // TRY / CATCH ???
-    // signOutUser!()
-    //   .then(() => {
-    //     setRenderHome!(false);
-    //     history.replace('/sign_in');
-    //   })
-    //   .catch((error) => {
-    //     console.log('log out: ', error);
-    //   });
+    try {
+      await menuController.close();
+      await signOutUser!();
+    } catch (e) {
+      // IMPROVE ERROR HANDLING!
+      console.error(e);
+    }
   };
 
   return (
