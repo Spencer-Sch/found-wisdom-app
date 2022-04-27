@@ -51,10 +51,14 @@ export const AuthProvider: React.FC = ({ children }) => {
       // photoURL: 'https://example.com/jane-q-user/profile.jpg',
     })
       .then(() => {
+        // global-store steps:
+        // instead of using the renderHome gate to trigger the useEffect in Home.tsx
+        // maybe call a function here (dispatch an action?) that triggers the request to firebase
+        // and stores the returned data in the global-store?
         setRenderHome(true);
       })
       .catch((error) => {
-        // better error handeling!!!
+        // TODO: better error handeling!!!
         console.error('AuthContext/updateUserProfile error: ', error);
       });
   };
@@ -71,6 +75,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       if (user?.displayName) {
+        // global-store steps:
+        // instead of using the renderHome gate to trigger the useEffect in Home.tsx
+        // maybe call a function here (dispatch an action?) that triggers the request to firebase
+        // and stores the returned data in the global-store?
         setRenderHome(true);
       }
       setLoading(false);

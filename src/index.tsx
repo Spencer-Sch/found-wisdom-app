@@ -2,11 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Routes from './routes';
 
-import { AuthProvider } from './contexts/AuthContext';
-import { UtilityProvider } from './contexts/UtilityContext';
-
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+
+import { AuthProvider } from './contexts/AuthContext';
+import { UtilityProvider } from './contexts/UtilityContext';
+import { configureDataStore } from './global-store/data-store';
+
+// global-state steps:
+// CODE SKETCH:
+// configureDataStore();
 
 const App: React.FC = () => {
   return (
