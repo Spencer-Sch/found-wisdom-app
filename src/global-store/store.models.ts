@@ -7,7 +7,11 @@ export interface GlobalState {
 
 export interface UserActions {
   FETCH_WISDOM_DATA: (
-    curState: GlobalState,
+    curState: {} | GlobalState,
     currentUser: FirebaseUser | null
-  ) => WisdomObj[];
+  ) => void;
+  // FETCH_WISDOM_DATA: (
+  //   curState: GlobalState,
+  //   currentUser: FirebaseUser | null
+  // ) => WisdomObj[];
 }
