@@ -7,18 +7,16 @@ import reportWebVitals from './reportWebVitals';
 
 import { AuthProvider } from './contexts/AuthContext';
 import { UtilityProvider } from './contexts/UtilityContext';
-import { configureDataStore } from './global-store/data-store';
-
-// global-state steps:
-// CODE SKETCH:
-// configureDataStore();
+import { WisdomStoreProvider } from './contexts/WisdomStoreContext';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <UtilityProvider>
-        <Routes />
-      </UtilityProvider>
+      <WisdomStoreProvider>
+        <UtilityProvider>
+          <Routes />
+        </UtilityProvider>
+      </WisdomStoreProvider>
     </AuthProvider>
   );
 };

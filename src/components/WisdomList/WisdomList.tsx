@@ -7,14 +7,25 @@ import WisdomCard from '../WisdomCard/WisdomCard';
 import styles from './WisdomList.module.css';
 
 import { WisdomData } from '../../models/models';
+import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 
-interface PropsData {
-  storedWisdoms: WisdomData[] | null;
-}
+///////////////////////////////
+// old code
+// interface PropsData {
+//   storedWisdoms: WisdomData[] | null;
+// }
 
-const WisdomList: React.FC<PropsData> = ({ storedWisdoms }) => {
-  if (!storedWisdoms) {
+// const WisdomList: React.FC<PropsData> = ({ storedWisdoms }) => {
+///////////////////////////////
+const WisdomList: React.FC = () => {
+  const { userWisdoms } = useWisdomStore();
+  console.log('userWisdoms in WisdomList', userWisdoms);
+  let storedWisdoms: [] | WisdomData[];
+
+  if (!userWisdoms) {
     storedWisdoms = [];
+  } else {
+    storedWisdoms = userWisdoms;
   }
 
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
