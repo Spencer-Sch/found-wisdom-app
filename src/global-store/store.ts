@@ -4,12 +4,19 @@ import { UserActions, GlobalState } from './store.models';
 
 import { actionsSource } from './data-store';
 
+///////////////////
+// TYPES
+///////////////////
+
 type Dispatch = (actionIdentifier: any, payload: any) => void;
 type UseStoreHook = (
   shouldListen?: boolean | undefined
-) => [{} | GlobalState, Dispatch];
+) => [GlobalState, Dispatch];
 
-let globalState: {} | GlobalState = {};
+// let globalState: {} | GlobalState = {};
+let globalState: GlobalState = {
+  storedWisdoms: null,
+};
 let listeners: any[] = [];
 // let actions: {} | UserActions = {};
 let actions: UserActions = {
@@ -49,7 +56,7 @@ export const useStore: UseStoreHook = (shouldListen = true) => {
 
     globalState = { ...globalState, ...newState };
 
-    // console.log('globalState is:', globalState);
+    console.log('globalState is:', globalState);
 
     for (const listener of listeners) {
       listener(globalState);

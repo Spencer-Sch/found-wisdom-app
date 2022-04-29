@@ -1,15 +1,15 @@
-import { WisdomObj } from '../models/models';
+import { WisdomObj, WisdomData } from '../models/models';
 import { User as FirebaseUser } from 'firebase/auth';
 
 export interface GlobalState {
-  storedWisdoms: WisdomObj[] | null;
+  storedWisdoms: WisdomData[] | null;
 }
 
 export interface UserActions {
   FETCH_WISDOM_DATA: (
-    curState: {} | GlobalState,
+    curState: GlobalState,
     currentUser: FirebaseUser | null
-  ) => void;
+  ) => GlobalState | undefined;
   // FETCH_WISDOM_DATA: (
   //   curState: GlobalState,
   //   currentUser: FirebaseUser | null
