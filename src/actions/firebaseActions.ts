@@ -17,8 +17,10 @@ import {
   WisdomData,
   WisdomObj,
   UsersCollectionUserObj,
+  AddNewWisdomToFirestore,
 } from '../models/models';
 import {
+  buildNewWisdom,
   filterDeletedItem,
   getNextWisdomId,
 } from '../functions/wisdomFunctions';
@@ -174,6 +176,21 @@ export const addToUserWisdomCollections: AddToUserWisdomCollections = async (
       },
     });
   }
+};
+
+export const addNewWisdomToFirestore: AddNewWisdomToFirestore = async (
+  values,
+  username
+) => {
+  // create and upload new wisdom to wisdomsCollection
+  const newWisdom = buildNewWisdom(values, username);
+  uploadNewWisdom(newWisdom);
+
+  // upload new wisdom to user's wisdomCollections
+  const userData = await fetchUserData(username);
+  const userWisdomCollections = userData.wisdomCollections;
+  const wisdomId = newWisdom.wisdomData.id;
+  addToUserWisdomCollections(username, wisdomId, userWisdomCollections);
 };
 
 export const removeFromUserWisdomCollections: RemoveFromUserWisdomCollections =

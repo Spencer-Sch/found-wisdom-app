@@ -25,6 +25,7 @@ import {
   uploadNewWisdom,
   fetchUserData,
   addToUserWisdomCollections,
+  addNewWisdomToFirestore,
 } from '../../actions/firebaseActions';
 
 const WisdomAdd: React.FC = () => {
@@ -52,18 +53,20 @@ const WisdomAdd: React.FC = () => {
     },
   });
 
-  const addNewWisdom: AddNewWisdom = async (values) => {
-    // create and upload new wisdom to wisdomsCollection
-    const username = currentUser!.displayName!;
-    const userData = await fetchUserData(username);
-    const newWisdom = buildNewWisdom(values, username);
-    uploadNewWisdom(newWisdom);
+  // old caode
+  // TODO: move to firebaseActions.ts ???
+  // const addNewWisdomToDB: AddNewWisdomToDB = async (values) => {
+  //   // create and upload new wisdom to wisdomsCollection
+  //   const username = currentUser!.displayName!;
+  //   const newWisdom = buildNewWisdom(values, username);
+  //   uploadNewWisdom(newWisdom);
 
-    // upload new wisdom to user's wisdomCollections
-    const userWisdomCollections = userData.wisdomCollections;
-    const wisdomId = newWisdom.wisdomData.id;
-    addToUserWisdomCollections(username, wisdomId, userWisdomCollections);
-  };
+  //   // upload new wisdom to user's wisdomCollections
+  //   const userData = await fetchUserData(username);
+  //   const userWisdomCollections = userData.wisdomCollections;
+  //   const wisdomId = newWisdom.wisdomData.id;
+  //   addToUserWisdomCollections(username, wisdomId, userWisdomCollections);
+  // };
 
   return (
     <IonPage>
