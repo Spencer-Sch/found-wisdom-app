@@ -17,9 +17,13 @@ import styles from './wisdomEdit.module.css';
 
 import { WisdomData } from '../../models/models';
 
-import { handleEdit } from '../../functions/wisdomFunctions';
+import {
+  handleEdit,
+  updateEditedWisdomInWisdomStore,
+} from '../../functions/wisdomFunctions';
 
 import { uploadEditedWisdom } from '../../actions/firebaseActions';
+import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 
 interface PropsData {
   currentWisdom: WisdomData;
@@ -34,6 +38,8 @@ const WisdomEdit: React.FC<PropsData> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const { source, text } = currentWisdom;
+
+  const { userWisdoms, setUserWisdoms } = useWisdomStore();
 
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
 
@@ -50,6 +56,12 @@ const WisdomEdit: React.FC<PropsData> = ({
       setLoading(true);
       const editedWisdom = handleEdit(values, currentWisdom);
       await uploadEditedWisdom(editedWisdom);
+      // update WisdomStoreContext with editedWisdom
+      updateEditedWisdomInWisdomStore(
+        editedWisdom,
+        userWisdoms,
+        setUserWisdoms!
+      );
       setCurrentWisdom(editedWisdom);
       setLoading(false);
       setShowEdit(false);

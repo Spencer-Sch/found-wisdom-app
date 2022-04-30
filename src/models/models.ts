@@ -108,3 +108,9 @@ export type AddNewWisdomToContext = (
   userWisdoms: WisdomData[] | null,
   setUserWisdoms: React.Dispatch<React.SetStateAction<WisdomData[] | [] | null>>
 ) => void;
+
+export type UpdateEditedWisdomInWisdomStore = (
+  editedWisdom: WisdomData,
+  userWisdoms: WisdomData[] | null,
+  setUserWisdoms: React.Dispatch<React.SetStateAction<WisdomData[] | [] | null>>
+) => void;

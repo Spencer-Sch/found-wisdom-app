@@ -3,6 +3,7 @@ import {
   FilterDeletedItem,
   GetNextWisdomId,
   HandleEdit,
+  UpdateEditedWisdomInWisdomStore,
 } from '../models/models';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -75,3 +76,14 @@ export const addNewWisdomToContext: AddNewWisdomToContext = (
   const newWisdom = buildNewWisdom(values, username);
   setUserWisdoms([...userWisdoms!, newWisdom.wisdomData]);
 };
+
+export const updateEditedWisdomInWisdomStore: UpdateEditedWisdomInWisdomStore =
+  (editedWisdom, userWisdoms, setUserWisdoms) => {
+    userWisdoms!.forEach((item, idx) => {
+      if (item.id === editedWisdom.id) {
+        let userWisdomsCopy = [...userWisdoms!];
+        userWisdomsCopy[idx] = { ...editedWisdom };
+        setUserWisdoms(userWisdomsCopy);
+      }
+    });
+  };
