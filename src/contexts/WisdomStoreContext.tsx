@@ -34,9 +34,9 @@ export const WisdomStoreProvider: React.FC = ({ children }) => {
     console.log('Fetching Wisdom Data');
     const userData = await fetchUserData(currentUser!.displayName!);
     const defaultCollection: string[] = userData.wisdomCollections.default;
-    const userWisdoms = await fetchWisdomsById(defaultCollection);
+    const wisdomsArr = await fetchWisdomsById(defaultCollection);
 
-    setUserWisdoms(userWisdoms);
+    setUserWisdoms(wisdomsArr);
   };
 
   const value = {
