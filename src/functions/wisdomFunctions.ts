@@ -8,7 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { format } from 'date-fns';
 
-import { WisdomObj, BuildNewWisdom } from '../models/models';
+import {
+  WisdomObj,
+  BuildNewWisdom,
+  FindSelectedWisdom,
+} from '../models/models';
 
 export const getNextWisdomId: GetNextWisdomId = (wisdomId, userWisdoms) => {
   let nextWisdomId = '';
@@ -49,4 +53,14 @@ export const buildNewWisdom: BuildNewWisdom = (values, username) => {
     },
   };
   return newWisdom;
+};
+
+export const findSelectedWisdom: FindSelectedWisdom = (
+  userWisdoms,
+  wisdomid
+) => {
+  const matchingWisdom = userWisdoms!.filter((item) => item.id === wisdomid);
+  console.log('from findSelectedWisdom - matchingWisdom:', matchingWisdom);
+
+  return matchingWisdom[0];
 };
