@@ -1,4 +1,5 @@
 import {
+  AddNewWisdomToContext,
   FilterDeletedItem,
   GetNextWisdomId,
   HandleEdit,
@@ -63,4 +64,14 @@ export const findSelectedWisdom: FindSelectedWisdom = (
   console.log('from findSelectedWisdom - matchingWisdom:', matchingWisdom);
 
   return matchingWisdom[0];
+};
+
+export const addNewWisdomToContext: AddNewWisdomToContext = (
+  values,
+  username,
+  userWisdoms,
+  setUserWisdoms
+) => {
+  const newWisdom = buildNewWisdom(values, username);
+  setUserWisdoms([...userWisdoms!, newWisdom.wisdomData]);
 };

@@ -18,8 +18,11 @@ import {
 
 import styles from './wisdomAdd.module.css';
 
-import { AddNewWisdom } from '../../models/models';
-import { buildNewWisdom } from '../../functions/wisdomFunctions';
+// import { AddNewWisdomToDB } from '../../models/models';
+import {
+  addNewWisdomToContext,
+  buildNewWisdom,
+} from '../../functions/wisdomFunctions';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   uploadNewWisdom,
@@ -27,6 +30,7 @@ import {
   addToUserWisdomCollections,
   addNewWisdomToFirestore,
 } from '../../actions/firebaseActions';
+import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 
 const WisdomAdd: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -35,6 +39,8 @@ const WisdomAdd: React.FC = () => {
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
 
   const { currentUser } = useAuth();
+
+  const { userWisdoms, setUserWisdoms } = useWisdomStore();
 
   const formik = useFormik({
     initialValues: {
@@ -47,7 +53,11 @@ const WisdomAdd: React.FC = () => {
     }),
     onSubmit: async (values) => {
       setLoading(true);
-      await addNewWisdom(values);
+      const username = currentUser!.displayName!; // new code
+      // await addNewWisdom(values); // old code
+      // await addNewWisdomToDB(values); // new local call
+      await addNewWisdomToFirestore(values, username); // new code / new imported call
+      addNewWisdomToContext(values, username, userWisdoms, setUserWisdoms!); // new code
       setLoading(false);
       history.replace('/');
     },

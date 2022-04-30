@@ -101,3 +101,10 @@ export type FindSelectedWisdom = (
   userWisdoms: WisdomData[] | null,
   wisdomid: string
 ) => WisdomData | null;
+
+export type AddNewWisdomToContext = (
+  values: FormikValues,
+  username: string,
+  userWisdoms: WisdomData[] | null,
+  setUserWisdoms: React.Dispatch<React.SetStateAction<WisdomData[] | [] | null>>
+) => void;
