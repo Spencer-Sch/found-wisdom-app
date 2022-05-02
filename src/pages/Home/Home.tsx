@@ -12,14 +12,14 @@ import {
 
 import { add } from 'ionicons/icons';
 
-import { WisdomData } from '../../models/models';
+// import { WisdomData } from '../../models/models';
 
 import WisdomList from '../../components/WisdomList/WisdomList';
 import { useAuth } from '../../contexts/AuthContext';
-import { fetchUserData, fetchWisdomsById } from '../../actions/firebaseActions';
+// import { fetchUserData, fetchWisdomsById } from '../../actions/firebaseActions';
 
 import styles from './home.module.css';
-import { useUtility } from '../../contexts/UtilityContext';
+// import { useUtility } from '../../contexts/UtilityContext';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 
 const Home: React.FC = () => {
@@ -27,8 +27,10 @@ const Home: React.FC = () => {
   // const [storedWisdoms, setStoredWisdoms] = useState<WisdomData[] | null>(null);
   // const [loading, setLoading] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(false);
+  const [reloadCount, setReloadCount] = useState(0);
   const { currentUser } = useAuth();
-  const { didDelete, setDidDelete } = useUtility();
+  // const { didDelete, setDidDelete } = useUtility();
 
   const { userWisdoms, fetchWisdomData } = useWisdomStore();
 
@@ -39,7 +41,25 @@ const Home: React.FC = () => {
   useEffect(() => {
     console.log('Home useEffect...');
     if (!currentUser) {
+      // TODO: better error handeling
       console.error('from useEffect in Home: currentUser is null!');
+      return;
+    }
+
+    if (reloadCount > 10) {
+      // TODO: change from console.error to an on screen error message and kick the user back to the login screen.
+      console.error(
+        'Something went wrong. Timed out waiting for displayName to update. Please reload the application.'
+      );
+      return;
+    }
+
+    if (!currentUser.displayName) {
+      // TODO: redundant checks on the status of displayName between here and inside fetchWisdomData in WisdomStoreContext?
+      setTimeout(() => {
+        setReload((prev) => !prev);
+        setReloadCount((prev) => prev + 1);
+      }, 1000);
       return;
     }
 
@@ -50,6 +70,7 @@ const Home: React.FC = () => {
     }
 
     if (userWisdoms) {
+      // TODO: turn into an else on the above if statement?
       setLoading(false);
     }
 
@@ -80,13 +101,13 @@ const Home: React.FC = () => {
     // }
 
     return console.log('unmounting Home...');
-  }, [currentUser, fetchWisdomData, userWisdoms]);
+  }, [currentUser, reload, reloadCount, fetchWisdomData, userWisdoms]);
   // }, [storedWisdoms, currentUser, didDelete]);
 
   return (
     <IonPage>
       <IonContent id="page-content" fullscreen>
-        <WisdomList />
+        <WisdomList loading={loading} />
         {/* /////////////////////// */}
         {/* old code */}
         {/* <WisdomList storedWisdoms={storedWisdoms} />{' '} */}
