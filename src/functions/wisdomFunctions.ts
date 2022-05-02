@@ -1,5 +1,6 @@
 import {
   AddNewWisdomToContext,
+  DeleteWisdomFromWisdomStore,
   FilterDeletedItem,
   GetNextWisdomId,
   HandleEdit,
@@ -59,9 +60,9 @@ export const buildNewWisdom: BuildNewWisdom = (values, username) => {
 
 export const findSelectedWisdom: FindSelectedWisdom = (
   userWisdoms,
-  wisdomid
+  wisdomId
 ) => {
-  const matchingWisdom = userWisdoms!.filter((item) => item.id === wisdomid);
+  const matchingWisdom = userWisdoms!.filter((item) => item.id === wisdomId);
   console.log('from findSelectedWisdom - matchingWisdom:', matchingWisdom);
 
   return matchingWisdom[0];
@@ -87,3 +88,12 @@ export const updateEditedWisdomInWisdomStore: UpdateEditedWisdomInWisdomStore =
       }
     });
   };
+
+export const deleteWisdomFromWisdomStore: DeleteWisdomFromWisdomStore = (
+  wisdomId,
+  userWisdoms,
+  setUserWisdoms
+) => {
+  const filteredWisdoms = userWisdoms!.filter((item) => item.id !== wisdomId);
+  setUserWisdoms(filteredWisdoms);
+};

@@ -114,3 +114,9 @@ export type UpdateEditedWisdomInWisdomStore = (
   userWisdoms: WisdomData[] | null,
   setUserWisdoms: React.Dispatch<React.SetStateAction<WisdomData[] | [] | null>>
 ) => void;
+
+export type DeleteWisdomFromWisdomStore = (
+  wisdomId: string,
+  userWisdoms: WisdomData[] | null,
+  setUserWisdoms: React.Dispatch<React.SetStateAction<WisdomData[] | [] | null>>
+) => void;
