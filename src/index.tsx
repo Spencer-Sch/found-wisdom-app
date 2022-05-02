@@ -5,19 +5,13 @@ import Routes from './routes';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
-import { AuthProvider } from './contexts/AuthContext';
-import { UtilityProvider } from './contexts/UtilityContext';
-import { WisdomStoreProvider } from './contexts/WisdomStoreContext';
+import MyProviders from './components/MyProviders/MyProviders';
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <WisdomStoreProvider>
-        <UtilityProvider>
-          <Routes />
-        </UtilityProvider>
-      </WisdomStoreProvider>
-    </AuthProvider>
+    <MyProviders>
+      <Routes />
+    </MyProviders>
   );
 };
 
