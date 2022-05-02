@@ -20,17 +20,20 @@ import { useAuth } from '../../contexts/AuthContext';
 
 import styles from './header.module.css';
 import { menuController } from '@ionic/core/components';
+import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 
 const Header: React.FC = () => {
   const { signOutUser, setRenderHome } = useAuth();
+  const { setUserWisdoms } = useWisdomStore();
   const history = useHistory();
 
   const logoutHandler = async () => {
     try {
       await menuController.close();
       await signOutUser!();
+      setUserWisdoms!(null);
     } catch (e) {
-      // IMPROVE ERROR HANDLING!
+      // TODO: IMPROVE ERROR HANDLING!
       console.error(e);
     }
   };
