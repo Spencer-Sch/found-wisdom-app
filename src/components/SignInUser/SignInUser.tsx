@@ -7,7 +7,7 @@ import {
   IonLoading,
   IonText,
 } from '@ionic/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useFormik } from 'formik';
@@ -25,7 +25,15 @@ interface PropsData {
 const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  const { signIn, setRenderHome } = useAuth();
+  const { signIn, renderHome, setRenderHome } = useAuth();
+
+  console.log('SignInUser rendering...');
+  useEffect(() => {
+    if (renderHome) {
+      console.log('inside SignInUser useEffect');
+      setRenderHome!(false);
+    }
+  });
 
   const formik = useFormik({
     initialValues: {
