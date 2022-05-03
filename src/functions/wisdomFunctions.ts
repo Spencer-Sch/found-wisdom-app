@@ -63,7 +63,6 @@ export const findSelectedWisdom: FindSelectedWisdom = (
   wisdomId
 ) => {
   const matchingWisdom = userWisdoms!.filter((item) => item.id === wisdomId);
-  console.log('from findSelectedWisdom - matchingWisdom:', matchingWisdom);
 
   return matchingWisdom[0];
 };
