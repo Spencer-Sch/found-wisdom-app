@@ -14,24 +14,27 @@ import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 const WisdomPageWrapper: React.FC = () => {
   const { wisdomid }: { wisdomid: string } = useParams();
   const { currentUser } = useAuth();
-  const { userWisdoms } = useWisdomStore();
+  const { userWisdoms, fetchWisdomData } = useWisdomStore();
   const [currentWisdom, setCurrentWisdom] = useState<WisdomData | null>(null);
 
   useEffect(() => {
     // console.log('WisdomPageWrapper useEffect running...');
 
     // Is this if check necessary? This route is already being wrapped by authGuard.
-    if (!currentUser || !userWisdoms) {
+    if (!currentUser) {
       // TODO: improve error handeling!!!
       console.error(
-        'from useEffect in WisdomPageWrapper: currentUser is null or userWisdoms is null!'
+        'from useEffect in WisdomPageWrapper: currentUser is null!'
       );
       return;
     }
 
     /////////////////////////////////////
     // New Code
-    if (!currentWisdom) {
+    if (!userWisdoms) {
+      fetchWisdomData!(currentUser);
+    }
+    if (userWisdoms && !currentWisdom) {
       // Searches for selected wisdom in local WisdomStoreContext
       const returnedWisdom = findSelectedWisdom(userWisdoms, wisdomid);
       setCurrentWisdom(returnedWisdom);
@@ -47,7 +50,7 @@ const WisdomPageWrapper: React.FC = () => {
     //   const returnedWisdom = await fetchCurrentWisdom(wisdomid);
     //   setCurrentWisdom(returnedWisdom);
     // }
-  }, [currentUser, currentWisdom, wisdomid, userWisdoms]);
+  }, [currentUser, currentWisdom, wisdomid, userWisdoms, fetchWisdomData]);
   // }, [currentUser, currentWisdom, wisdomid]);
 
   const passingData = currentWisdom
