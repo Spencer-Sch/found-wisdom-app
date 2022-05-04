@@ -230,7 +230,6 @@ export const deleteWisdomFromFirestore: DeleteWisdomFromFirestore = async (
   username,
   wisdomId
 ) => {
-  // console.log('deleteing wisdom...');
   const { wisdomCollections } = await fetchUserData(username);
   const userNextWisdomToPush = wisdomCollections.nextWisdomToPush;
   const userWisdoms = wisdomCollections.default;

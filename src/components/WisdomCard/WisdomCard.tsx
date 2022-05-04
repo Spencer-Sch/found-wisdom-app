@@ -1,5 +1,5 @@
-import { IonCard, IonCardContent, IonItem } from '@ionic/react';
 import React from 'react';
+import { IonCard, IonCardContent, IonItem } from '@ionic/react';
 
 import styles from './WisdomCard.module.css';
 

@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   IonButton,
   IonGrid,
@@ -7,7 +8,6 @@ import {
   IonLoading,
   IonText,
 } from '@ionic/react';
-import React, { useState } from 'react';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -62,7 +62,7 @@ const RegisterNewUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
         updateUserProfile!(username);
       })
       .catch((e) => {
-        console.log('register user: ', e);
+        console.error('register user: ', e);
       });
   };
 

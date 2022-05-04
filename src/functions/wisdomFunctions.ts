@@ -1,20 +1,16 @@
-import {
-  AddNewWisdomToContext,
-  DeleteWisdomFromWisdomStore,
-  FilterDeletedItem,
-  GetNextWisdomId,
-  HandleEdit,
-  UpdateEditedWisdomInWisdomStore,
-} from '../models/models';
-
 import { v4 as uuidv4 } from 'uuid';
-
 import { format } from 'date-fns';
 
 import {
   WisdomObj,
   BuildNewWisdom,
   FindSelectedWisdom,
+  AddNewWisdomToContext,
+  DeleteWisdomFromWisdomStore,
+  FilterDeletedItem,
+  GetNextWisdomId,
+  HandleEdit,
+  UpdateEditedWisdomInWisdomStore,
 } from '../models/models';
 
 export const getNextWisdomId: GetNextWisdomId = (wisdomId, userWisdoms) => {

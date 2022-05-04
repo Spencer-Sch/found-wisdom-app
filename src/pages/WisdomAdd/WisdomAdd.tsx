@@ -1,9 +1,5 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
 import {
   IonButton,
   IonContent,
@@ -16,31 +12,23 @@ import {
   IonTextarea,
 } from '@ionic/react';
 
-import styles from './wisdomAdd.module.css';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
-// import { AddNewWisdomToDB } from '../../models/models';
-import {
-  addNewWisdomToContext,
-  buildNewWisdom,
-} from '../../functions/wisdomFunctions';
+import { addNewWisdomToContext } from '../../functions/wisdomFunctions';
+import { addNewWisdomToFirestore } from '../../actions/firebaseActions';
 import { useAuth } from '../../contexts/AuthContext';
-import {
-  uploadNewWisdom,
-  fetchUserData,
-  addToUserWisdomCollections,
-  addNewWisdomToFirestore,
-} from '../../actions/firebaseActions';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';
+
+import styles from './wisdomAdd.module.css';
 
 const WisdomAdd: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const { userWisdoms, setUserWisdoms } = useWisdomStore();
+  const { currentUser } = useAuth();
   const history = useHistory();
 
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
-
-  const { currentUser } = useAuth();
-
-  const { userWisdoms, setUserWisdoms } = useWisdomStore();
 
   const formik = useFormik({
     initialValues: {
@@ -53,30 +41,13 @@ const WisdomAdd: React.FC = () => {
     }),
     onSubmit: async (values) => {
       setLoading(true);
-      const username = currentUser!.displayName!; // new code
-      // await addNewWisdom(values); // old code
-      // await addNewWisdomToDB(values); // new local call
-      await addNewWisdomToFirestore(values, username); // new code / new imported call
-      addNewWisdomToContext(values, username, userWisdoms, setUserWisdoms!); // new code
+      const username = currentUser!.displayName!;
+      await addNewWisdomToFirestore(values, username);
+      addNewWisdomToContext(values, username, userWisdoms, setUserWisdoms!);
       setLoading(false);
       history.replace('/');
     },
   });
-
-  // old caode
-  // TODO: move to firebaseActions.ts ???
-  // const addNewWisdomToDB: AddNewWisdomToDB = async (values) => {
-  //   // create and upload new wisdom to wisdomsCollection
-  //   const username = currentUser!.displayName!;
-  //   const newWisdom = buildNewWisdom(values, username);
-  //   uploadNewWisdom(newWisdom);
-
-  //   // upload new wisdom to user's wisdomCollections
-  //   const userData = await fetchUserData(username);
-  //   const userWisdomCollections = userData.wisdomCollections;
-  //   const wisdomId = newWisdom.wisdomData.id;
-  //   addToUserWisdomCollections(username, wisdomId, userWisdomCollections);
-  // };
 
   return (
     <IonPage>

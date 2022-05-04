@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import {
   IonButton,
   IonCol,
@@ -11,17 +10,16 @@ import {
   IonRow,
   IonText,
 } from '@ionic/react';
-
 import { home } from 'ionicons/icons';
 
-import { deleteWisdomFromFirestore } from '../../actions/firebaseActions';
 import WisdomPageModal from '../../components/WisdomPageModal/WisdomPageModal';
-import { WisdomData } from '../../models/models';
+import { deleteWisdomFromWisdomStore } from '../../functions/wisdomFunctions';
+import { deleteWisdomFromFirestore } from '../../actions/firebaseActions';
 import { useAuth } from '../../contexts/AuthContext';
+import { useWisdomStore } from '../../contexts/WisdomStoreContext';
+import { WisdomData } from '../../models/models';
 
 import styles from './WisdomView.module.css';
-import { useWisdomStore } from '../../contexts/WisdomStoreContext';
-import { deleteWisdomFromWisdomStore } from '../../functions/wisdomFunctions';
 
 interface PropsData {
   currentWisdom: WisdomData;
@@ -37,10 +35,11 @@ const WisdomView: React.FC<PropsData> = ({
   showDeleteModal,
 }) => {
   const { currentUser } = useAuth();
-  const username = currentUser!.displayName!;
-  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const { userWisdoms, setUserWisdoms } = useWisdomStore();
+  const history = useHistory();
+
+  const username = currentUser!.displayName!;
 
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
   const screenAvailHeight = window.screen.availHeight;
@@ -118,14 +117,12 @@ const WisdomView: React.FC<PropsData> = ({
           </IonCol>
         </IonRow>
       </IonGrid>
-      {/* confirm delete modal */}
       {showDeleteModal && (
         <WisdomPageModal
           handleDelete={handleDelete}
           setShowDeleteModal={setShowDeleteModal}
         />
       )}
-      {/* Loading Spinner */}
       <IonLoading
         isOpen={loading}
         spinner="lines-sharp"

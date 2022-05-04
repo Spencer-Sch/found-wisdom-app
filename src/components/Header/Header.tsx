@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-
 import {
   IonButtons,
   IonContent,
@@ -15,15 +14,15 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { home, person, cog, key } from 'ionicons/icons';
+import { menuController } from '@ionic/core/components';
 
 import { useAuth } from '../../contexts/AuthContext';
-
-import styles from './header.module.css';
-import { menuController } from '@ionic/core/components';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 
+import styles from './header.module.css';
+
 const Header: React.FC = () => {
-  const { signOutUser, setRenderHome } = useAuth();
+  const { signOutUser } = useAuth();
   const { setUserWisdoms } = useWisdomStore();
   const history = useHistory();
 
@@ -41,7 +40,6 @@ const Header: React.FC = () => {
   return (
     <>
       <IonMenu side="start" contentId="ion-router-outlet">
-        {/* <IonMenu side="start" contentId="page-content"> */}
         <IonHeader>
           <IonToolbar>
             <IonTitle>Menu</IonTitle>
@@ -52,13 +50,10 @@ const Header: React.FC = () => {
             <IonItem
               button={true}
               onClick={async () => {
-                // flip these calls for different visual order
                 await menuController.close();
-                setRenderHome!(true);
                 history.replace('/');
               }}
             >
-              {/* <IonItem button={true} routerLink="/"> */}
               <IonIcon slot="start" icon={home} />
               <IonLabel>Home</IonLabel>
             </IonItem>

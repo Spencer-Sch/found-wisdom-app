@@ -77,7 +77,6 @@ export type CreateNewUserObj = (
   password: string
 ) => UsersCollectionUserObj;
 
-// export type AddNewWisdomToDB = (values: FormikValues) => Promise<void>;
 export type AddNewWisdomToFirestore = (
   values: FormikValues,
   username: string

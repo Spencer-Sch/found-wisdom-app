@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   IonButton,
   IonGrid,
@@ -7,8 +9,6 @@ import {
   IonLoading,
   IonText,
 } from '@ionic/react';
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -24,13 +24,11 @@ interface PropsData {
 
 const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
   const { signIn, renderHome, setRenderHome } = useAuth();
+  const history = useHistory();
 
-  console.log('SignInUser rendering...');
   useEffect(() => {
     if (renderHome) {
-      console.log('inside SignInUser useEffect');
       setRenderHome!(false);
     }
   });
@@ -59,7 +57,7 @@ const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
         history.replace('/');
       })
       .catch((error) => {
-        console.log('register user: ', error);
+        console.error('register user: ', error);
       });
   };
 

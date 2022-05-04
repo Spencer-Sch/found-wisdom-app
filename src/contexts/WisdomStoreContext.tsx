@@ -1,10 +1,11 @@
 import React, { useContext, useState, createContext } from 'react';
-import { WisdomData } from '../models/models';
 
 import {
   User as FirebaseUser, // User type from firebase
 } from 'firebase/auth';
+
 import { fetchUserData, fetchWisdomsById } from '../actions/firebaseActions';
+import { WisdomData } from '../models/models';
 
 interface WisdomStoreContextResult {
   setUserWisdoms?: React.Dispatch<
@@ -31,7 +32,6 @@ export const WisdomStoreProvider: React.FC = ({ children }) => {
   );
 
   const fetchWisdomData = async (currentUser: FirebaseUser) => {
-    console.log('Fetching Wisdom Data');
     const userData = await fetchUserData(currentUser!.displayName!);
     const defaultCollection: string[] = userData.wisdomCollections.default;
     const wisdomsArr = await fetchWisdomsById(defaultCollection);

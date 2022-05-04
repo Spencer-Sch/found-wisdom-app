@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
 import {
   IonButton,
   IonInput,
@@ -13,17 +9,18 @@ import {
   IonTextarea,
 } from '@ionic/react';
 
-import styles from './wisdomEdit.module.css';
-
-import { WisdomData } from '../../models/models';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import {
   handleEdit,
   updateEditedWisdomInWisdomStore,
 } from '../../functions/wisdomFunctions';
-
 import { uploadEditedWisdom } from '../../actions/firebaseActions';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';
+import { WisdomData } from '../../models/models';
+
+import styles from './wisdomEdit.module.css';
 
 interface PropsData {
   currentWisdom: WisdomData;
@@ -37,10 +34,9 @@ const WisdomEdit: React.FC<PropsData> = ({
   setCurrentWisdom,
 }) => {
   const [loading, setLoading] = useState(false);
-  const { source, text } = currentWisdom;
-
   const { userWisdoms, setUserWisdoms } = useWisdomStore();
 
+  const { source, text } = currentWisdom;
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
 
   const formik = useFormik({

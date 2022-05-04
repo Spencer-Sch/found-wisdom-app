@@ -1,17 +1,14 @@
 import React from 'react';
-
 import { IonLoading } from '@ionic/react';
 
-import { useAuth } from '../../contexts/AuthContext';
-
 import Home from './Home';
+import { useAuth } from '../../contexts/AuthContext';
 
 import styles from './home.module.css';
 
 const HomeWrapper: React.FC = () => {
   const { renderHome } = useAuth();
 
-  // console.log('HomeWrapper rendering...');
   return renderHome ? (
     <Home />
   ) : (

@@ -1,26 +1,22 @@
-import { IonLoading } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { IonLoading } from '@ionic/react';
 
-import { useAuth } from '../../contexts/AuthContext';
-// import { fetchCurrentWisdom } from '../../actions/firebaseActions';
-import { findSelectedWisdom } from '../../functions/wisdomFunctions';
 import WisdomPage from './WisdomPage';
+import { findSelectedWisdom } from '../../functions/wisdomFunctions';
+import { useAuth } from '../../contexts/AuthContext';
+import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 import { WisdomData } from '../../models/models';
 
 import styles from './wisdomPage.module.css';
-import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 
 const WisdomPageWrapper: React.FC = () => {
-  const { wisdomid }: { wisdomid: string } = useParams();
-  const { currentUser } = useAuth();
-  const { userWisdoms, fetchWisdomData } = useWisdomStore();
   const [currentWisdom, setCurrentWisdom] = useState<WisdomData | null>(null);
+  const { userWisdoms, fetchWisdomData } = useWisdomStore();
+  const { currentUser } = useAuth();
+  const { wisdomid }: { wisdomid: string } = useParams();
 
   useEffect(() => {
-    // console.log('WisdomPageWrapper useEffect running...');
-
-    // Is this if check necessary? This route is already being wrapped by authGuard.
     if (!currentUser) {
       // TODO: improve error handeling!!!
       console.error(
@@ -29,8 +25,6 @@ const WisdomPageWrapper: React.FC = () => {
       return;
     }
 
-    /////////////////////////////////////
-    // New Code
     if (!userWisdoms) {
       fetchWisdomData!(currentUser);
     }
@@ -39,19 +33,7 @@ const WisdomPageWrapper: React.FC = () => {
       const returnedWisdom = findSelectedWisdom(userWisdoms, wisdomid);
       setCurrentWisdom(returnedWisdom);
     }
-    /////////////////////////////////////
-    // Old Code
-    // gate the call to the server
-    // if (!currentWisdom) {
-    //   getSelectedWisdom();
-    // }
-    // searches for selected wisdom on server
-    // async function getSelectedWisdom() {
-    //   const returnedWisdom = await fetchCurrentWisdom(wisdomid);
-    //   setCurrentWisdom(returnedWisdom);
-    // }
   }, [currentUser, currentWisdom, wisdomid, userWisdoms, fetchWisdomData]);
-  // }, [currentUser, currentWisdom, wisdomid]);
 
   const passingData = currentWisdom
     ? {
