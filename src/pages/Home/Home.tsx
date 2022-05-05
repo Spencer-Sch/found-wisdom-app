@@ -60,9 +60,10 @@ const Home: React.FC = () => {
           <IonFabButton
             color="secondary"
             routerDirection="forward"
-            onClick={() => {
-              history.replace('/add');
-            }}
+            // onClick={() => {
+            //   history.replace('/add');
+            // }}
+            routerLink="/add"
           >
             <IonIcon icon={add} />
           </IonFabButton>

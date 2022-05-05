@@ -51,13 +51,22 @@ const Header: React.FC = () => {
               button={true}
               onClick={async () => {
                 await menuController.close();
-                history.replace('/');
+                history.push('/');
               }}
+              // routerLink="/"
+              // routerDirection="back"
             >
               <IonIcon slot="start" icon={home} />
               <IonLabel>Home</IonLabel>
             </IonItem>
-            <IonItem button={true} onClick={() => console.log('Account')}>
+            <IonItem
+              button={true}
+              onClick={async () => {
+                await menuController.close();
+                history.push('/account');
+              }}
+              routerDirection="forward"
+            >
               <IonIcon slot="start" icon={person} />
               <IonLabel>Account</IonLabel>
             </IonItem>
