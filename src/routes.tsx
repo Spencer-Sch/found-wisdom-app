@@ -27,6 +27,7 @@ import AuthGuard from './components/HOC/AuthGuard';
 import SignInOrRegister from './pages/SignInOrRegister';
 import WisdomPageWrapper from './pages/WisdomPage/WisdomPageWrapper';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
+import UserAccountWrapper from './pages/UserAccount/UserAccountWrapper';
 
 import { useAuth } from './contexts/AuthContext';
 
@@ -48,6 +49,7 @@ const Routes: React.FC = () => {
           <Route path="/home">
             <Redirect to="/" />
           </Route>
+          <Route path="/account" component={AuthGuard(UserAccountWrapper)} />
           <Route
             path="/sign_in"
             component={(props: any) => <SignInOrRegister {...props} />}
