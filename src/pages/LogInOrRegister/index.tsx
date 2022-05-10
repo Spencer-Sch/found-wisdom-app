@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { IonContent, IonPage } from '@ionic/react';
 
-import SignInUser from '../../components/SignInUser/SignInUser';
-import RegisterNewUser from '../../components/RegisterNewUser/RegisterNewUser';
+import LogInForm from '../../components/LogInForm/LogInForm';
+import RegisterForm from '../../components/RegisterForm/RegisterForm';
 import { useAuth } from '../../contexts/AuthContext';
 
-import styles from './signInOrRegister.module.css';
+import styles from './logInOrRegister.module.css';
 
-const SignInOrRegister: React.FC = (props: any) => {
+const LogInOrRegister: React.FC = (props: any) => {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const { currentUser } = useAuth();
 
@@ -18,15 +18,12 @@ const SignInOrRegister: React.FC = (props: any) => {
         <IonPage>
           <IonContent>
             {showRegisterForm ? (
-              <RegisterNewUser
+              <RegisterForm
                 {...props}
                 setShowRegisterForm={setShowRegisterForm}
               />
             ) : (
-              <SignInUser
-                {...props}
-                setShowRegisterForm={setShowRegisterForm}
-              />
+              <LogInForm {...props} setShowRegisterForm={setShowRegisterForm} />
             )}
           </IonContent>
         </IonPage>
@@ -37,4 +34,4 @@ const SignInOrRegister: React.FC = (props: any) => {
   );
 };
 
-export default SignInOrRegister;
+export default LogInOrRegister;
