@@ -16,13 +16,13 @@ import { useAuth } from '../../contexts/AuthContext';
 import { addUserToDB } from '../../actions/firebaseActions';
 import { SubmitRegistrationForm } from '../../models/models';
 
-import styles from './registerNewUser.module.css';
+import styles from './registerForm.module.css';
 
 interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
 }
 
-const RegisterNewUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
+const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
   const { registerNewUser, updateUserProfile } = useAuth();
 
@@ -163,7 +163,7 @@ const RegisterNewUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
               className={styles.ss_span}
               onClick={() => setShowRegisterForm(false)}
             >
-              log in here
+              login here
             </span>
           </div>
         </form>
@@ -178,4 +178,4 @@ const RegisterNewUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   );
 };
 
-export default RegisterNewUser;
+export default RegisterForm;
