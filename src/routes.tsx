@@ -24,7 +24,7 @@ import './theme/variables.css';
 import Header from './components/Header/Header';
 import HomeWrapper from './pages/Home/HomeWrapper';
 import AuthGuard from './components/HOC/AuthGuard';
-import SignInOrRegister from './pages/SignInOrRegister';
+import LogInOrRegister from './pages/LogInOrRegister';
 import WisdomPageWrapper from './pages/WisdomPage/WisdomPageWrapper';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
 import UserAccountWrapper from './pages/UserAccount/UserAccountWrapper';
@@ -51,8 +51,8 @@ const Routes: React.FC = () => {
           </Route>
           <Route path="/account" component={AuthGuard(UserAccountWrapper)} />
           <Route
-            path="/sign_in"
-            component={(props: any) => <SignInOrRegister {...props} />}
+            path="/login_register"
+            component={(props: any) => <LogInOrRegister {...props} />}
           />
           <Route exact path="/" component={AuthGuard(HomeWrapper)} />
         </IonRouterOutlet>

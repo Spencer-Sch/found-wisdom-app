@@ -11,7 +11,7 @@ const AuthGuard = (Component: any) => {
       if (currentUser) {
         return <Component {...this.props} />;
       } else {
-        return <Redirect to="/sign_in" />;
+        return <Redirect to="/login_register" />;
       }
     };
 

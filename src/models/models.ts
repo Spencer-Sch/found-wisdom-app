@@ -52,7 +52,7 @@ interface RegisterFormData {
   username: string;
 }
 
-interface SignInFormData {
+interface LogInFormData {
   email: string;
   password: string;
 }
@@ -94,7 +94,7 @@ export type GetNextWisdomId = (
 
 export type SubmitRegistrationForm = (values: RegisterFormData) => void;
 
-export type SubmitSignInForm = (values: SignInFormData) => void;
+export type SubmitLogInForm = (values: LogInFormData) => void;
 
 export type FindSelectedWisdom = (
   userWisdoms: WisdomData[] | null,
