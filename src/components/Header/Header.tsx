@@ -22,14 +22,14 @@ import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 import styles from './header.module.css';
 
 const Header: React.FC = () => {
-  const { signOutUser } = useAuth();
+  const { logOutUser } = useAuth();
   const { setUserWisdoms } = useWisdomStore();
   const history = useHistory();
 
   const logoutHandler = async () => {
     try {
       await menuController.close();
-      await signOutUser!();
+      await logOutUser!();
       setUserWisdoms!(null);
     } catch (e) {
       // TODO: IMPROVE ERROR HANDLING!

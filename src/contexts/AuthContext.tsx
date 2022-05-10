@@ -14,12 +14,12 @@ import { auth } from '../firebase/firebase'; // local firebase.ts
 
 interface AuthContextResult {
   currentUser: FirebaseUser | null;
-  signIn?: (email: string, password: string) => Promise<UserCredential>;
+  logIn?: (email: string, password: string) => Promise<UserCredential>;
   registerNewUser?: (
     email: string,
     password: string
   ) => Promise<UserCredential>;
-  signOutUser?: () => Promise<void>;
+  logOutUser?: () => Promise<void>;
   updateUserProfile?: (username: string) => void;
   setRenderHome?: (value: boolean) => void;
   renderHome: boolean;
@@ -59,11 +59,11 @@ export const AuthProvider: React.FC = ({ children }) => {
       });
   };
 
-  const signIn = (email: string, password: string) => {
+  const logIn = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const signOutUser = () => {
+  const logOutUser = () => {
     return signOut(auth);
   };
 
@@ -81,9 +81,9 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const value = {
     currentUser,
-    signIn,
+    logIn,
     registerNewUser,
-    signOutUser,
+    logOutUser,
     updateUserProfile,
     setRenderHome,
     renderHome,
