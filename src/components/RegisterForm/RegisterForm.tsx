@@ -163,7 +163,7 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
               className={styles.ss_span}
               onClick={() => setShowRegisterForm(false)}
             >
-              login here
+              log in here
             </span>
           </div>
         </form>

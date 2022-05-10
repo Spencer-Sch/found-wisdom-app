@@ -24,7 +24,7 @@ interface PropsData {
 
 const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
-  const { signIn, renderHome, setRenderHome } = useAuth();
+  const { logIn, renderHome, setRenderHome } = useAuth();
   const history = useHistory();
 
   useEffect(() => {
@@ -51,12 +51,12 @@ const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   });
 
   const submitForm: SubmitLogInForm = ({ email, password }) => {
-    signIn!(email, password)
+    logIn!(email, password)
       .then(() => {
         setRenderHome!(true);
         history.replace('/');
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         console.error('register user: ', error);
       });
   };
@@ -115,7 +115,7 @@ const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
             disabled={loading}
             className="ion-text-uppercase"
           >
-            login
+            log in
           </IonButton>
           <div className={`ion-text-center ${styles.ss_div}`}>
             new user?{' '}
@@ -132,7 +132,7 @@ const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
         isOpen={loading}
         spinner="lines-sharp"
         cssClass={styles.my_custom_spinner}
-        message="signing in..."
+        message="logging in..."
       />
     </>
   );
