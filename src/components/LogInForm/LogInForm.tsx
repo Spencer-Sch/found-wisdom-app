@@ -14,15 +14,15 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { useAuth } from '../../contexts/AuthContext';
-import { SubmitSignInForm } from '../../models/models';
+import { SubmitLogInForm } from '../../models/models';
 
-import styles from './signInUser.module.css';
+import styles from './logInForm.module.css';
 
 interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
 }
 
-const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
+const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
   const { signIn, renderHome, setRenderHome } = useAuth();
   const history = useHistory();
@@ -50,7 +50,7 @@ const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
     },
   });
 
-  const submitForm: SubmitSignInForm = ({ email, password }) => {
+  const submitForm: SubmitLogInForm = ({ email, password }) => {
     signIn!(email, password)
       .then(() => {
         setRenderHome!(true);
@@ -115,7 +115,7 @@ const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
             disabled={loading}
             className="ion-text-uppercase"
           >
-            log in
+            login
           </IonButton>
           <div className={`ion-text-center ${styles.ss_div}`}>
             new user?{' '}
@@ -138,4 +138,4 @@ const SignInUser: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   );
 };
 
-export default SignInUser;
+export default LogInForm;
