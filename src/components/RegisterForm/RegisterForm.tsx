@@ -24,7 +24,7 @@ interface PropsData {
 
 const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
-  const { registerNewUser, updateUserProfile } = useAuth();
+  const { registerNewUser, updateUserProfile, currentUser } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -60,11 +60,30 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
       .then(async () => {
         await addUserToDB(username, email, password);
         updateUserProfile!(username);
+        // await addUserToDB(currentUser!.uid, username, email, password);
       })
       .catch((e) => {
         console.error('register user: ', e);
       });
   };
+  /////////////////////////
+  // Previous submitForm
+  /////////////////////////
+  // const submitForm: SubmitRegistrationForm = ({
+  //   username,
+  //   email,
+  //   password,
+  // }) => {
+  //   registerNewUser!(email, password)
+  //     .then(async () => {
+  //       await addUserToDB(username, email, password);
+  //       updateUserProfile!(username);
+  //     })
+  //     .catch((e) => {
+  //       console.error('register user: ', e);
+  //     });
+  // };
+  /////////////////////////
 
   return (
     <>

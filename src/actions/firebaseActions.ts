@@ -10,6 +10,7 @@ import {
   collection,
   query,
   deleteField,
+  setDoc,
 } from 'firebase/firestore';
 
 import { createNewUserObj } from '../functions/userFunctions';
@@ -43,7 +44,20 @@ const Q_USERS_COLLECTION = query(usersCollection);
 // TYPES
 /////////////////////////////////////
 
+//////////////////////////////
+// New AddUserToDB Type
+//////////////////////////////
+// type AddUserToDB = (
+//   uid: string,
+//   username: string,
+//   email: string,
+//   password: string
+// ) => void;
+//////////////////////////////
+// Previous AddUserToDB Type
+//////////////////////////////
 type AddUserToDB = (username: string, email: string, password: string) => void;
+//////////////////////////////
 type FetchUserData = (username: string) => Promise<UsersCollectionUserObj>;
 type FetchWisdomsById = (
   wisdomIds: string[]
@@ -76,16 +90,44 @@ export type DeleteWisdomFromFirestore = (
 // FIREBASE FUNCTIONS
 /////////////////////////////////////
 
-export const addUserToDB: AddUserToDB = async (username, email, password) => {
-  const newUserObj = createNewUserObj(username, email, password);
+export const addUserToDB: AddUserToDB = async (
+  // uid,
+  username,
+  email,
+  password
+) => {
+  // const newUserObj = createNewUserObj(username, email, password);
 
-  const docRef = doc(usersCollection, usersCollectionDocId);
-  await updateDoc(docRef, { [`${username}`]: { ...newUserObj } });
+  const docRef = doc(
+    firestoreDB,
+    USERS_COLLECTION,
+    `${username}`,
+    'user_priv',
+    'user_priv'
+  ); // successfully created a sub-collection and doc within said sub-collection
+  await setDoc(docRef, { username, email, password }); // should return a promise to check for resolve!!!???
+
+  // await updateDoc(docRef, { [`${username}`]: { ...newUserObj } });
   // try {
   // } catch (error) {
   //   console.error('Error from create addUserToDB: ', error);
   // }
 };
+
+///////////////////////////////////
+// Previous addUserToDB function
+///////////////////////////////////
+// export const addUserToDB: AddUserToDB = async (username, email, password) => {
+//   const newUserObj = createNewUserObj(username, email, password);
+
+//   const docRef = doc(usersCollection, usersCollectionDocId);
+//   await updateDoc(docRef, { [`${username}`]: { ...newUserObj } });
+//   // try {
+//   // } catch (error) {
+//   //   console.error('Error from create addUserToDB: ', error);
+//   // }
+// };
+///////////////////////////////////
 
 export const fetchUserData: FetchUserData = (username) => {
   return getDocs(Q_USERS_COLLECTION)
