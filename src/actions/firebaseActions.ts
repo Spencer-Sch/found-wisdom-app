@@ -11,9 +11,15 @@ import {
   query,
   deleteField,
   setDoc,
+  DocumentReference,
+  DocumentData,
 } from 'firebase/firestore';
 
-import { createNewUserObj } from '../functions/userFunctions';
+import {
+  createNewUserObj,
+  createNewUserPrivObj,
+  createNewUserPubObj,
+} from '../functions/userFunctions';
 import {
   WisdomData,
   WisdomObj,
@@ -43,6 +49,11 @@ const Q_USERS_COLLECTION = query(usersCollection);
 /////////////////////////////////////
 // TYPES
 /////////////////////////////////////
+type BuildUserDocRef = (
+  username: string,
+  subCollectionName: string,
+  subColDocName: string
+) => DocumentReference<DocumentData>;
 
 //////////////////////////////
 // New AddUserToDB Type
@@ -90,28 +101,49 @@ export type DeleteWisdomFromFirestore = (
 // FIREBASE FUNCTIONS
 /////////////////////////////////////
 
+const buildUserDocRef: BuildUserDocRef = (
+  username,
+  subCollectionName,
+  subColDocName
+) => {
+  return doc(
+    firestoreDB,
+    USERS_COLLECTION,
+    `${username}`,
+    `${subCollectionName}`,
+    `${subColDocName}`
+  );
+};
+
 export const addUserToDB: AddUserToDB = async (
   // uid,
   username,
   email,
   password
 ) => {
-  // const newUserObj = createNewUserObj(username, email, password);
-
-  const docRef = doc(
-    firestoreDB,
-    USERS_COLLECTION,
-    `${username}`,
-    'user_priv',
-    'user_priv'
-  ); // successfully created a sub-collection and doc within said sub-collection
-  await setDoc(docRef, { username, email, password }); // should return a promise to check for resolve!!!???
-
-  // await updateDoc(docRef, { [`${username}`]: { ...newUserObj } });
-  // try {
-  // } catch (error) {
-  //   console.error('Error from create addUserToDB: ', error);
-  // }
+  try {
+    // SHOULD THESE BE IN A BATCH WRITE???
+    await setDoc(
+      buildUserDocRef(username, 'user_priv', 'user_priv'),
+      createNewUserPrivObj(email, password, username)
+    ); // should return a promise to check for resolve!!!???
+    await setDoc(
+      buildUserDocRef(username, 'user_pub', 'user_pub'),
+      createNewUserPubObj(username)
+    ); // should return a promise to check for resolve!!!???
+    await setDoc(
+      buildUserDocRef(username, 'wisdom_ids', 'next_wisdom_to_push'),
+      { wisdomId: null }
+    ); // should return a promise to check for resolve!!!???
+    await setDoc(buildUserDocRef(username, 'wisdom_ids', 'user_categories'), {
+      userCategories: ['none'],
+    }); // should return a promise to check for resolve!!!???
+    await setDoc(buildUserDocRef(username, 'wisdom_ids', 'wisdoms_all'), {
+      ids: [],
+    }); // should return a promise to check for resolve!!!???
+  } catch (error) {
+    console.error('Error from firebaseActions -> addUserToDB: ', error);
+  }
 };
 
 ///////////////////////////////////

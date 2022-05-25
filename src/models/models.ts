@@ -45,6 +45,21 @@ export interface UsersCollectionUserObj {
   };
 }
 
+export interface UserPrivObj {
+  date_joined: string;
+  email: string;
+  password: string;
+  profile_img: string | null;
+  uid: string | null;
+  username: string;
+}
+
+export interface UserPubObj {
+  date_joined: string;
+  profile_img: string | null;
+  username: string;
+}
+
 interface RegisterFormData {
   email: string;
   password: string;
@@ -76,6 +91,19 @@ export type CreateNewUserObj = (
   email: string,
   password: string
 ) => UsersCollectionUserObj;
+
+export type CreateNewUserPrivObj = (
+  email: string,
+  password: string,
+  username: string,
+  uid?: string,
+  profile_img?: string
+) => UserPrivObj;
+
+export type CreateNewUserPubObj = (
+  username: string,
+  profile_img?: string
+) => UserPubObj;
 
 export type AddNewWisdomToFirestore = (
   values: FormikValues,
