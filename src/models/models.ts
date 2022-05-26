@@ -50,7 +50,7 @@ export interface UserPrivObj {
   email: string;
   password: string;
   profile_img: string | null;
-  uid: string | null;
+  uid: string;
   username: string;
 }
 
@@ -95,8 +95,8 @@ export type CreateNewUserObj = (
 export type CreateNewUserPrivObj = (
   email: string,
   password: string,
+  uid: string,
   username: string,
-  uid?: string,
   profile_img?: string
 ) => UserPrivObj;
 

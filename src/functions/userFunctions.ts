@@ -10,6 +10,8 @@ import {
   UserPubObj,
 } from '../models/models';
 
+//////////////////////////////////////
+// Old Function
 export const createNewUserObj: CreateNewUserObj = (
   username,
   email,
@@ -31,15 +33,15 @@ export const createNewUserObj: CreateNewUserObj = (
 
   return newUserObj;
 };
+//////////////////////////////////////
 
 //////////////////////////////////////
 // New functions
-
 export const createNewUserPrivObj: CreateNewUserPrivObj = (
   email,
   password,
-  username,
   uid,
+  username,
   profile_img
 ) => {
   const user_priv_docData: UserPrivObj = {
@@ -47,7 +49,7 @@ export const createNewUserPrivObj: CreateNewUserPrivObj = (
     email,
     password,
     profile_img: profile_img ? profile_img : null,
-    uid: uid ? uid : null,
+    uid,
     username,
   };
 
@@ -66,3 +68,4 @@ export const createNewUserPubObj: CreateNewUserPubObj = (
 
   return user_pub_docData;
 };
+//////////////////////////////////////
