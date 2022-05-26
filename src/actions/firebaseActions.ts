@@ -50,32 +50,30 @@ const Q_USERS_COLLECTION = query(usersCollection);
 // TYPES
 /////////////////////////////////////
 type BuildUserDocRef = (
-  username: string,
+  uid: string,
   subCollectionName: string,
   subColDocName: string
 ) => DocumentReference<DocumentData>;
 
-//////////////////////////////
-// New AddUserToDB Type
-//////////////////////////////
-// type AddUserToDB = (
-//   uid: string,
-//   username: string,
-//   email: string,
-//   password: string
-// ) => void;
-//////////////////////////////
-// Previous AddUserToDB Type
-//////////////////////////////
-type AddUserToDB = (username: string, email: string, password: string) => void;
-//////////////////////////////
+type AddUserToDB = (
+  email: string,
+  password: string,
+  uid: string,
+  username: string
+) => void;
+
 type FetchUserData = (username: string) => Promise<UsersCollectionUserObj>;
+
 type FetchWisdomsById = (
   wisdomIds: string[]
 ) => Promise<WisdomData[] | null> | [];
+
 type FetchCurrentWisdom = (wisdomid: string) => Promise<WisdomData | null>;
+
 type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
+
 type UploadNewWisdom = (newWisdom: WisdomObj) => void;
+
 type AddToUserWisdomCollections = (
   username: string,
   wisdomId: string,
@@ -85,13 +83,16 @@ type AddToUserWisdomCollections = (
     userCreatedCategory?: string[] | undefined;
   }
 ) => void;
+
 type RemoveFromUserWisdomCollections = (
   username: string,
   filteredCollection: string[] | [],
   userNextWisdomToPush: string | null,
   newNextWisdomToPush: string | null
 ) => void;
+
 type RemoveWisdomFromWisdomsCollection = (wisdomId: string) => void;
+
 export type DeleteWisdomFromFirestore = (
   username: string,
   wisdomId: string
