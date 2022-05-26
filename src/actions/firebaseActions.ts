@@ -13,6 +13,7 @@ import {
   setDoc,
   DocumentReference,
   DocumentData,
+  writeBatch,
 } from 'firebase/firestore';
 
 import {
@@ -103,47 +104,60 @@ export type DeleteWisdomFromFirestore = (
 /////////////////////////////////////
 
 const buildUserDocRef: BuildUserDocRef = (
-  username,
+  uid,
   subCollectionName,
   subColDocName
 ) => {
   return doc(
     firestoreDB,
     USERS_COLLECTION,
-    `${username}`,
+    `${uid}`,
     `${subCollectionName}`,
     `${subColDocName}`
   );
 };
 
 export const addUserToDB: AddUserToDB = async (
-  // uid,
-  username,
   email,
-  password
+  password,
+  uid,
+  username
 ) => {
+  const batch = writeBatch(firestoreDB);
+
+  const user_priv_ref = buildUserDocRef(uid, 'user_priv', 'user_priv');
+  batch.set(
+    user_priv_ref,
+    createNewUserPrivObj(email, password, uid, username)
+  );
+
+  const user_pub_ref = buildUserDocRef(uid, 'user_pub', 'user_pub');
+  batch.set(user_pub_ref, createNewUserPubObj(username));
+
+  const next_wisdom_to_push_ref = buildUserDocRef(
+    uid,
+    'wisdom_ids',
+    'next_wisdom_to_push'
+  );
+  batch.set(next_wisdom_to_push_ref, { wisdomId: null });
+
+  const user_categories_ref = buildUserDocRef(
+    uid,
+    'wisdom_ids',
+    'user_categories'
+  );
+  batch.set(user_categories_ref, { userCategories: [] });
+
+  const wisdoms_all_ref = buildUserDocRef(uid, 'wisdom_ids', 'wisdoms_all');
+  batch.set(wisdoms_all_ref, { ids: [] });
+
   try {
-    // SHOULD THESE BE IN A BATCH WRITE???
-    await setDoc(
-      buildUserDocRef(username, 'user_priv', 'user_priv'),
-      createNewUserPrivObj(email, password, username)
-    ); // should return a promise to check for resolve!!!???
-    await setDoc(
-      buildUserDocRef(username, 'user_pub', 'user_pub'),
-      createNewUserPubObj(username)
-    ); // should return a promise to check for resolve!!!???
-    await setDoc(
-      buildUserDocRef(username, 'wisdom_ids', 'next_wisdom_to_push'),
-      { wisdomId: null }
-    ); // should return a promise to check for resolve!!!???
-    await setDoc(buildUserDocRef(username, 'wisdom_ids', 'user_categories'), {
-      userCategories: ['none'],
-    }); // should return a promise to check for resolve!!!???
-    await setDoc(buildUserDocRef(username, 'wisdom_ids', 'wisdoms_all'), {
-      ids: [],
-    }); // should return a promise to check for resolve!!!???
-  } catch (error) {
-    console.error('Error from firebaseActions -> addUserToDB: ', error);
+    await batch.commit(); // should I check for resolve on the returned promise???
+  } catch (e) {
+    console.error(
+      'Error from firebaseActions -> addUserToDB: (batch write) ',
+      e
+    );
   }
 };
 
