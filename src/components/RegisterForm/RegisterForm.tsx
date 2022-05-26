@@ -24,7 +24,7 @@ interface PropsData {
 
 const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
-  const { registerNewUser, updateUserProfile, currentUser } = useAuth();
+  const { registerNewUser, updateUserProfile } = useAuth();
 
   const formik = useFormik({
     initialValues: {
