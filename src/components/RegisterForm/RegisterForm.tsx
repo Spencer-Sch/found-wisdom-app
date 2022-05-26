@@ -56,11 +56,18 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
     email,
     password,
   }) => {
-    registerNewUser!(email, password)
-      .then(async () => {
-        await addUserToDB(username, email, password);
+    registerNewUser!(email, password) // I have .then() mixed with async/await. refactor to only use async/await???
+      .then(async (onfulfilled) => {
+        const newUserUid = onfulfilled.user.uid;
+        try {
+          await addUserToDB(email, password, newUserUid, username);
+        } catch (e) {
+          console.error(
+            'addUserToDB failed. RegisterForm.tsx -> registerNewUser: ',
+            e
+          );
+        }
         updateUserProfile!(username);
-        // await addUserToDB(currentUser!.uid, username, email, password);
       })
       .catch((e) => {
         console.error('register user: ', e);
