@@ -14,6 +14,8 @@ import {
   DocumentReference,
   DocumentData,
   writeBatch,
+  getDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 
 import {
@@ -75,15 +77,17 @@ type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
 
 type UploadNewWisdom = (newWisdom: WisdomObj) => void;
 
-type AddToUserWisdomCollections = (
-  username: string,
-  wisdomId: string,
-  userWisdomCollections: {
-    default: string[];
-    nextWisdomToPush: string | null;
-    userCreatedCategory?: string[] | undefined;
-  }
-) => void;
+type addToUserWisdomIdList = (uid: string, wisdomId: string) => void;
+
+// type AddToUserWisdomCollections = (
+//   username: string,
+//   wisdomId: string,
+//   userWisdomCollections: {
+//     default: string[];
+//     nextWisdomToPush: string | null;
+//     userCreatedCategory?: string[] | undefined;
+//   }
+// ) => void;
 
 type RemoveFromUserWisdomCollections = (
   username: string,
@@ -176,19 +180,33 @@ export const addUserToDB: AddUserToDB = async (
 // };
 ///////////////////////////////////
 
-export const fetchUserData: FetchUserData = (username) => {
+export const fetchUserData: FetchUserData = (uid) => {
   return getDocs(Q_USERS_COLLECTION)
     .then((snapshot) => {
       const userDocs = snapshot.docs.map((item) => ({
         ...item.data(),
       }));
-      return userDocs[0][`${username}`];
+      return userDocs[0][`${uid}`];
     })
     .catch((error) => {
       // improve error handeling!!!
       console.error('fetchUserData Error:', error);
     });
 };
+
+// export const fetchUserData: FetchUserData = (username) => {
+//   return getDocs(Q_USERS_COLLECTION)
+//     .then((snapshot) => {
+//       const userDocs = snapshot.docs.map((item) => ({
+//         ...item.data(),
+//       }));
+//       return userDocs[0][`${username}`];
+//     })
+//     .catch((error) => {
+//       // improve error handeling!!!
+//       console.error('fetchUserData Error:', error);
+//     });
+// };
 
 export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
   if (wisdomIds.length === 0) {
@@ -236,51 +254,137 @@ export const uploadEditedWisdom: UploadEditedWisdom = async (editedWisdom) => {
 };
 
 export const uploadNewWisdom: UploadNewWisdom = async (newWisdom) => {
-  const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
-  await updateDoc(docRef, { [newWisdom.wisdomData.id]: { ...newWisdom } });
+  const docRef = doc(wisdomsCollection, newWisdom.wisdomData.id);
+  await setDoc(docRef, { ...newWisdom });
 };
 
-export const addToUserWisdomCollections: AddToUserWisdomCollections = async (
-  username,
-  wisdomId,
-  userWisdomCollections
-) => {
-  const docRef = doc(usersCollection, usersCollectionDocId);
-  const userWisdomCollectionsPath = `${username}.wisdomCollections`;
-  const nextWisdomToPush = userWisdomCollections.nextWisdomToPush;
-  const defaultCollection = userWisdomCollections.default;
+// export const uploadNewWisdom: UploadNewWisdom = async (newWisdom) => {
+//   const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
+//   await updateDoc(docRef, { [newWisdom.wisdomData.id]: { ...newWisdom } });
+// };
 
-  if (nextWisdomToPush === null) {
-    await updateDoc(docRef, {
-      [userWisdomCollectionsPath]: {
-        default: [...defaultCollection, wisdomId],
-        nextWisdomToPush: wisdomId,
-      },
-    });
-  } else {
-    await updateDoc(docRef, {
-      [userWisdomCollectionsPath]: {
-        default: [...defaultCollection, wisdomId],
-        nextWisdomToPush: nextWisdomToPush,
-      },
-    });
+const addToUserWisdomIdList: addToUserWisdomIdList = async (uid, wisdomId) => {
+  const next_wisdom_to_push_DocRef = doc(
+    usersCollection,
+    uid,
+    'wisdom_ids',
+    'next_wisdom_to_push'
+  );
+  const wisdoms_all_DocRef = doc(
+    usersCollection,
+    uid,
+    'wisdom_ids',
+    'wisdoms_all'
+  );
+
+  // const wisdoms_all_snapshot = await getDoc(wisdoms_all_DocRef);
+  // const wisdoms_all = wisdoms_all_snapshot.data();
+  // if (!wisdoms_all) {
+  //   console.error(
+  //     'wisdoms_all is null or undefined. Sent from firebaseActions.ts -> addToUserWisdomIdList'
+  //   );
+  //   return;
+  // }
+
+  // add wisdomId to the array located at wisdoms_all.ids
+  try {
+    await updateDoc(wisdoms_all_DocRef, { ids: arrayUnion(wisdomId) });
+  } catch (e) {
+    console.error(
+      'error from firebaseActions.ts -> addToUserWisdomIdList -> add wisdomId to wisdoms_all.ids: ',
+      e
+    );
+  }
+
+  // get the current value stored in next_wisdom_to_push
+  let nextWisdomToPushId;
+  try {
+    const NWTP_snapshot = await getDoc(next_wisdom_to_push_DocRef);
+    const next_wisdom_to_push = NWTP_snapshot.data();
+    if (!next_wisdom_to_push) {
+      console.error(
+        'next_wisdom_to_push is null or undefined. Sent from firebaseActions.ts -> addToUserWisdomIdList'
+      );
+      return;
+    }
+    nextWisdomToPushId = next_wisdom_to_push.wisdomId;
+  } catch (e) {
+    console.error(
+      'error from firebaseActions.ts -> addToUserWisdomIdList -> get the current value stored in next_wisdom_to_push:',
+      e
+    );
+  }
+
+  // if nextWisdomToPushId is null, add this wisdomId, else do nothing
+  try {
+    if (nextWisdomToPushId === null) {
+      await updateDoc(next_wisdom_to_push_DocRef, {
+        wisdomId: wisdomId,
+      });
+    }
+  } catch (e) {
+    console.error(
+      'error from firebaseActions.ts -> addToUserWisdomIdList -> if nextWisdomToPushId is null, add this wisdomId:',
+      e
+    );
   }
 };
 
+// export const addToUserWisdomCollections: AddToUserWisdomCollections = async (
+//   username,
+//   wisdomId,
+//   userWisdomCollections
+// ) => {
+//   const docRef = doc(usersCollection, usersCollectionDocId);
+//   const userWisdomCollectionsPath = `${username}.wisdomCollections`;
+//   const nextWisdomToPush = userWisdomCollections.nextWisdomToPush;
+//   const defaultCollection = userWisdomCollections.default;
+
+//   if (nextWisdomToPush === null) {
+//     await updateDoc(docRef, {
+//       [userWisdomCollectionsPath]: {
+//         default: [...defaultCollection, wisdomId],
+//         nextWisdomToPush: wisdomId,
+//       },
+//     });
+//   } else {
+//     await updateDoc(docRef, {
+//       [userWisdomCollectionsPath]: {
+//         default: [...defaultCollection, wisdomId],
+//         nextWisdomToPush: nextWisdomToPush,
+//       },
+//     });
+//   }
+// };
+
 export const addNewWisdomToFirestore: AddNewWisdomToFirestore = async (
   values,
-  username
+  username,
+  uid
 ) => {
   // create and upload new wisdom to wisdomsCollection
   const newWisdom = buildNewWisdom(values, username);
   uploadNewWisdom(newWisdom);
 
-  // upload new wisdom to user's wisdomCollections
-  const userData = await fetchUserData(username);
-  const userWisdomCollections = userData.wisdomCollections;
+  // upload new wisdomId to user's wisdom_all and maybe to next_wisdom_to_push
   const wisdomId = newWisdom.wisdomData.id;
-  addToUserWisdomCollections(username, wisdomId, userWisdomCollections);
+  addToUserWisdomIdList(uid, wisdomId);
 };
+
+// export const addNewWisdomToFirestore: AddNewWisdomToFirestore = async (
+//   values,
+//   username
+// ) => {
+//   // create and upload new wisdom to wisdomsCollection
+//   const newWisdom = buildNewWisdom(values, username);
+//   uploadNewWisdom(newWisdom);
+
+//   // upload new wisdom to user's wisdomCollections
+//   const userData = await fetchUserData(username);
+//   const userWisdomCollections = userData.wisdomCollections;
+//   const wisdomId = newWisdom.wisdomData.id;
+//   addToUserWisdomCollections(username, wisdomId, userWisdomCollections);
+// };
 
 export const removeFromUserWisdomCollections: RemoveFromUserWisdomCollections =
   async (

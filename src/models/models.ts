@@ -107,7 +107,8 @@ export type CreateNewUserPubObj = (
 
 export type AddNewWisdomToFirestore = (
   values: FormikValues,
-  username: string
+  username: string,
+  uid: string
 ) => Promise<void>;
 
 export type FilterDeletedItem = (

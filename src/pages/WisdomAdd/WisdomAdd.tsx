@@ -42,7 +42,9 @@ const WisdomAdd: React.FC = () => {
     onSubmit: async (values) => {
       setLoading(true);
       const username = currentUser!.displayName!;
-      await addNewWisdomToFirestore(values, username);
+      const uid = currentUser!.uid;
+      await addNewWisdomToFirestore(values, username, uid);
+      /////////////////////////
       addNewWisdomToContext(values, username, userWisdoms, setUserWisdoms!);
       setLoading(false);
       history.replace('/');
