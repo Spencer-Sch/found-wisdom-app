@@ -77,7 +77,7 @@ type UploadEditedWisdom = (editedWisdom: WisdomData) => void;
 
 type UploadNewWisdom = (newWisdom: WisdomObj) => void;
 
-type addToUserWisdomIdList = (uid: string, wisdomId: string) => void;
+type AddToUserWisdomIdList = (uid: string, wisdomId: string) => void;
 
 // type AddToUserWisdomCollections = (
 //   username: string,
@@ -181,6 +181,7 @@ export const addUserToDB: AddUserToDB = async (
 ///////////////////////////////////
 
 export const fetchUserData: FetchUserData = (uid) => {
+  // so far, this function is not used...
   return getDocs(Q_USERS_COLLECTION)
     .then((snapshot) => {
       const userDocs = snapshot.docs.map((item) => ({
@@ -263,7 +264,7 @@ export const uploadNewWisdom: UploadNewWisdom = async (newWisdom) => {
 //   await updateDoc(docRef, { [newWisdom.wisdomData.id]: { ...newWisdom } });
 // };
 
-const addToUserWisdomIdList: addToUserWisdomIdList = async (uid, wisdomId) => {
+const addToUserWisdomIdList: AddToUserWisdomIdList = async (uid, wisdomId) => {
   const next_wisdom_to_push_DocRef = doc(
     usersCollection,
     uid,
@@ -301,9 +302,10 @@ const addToUserWisdomIdList: addToUserWisdomIdList = async (uid, wisdomId) => {
   try {
     const NWTP_snapshot = await getDoc(next_wisdom_to_push_DocRef);
     const next_wisdom_to_push = NWTP_snapshot.data();
-    if (!next_wisdom_to_push) {
+    // if (!next_wisdom_to_push) {
+    if (typeof next_wisdom_to_push === 'undefined') {
       console.error(
-        'next_wisdom_to_push is null or undefined. Sent from firebaseActions.ts -> addToUserWisdomIdList'
+        'next_wisdom_to_push is undefined (does not exist). Sent from firebaseActions.ts -> addToUserWisdomIdList'
       );
       return;
     }
