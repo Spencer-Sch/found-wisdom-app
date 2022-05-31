@@ -49,14 +49,14 @@ export interface UserPrivObj {
   date_joined: string;
   email: string;
   password: string;
-  profile_img: string | null;
+  profile_img: string;
   uid: string;
   username: string;
 }
 
 export interface UserPubObj {
   date_joined: string;
-  profile_img: string | null;
+  profile_img: string;
   username: string;
 }
 

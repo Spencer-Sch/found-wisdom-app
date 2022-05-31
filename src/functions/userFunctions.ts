@@ -42,13 +42,13 @@ export const createNewUserPrivObj: CreateNewUserPrivObj = (
   password,
   uid,
   username,
-  profile_img
+  profile_img = ''
 ) => {
   const user_priv_docData: UserPrivObj = {
     date_joined: format(new Date(), 'MMM dd, yyyy'),
     email,
     password,
-    profile_img: profile_img ? profile_img : null,
+    profile_img,
     uid,
     username,
   };
@@ -58,11 +58,11 @@ export const createNewUserPrivObj: CreateNewUserPrivObj = (
 
 export const createNewUserPubObj: CreateNewUserPubObj = (
   username,
-  profile_img
+  profile_img = ''
 ) => {
   const user_pub_docData: UserPubObj = {
     date_joined: format(new Date(), 'MMM dd, yyyy'),
-    profile_img: profile_img ? profile_img : null,
+    profile_img,
     username,
   };
 
