@@ -4,14 +4,20 @@ import {
   User as FirebaseUser, // User type from firebase
 } from 'firebase/auth';
 
+import { firestoreDB } from '../firebase/firebase';
+
 import { fetchUserData, fetchWisdomsById } from '../actions/firebaseActions';
 import { WisdomData } from '../models/models';
+import { doc, getDoc } from 'firebase/firestore';
 
 interface WisdomStoreContextResult {
   setUserWisdoms?: React.Dispatch<
     React.SetStateAction<WisdomData[] | [] | null>
   >;
-  fetchWisdomData?: (user: FirebaseUser) => void;
+  fetchWisdomData?: (uid: string) => void;
+  // fetchWisdomData?: (uid: string) => Promise<void>;
+  ///////////////////
+  // fetchWisdomData?: (user: FirebaseUser) => void;
   userWisdoms: WisdomData[] | null;
 }
 
@@ -31,13 +37,35 @@ export const WisdomStoreProvider: React.FC = ({ children }) => {
     null
   );
 
-  const fetchWisdomData = async (currentUser: FirebaseUser) => {
-    const userData = await fetchUserData(currentUser!.displayName!);
-    const defaultCollection: string[] = userData.wisdomCollections.default;
-    const wisdomsArr = await fetchWisdomsById(defaultCollection);
+  const fetchWisdomData = async (uid: string) => {
+    // fetchWisdomIds
+    // maybe export this into its own function?
+    const wisdomsAllRef = doc(
+      firestoreDB,
+      'usersCollection',
+      uid,
+      'wisdom_ids',
+      'wisdoms_all'
+    );
+    const snapshot = await getDoc(wisdomsAllRef);
+    const wisdoms_all_obj = snapshot.data();
+    if (wisdoms_all_obj) {
+      const wisdomIds: string[] = wisdoms_all_obj.ids;
+      // next step: refactor fetchWisdomsById to work with new Firebase model
+      const wisdomsArr = await fetchWisdomsById(wisdomIds);
+    }
+    ///////////////////////
 
-    setUserWisdoms(wisdomsArr);
+    // setUserWisdoms(wisdomsArr);
   };
+
+  // const fetchWisdomData = async (currentUser: FirebaseUser) => {
+  //   const userData = await fetchUserData(currentUser!.displayName!);
+  //   const defaultCollection: string[] = userData.wisdomCollections.default;
+  //   const wisdomsArr = await fetchWisdomsById(defaultCollection);
+
+  //   setUserWisdoms(wisdomsArr);
+  // };
 
   const value = {
     userWisdoms,

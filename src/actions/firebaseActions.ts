@@ -213,6 +213,9 @@ export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
   if (wisdomIds.length === 0) {
     return [];
   }
+  // I need to query the whole of wisdomsCollection to find the docs who's names match the ids in the incoming 'wisdomIds' array
+  // create a forEach loop and getDoc for every wisdomId? That would result in a lot of reads...
+  //////////////////////
   return getDocs(Q_WISDOMS_COLLECTION)
     .then((snapshot) => {
       const wisdomsDoc = snapshot.docs.map((item) => ({
@@ -231,6 +234,28 @@ export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
       return null;
     });
 };
+// export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
+//   if (wisdomIds.length === 0) {
+//     return [];
+//   }
+//   return getDocs(Q_WISDOMS_COLLECTION)
+//     .then((snapshot) => {
+//       const wisdomsDoc = snapshot.docs.map((item) => ({
+//         ...item.data(),
+//       }));
+
+//       const userWisdoms: WisdomData[] | [] = wisdomIds.map((item) => {
+//         return wisdomsDoc[0][item]['wisdomData'];
+//       });
+
+//       return userWisdoms.length > 0 ? userWisdoms : null;
+//     })
+//     .catch((error) => {
+//       // improve error handeling!!!
+//       console.error(error);
+//       return null;
+//     });
+// };
 
 export const fetchCurrentWisdom: FetchCurrentWisdom = (wisdomid) => {
   return getDocs(Q_WISDOMS_COLLECTION)
