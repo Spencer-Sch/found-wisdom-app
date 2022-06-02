@@ -46,7 +46,9 @@ const Home: React.FC = () => {
     }
 
     if (!userWisdoms) {
-      fetchWisdomData!(currentUser);
+      // TODO: rename this function
+      fetchWisdomData!(currentUser.displayName);
+      // fetchWisdomData!(currentUser);
     } else {
       setLoading(false);
     }
