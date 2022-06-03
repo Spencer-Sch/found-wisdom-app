@@ -26,8 +26,16 @@ const WisdomPageWrapper: React.FC = () => {
     }
 
     if (!userWisdoms) {
-      fetchWisdomData!(currentUser);
+      // if the app is directed to /wisdom/id123 before the home component is rendered
+      // OR if the app is on /wisdom/id123 and the page is reloaded.
+      currentUser.displayName
+        ? fetchWisdomData!(currentUser.displayName)
+        : console.error(
+            // TODO: improve error handeling!!!
+            'WisdomPageWrapper.tsx -> useEffect: currentUser.displayName is not present.'
+          );
     }
+
     if (userWisdoms && !currentWisdom) {
       // Searches for selected wisdom in local WisdomStoreContext
       const returnedWisdom = findSelectedWisdom(userWisdoms, wisdomid);
