@@ -16,6 +16,7 @@ import {
   writeBatch,
   getDoc,
   arrayUnion,
+  deleteDoc,
 } from 'firebase/firestore';
 
 import {
@@ -89,12 +90,18 @@ type AddToUserWisdomIdList = (uid: string, wisdomId: string) => void;
 //   }
 // ) => void;
 
-type RemoveFromUserWisdomCollections = (
+type RemoveFromUserWisdomIds = (
   username: string,
   filteredCollection: string[] | [],
-  userNextWisdomToPush: string | null,
   newNextWisdomToPush: string | null
 ) => void;
+
+// type RemoveFromUserWisdomCollections = (
+//   username: string,
+//   filteredCollection: string[] | [],
+//   userNextWisdomToPush: string | null,
+//   newNextWisdomToPush: string | null
+// ) => void;
 
 type RemoveWisdomFromWisdomsCollection = (wisdomId: string) => void;
 
@@ -418,67 +425,149 @@ export const addNewWisdomToFirestore: AddNewWisdomToFirestore = async (
 //   addToUserWisdomCollections(username, wisdomId, userWisdomCollections);
 // };
 
-export const removeFromUserWisdomCollections: RemoveFromUserWisdomCollections =
-  async (
-    username,
-    filteredCollection,
-    userNextWisdomToPush,
-    newNextWisdomToPush
-  ) => {
-    const docRef = doc(usersCollection, usersCollectionDocId);
-    const userWisdomCollectionsPath = `${username}.wisdomCollections`;
+export const removeFromUserWisdomIds: RemoveFromUserWisdomIds = async (
+  uid,
+  filteredCollection,
+  newNextWisdomToPush
+) => {
+  if (newNextWisdomToPush !== '') {
+    // next_wisdoms_to_push needs to be updated
+    const batch = writeBatch(firestoreDB);
 
-    if (newNextWisdomToPush === '') {
-      await updateDoc(docRef, {
-        [userWisdomCollectionsPath]: {
-          default: [...filteredCollection],
-          nextWisdomToPush: userNextWisdomToPush,
-        },
-      });
-    } else {
-      await updateDoc(docRef, {
-        [userWisdomCollectionsPath]: {
-          default: [...filteredCollection],
-          nextWisdomToPush: newNextWisdomToPush,
-        },
-      });
+    const next_wisdom_to_push_ref = buildUserDocRef(
+      uid,
+      'wisdom_ids',
+      'next_wisdom_to_push'
+    );
+    batch.set(next_wisdom_to_push_ref, { wisdomId: newNextWisdomToPush });
+
+    const wisdoms_all_ref = buildUserDocRef(uid, 'wisdom_ids', 'wisdoms_all');
+    batch.set(wisdoms_all_ref, { ids: [...filteredCollection] });
+
+    try {
+      await batch.commit(); // should I check for resolve on the returned promise???
+    } catch (e) {
+      console.error(
+        'Error from firebaseActions -> removeFromUserWisdomIds: (batch write) ',
+        e
+      );
     }
-  };
+  } else {
+    // next_wisdoms_to_push DOES NOT needs to be updated
+    const wisdoms_all_ref = buildUserDocRef(uid, 'wisdom_ids', 'wisdoms_all');
+    updateDoc(wisdoms_all_ref, { ids: [...filteredCollection] });
+  }
+};
+
+// export const removeFromUserWisdomCollections: RemoveFromUserWisdomCollections =
+//   async (
+//     uid,
+//     filteredCollection,
+//     userNextWisdomToPush,
+//     newNextWisdomToPush
+//   ) => {
+//     const docRef = doc(usersCollection, usersCollectionDocId);
+//     const userWisdomCollectionsPath = `${uid}.wisdomCollections`;
+
+//     if (newNextWisdomToPush === '') {
+//       await updateDoc(docRef, {
+//         [userWisdomCollectionsPath]: {
+//           default: [...filteredCollection],
+//           nextWisdomToPush: userNextWisdomToPush,
+//         },
+//       });
+//     } else {
+//       await updateDoc(docRef, {
+//         [userWisdomCollectionsPath]: {
+//           default: [...filteredCollection],
+//           nextWisdomToPush: newNextWisdomToPush,
+//         },
+//       });
+//     }
+//   };
 
 export const removeWisdomFromWisdomsCollection: RemoveWisdomFromWisdomsCollection =
   async (wisdomId) => {
-    const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
-    await updateDoc(docRef, { [wisdomId]: deleteField() });
+    try {
+      const docRef = doc(wisdomsCollection, wisdomId);
+      await deleteDoc(docRef);
+    } catch (e) {
+      // TODO: improve error handeling!!!
+      console.error(
+        'error from firebaseActions.ts -> removeWisdomFromWisdomsCollection: ',
+        e
+      );
+    }
   };
 
 export const deleteWisdomFromFirestore: DeleteWisdomFromFirestore = async (
-  username,
+  uid,
   wisdomId
 ) => {
-  const { wisdomCollections } = await fetchUserData(username);
-  const userNextWisdomToPush = wisdomCollections.nextWisdomToPush;
-  const userWisdoms = wisdomCollections.default;
+  const wisdoms_all_docRef = buildUserDocRef(uid, 'wisdom_ids', 'wisdoms_all');
+  const next_wisdom_to_push_docRef = buildUserDocRef(
+    uid,
+    'wisdom_ids',
+    'next_wisdom_to_push'
+  );
+
+  const wisdoms_all_snapshot = await getDoc(wisdoms_all_docRef);
+  const next_wisdom_to_push_snapshot = await getDoc(next_wisdom_to_push_docRef);
+
+  const wisdoms_all_data = wisdoms_all_snapshot.data();
+  const next_wisdom_to_push_data = next_wisdom_to_push_snapshot.data();
+
+  const userWisdomIds: string[] | [] = wisdoms_all_data
+    ? wisdoms_all_data.ids
+    : [];
+  const userNextWisdomToPush: string = next_wisdom_to_push_data
+    ? next_wisdom_to_push_data.wisdomId
+    : '';
+
   let newNextWisdomToPush: string | null = '';
 
-  if (userNextWisdomToPush === wisdomId && userWisdoms.length > 1) {
-    newNextWisdomToPush = getNextWisdomId(wisdomId, userWisdoms);
+  if (userNextWisdomToPush === wisdomId && userWisdomIds.length > 1) {
+    newNextWisdomToPush = getNextWisdomId(wisdomId, userWisdomIds);
   }
 
-  if (userNextWisdomToPush === wisdomId && userWisdoms.length === 1) {
+  if (userNextWisdomToPush === wisdomId && userWisdomIds.length === 1) {
     newNextWisdomToPush = null;
   }
 
-  const filteredCollection = filterDeletedItem(userWisdoms, wisdomId);
+  const filteredCollection = filterDeletedItem(userWisdomIds, wisdomId);
 
-  removeFromUserWisdomCollections(
-    username,
-    filteredCollection,
-    userNextWisdomToPush,
-    newNextWisdomToPush
-  );
-
+  removeFromUserWisdomIds(uid, filteredCollection, newNextWisdomToPush);
   removeWisdomFromWisdomsCollection(wisdomId);
 };
+
+// export const deleteWisdomFromFirestore: DeleteWisdomFromFirestore = async (
+//   username,
+//   wisdomId
+// ) => {
+//   const { wisdomCollections } = await fetchUserData(username);
+//   const userNextWisdomToPush = wisdomCollections.nextWisdomToPush;
+//   const userWisdoms = wisdomCollections.default;
+//   let newNextWisdomToPush: string | null = '';
+
+//   if (userNextWisdomToPush === wisdomId && userWisdoms.length > 1) {
+//     newNextWisdomToPush = getNextWisdomId(wisdomId, userWisdoms);
+//   }
+
+//   if (userNextWisdomToPush === wisdomId && userWisdoms.length === 1) {
+//     newNextWisdomToPush = null;
+//   }
+
+//   const filteredCollection = filterDeletedItem(userWisdoms, wisdomId);
+
+//   removeFromUserWisdomCollections(
+//     username,
+//     filteredCollection,
+//     userNextWisdomToPush,
+//     newNextWisdomToPush
+//   );
+
+//   removeWisdomFromWisdomsCollection(wisdomId);
+// };
 
 ////////////////////////////////////////
 // OLD PUSH NOTIFICATION CODE BACKUP

@@ -13,14 +13,14 @@ import {
   UpdateEditedWisdomInWisdomStore,
 } from '../models/models';
 
-export const getNextWisdomId: GetNextWisdomId = (wisdomId, userWisdoms) => {
+export const getNextWisdomId: GetNextWisdomId = (wisdomId, userWisdomIds) => {
   let nextWisdomId = '';
-  const currentWisdomIdx = userWisdoms.indexOf(wisdomId);
+  const currentWisdomIdx = userWisdomIds.indexOf(wisdomId);
 
-  if (currentWisdomIdx === userWisdoms.length - 1) {
-    nextWisdomId = userWisdoms[0];
+  if (currentWisdomIdx === userWisdomIds.length - 1) {
+    nextWisdomId = userWisdomIds[0];
   } else {
-    nextWisdomId = userWisdoms[currentWisdomIdx + 1];
+    nextWisdomId = userWisdomIds[currentWisdomIdx + 1];
   }
 
   return nextWisdomId;
