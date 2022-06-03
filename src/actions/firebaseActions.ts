@@ -397,12 +397,10 @@ const addToUserWisdomIdList: AddToUserWisdomIdList = async (uid, wisdomId) => {
 // };
 
 export const addNewWisdomToFirestore: AddNewWisdomToFirestore = async (
-  values,
-  username,
+  newWisdom,
   uid
 ) => {
-  // create and upload new wisdom to wisdomsCollection
-  const newWisdom = buildNewWisdom(values, username);
+  // upload new wisdom to wisdomsCollection
   uploadNewWisdom(newWisdom);
 
   // upload new wisdomId to user's wisdom_all and maybe to next_wisdom_to_push
@@ -447,6 +445,7 @@ export const removeFromUserWisdomIds: RemoveFromUserWisdomIds = async (
     try {
       await batch.commit(); // should I check for resolve on the returned promise???
     } catch (e) {
+      // TODO: improve error handeling!!!
       console.error(
         'Error from firebaseActions -> removeFromUserWisdomIds: (batch write) ',
         e
@@ -454,8 +453,16 @@ export const removeFromUserWisdomIds: RemoveFromUserWisdomIds = async (
     }
   } else {
     // next_wisdoms_to_push DOES NOT needs to be updated
-    const wisdoms_all_ref = buildUserDocRef(uid, 'wisdom_ids', 'wisdoms_all');
-    updateDoc(wisdoms_all_ref, { ids: [...filteredCollection] });
+    try {
+      const wisdoms_all_ref = buildUserDocRef(uid, 'wisdom_ids', 'wisdoms_all');
+      await updateDoc(wisdoms_all_ref, { ids: [...filteredCollection] });
+    } catch (e) {
+      // TODO: improve error handeling!!!
+      console.error(
+        'Error from firebaseActions -> removeFromUserWisdomIds: (else block) ',
+        e
+      );
+    }
   }
 };
 
@@ -511,8 +518,22 @@ export const deleteWisdomFromFirestore: DeleteWisdomFromFirestore = async (
     'next_wisdom_to_push'
   );
 
-  const wisdoms_all_snapshot = await getDoc(wisdoms_all_docRef);
-  const next_wisdom_to_push_snapshot = await getDoc(next_wisdom_to_push_docRef);
+  /////////////////////
+  // const wisdoms_all_snapshot = await getDoc(wisdoms_all_docRef);
+  // const next_wisdom_to_push_snapshot = await getDoc(next_wisdom_to_push_docRef);
+
+  let wisdoms_all_snapshot;
+  let next_wisdom_to_push_snapshot;
+
+  try {
+    wisdoms_all_snapshot = await getDoc(wisdoms_all_docRef);
+    next_wisdom_to_push_snapshot = await getDoc(next_wisdom_to_push_docRef);
+  } catch (e) {
+    // TODO: improve error handeling!!!
+    console.error('firebaseActions.ts -> deleteWisdomFromFirestore: ', e);
+    return;
+  }
+  /////////////////////
 
   const wisdoms_all_data = wisdoms_all_snapshot.data();
   const next_wisdom_to_push_data = next_wisdom_to_push_snapshot.data();

@@ -106,10 +106,15 @@ export type CreateNewUserPubObj = (
 ) => UserPubObj;
 
 export type AddNewWisdomToFirestore = (
-  values: FormikValues,
-  username: string,
+  newWisdom: WisdomObj,
   uid: string
-) => Promise<void>;
+) => void;
+
+// export type AddNewWisdomToFirestore = (
+//   values: FormikValues,
+//   username: string,
+//   uid: string
+// ) => Promise<void>;
 
 export type FilterDeletedItem = (
   collectionToFilter: string[],
@@ -131,11 +136,17 @@ export type FindSelectedWisdom = (
 ) => WisdomData | null;
 
 export type AddNewWisdomToContext = (
-  values: FormikValues,
-  username: string,
+  newWisdom: WisdomObj,
   userWisdoms: WisdomData[] | null,
   setUserWisdoms: React.Dispatch<React.SetStateAction<WisdomData[] | [] | null>>
 ) => void;
+
+// export type AddNewWisdomToContext = (
+//   values: FormikValues,
+//   username: string,
+//   userWisdoms: WisdomData[] | null,
+//   setUserWisdoms: React.Dispatch<React.SetStateAction<WisdomData[] | [] | null>>
+// ) => void;
 
 export type UpdateEditedWisdomInWisdomStore = (
   editedWisdom: WisdomData,

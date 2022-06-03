@@ -73,12 +73,10 @@ export const findSelectedWisdom: FindSelectedWisdom = (
 };
 
 export const addNewWisdomToContext: AddNewWisdomToContext = (
-  values,
-  username,
+  newWisdom,
   userWisdoms,
   setUserWisdoms
 ) => {
-  const newWisdom = buildNewWisdom(values, username);
   setUserWisdoms([...userWisdoms!, newWisdom.wisdomData]);
 };
 

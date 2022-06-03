@@ -50,7 +50,7 @@ const WisdomView: React.FC<PropsData> = ({
 
   const handleDelete = async () => {
     setLoading(true);
-    await deleteWisdomFromFirestore(uid, currentWisdom.id);
+    deleteWisdomFromFirestore(uid, currentWisdom.id);
     // await deleteWisdomFromFirestore(username, currentWisdom.id);
     deleteWisdomFromWisdomStore(currentWisdom.id, userWisdoms, setUserWisdoms!);
     setShowDeleteModal(false);

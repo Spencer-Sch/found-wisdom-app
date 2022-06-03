@@ -15,7 +15,10 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { addNewWisdomToContext } from '../../functions/wisdomFunctions';
+import {
+  addNewWisdomToContext,
+  buildNewWisdom,
+} from '../../functions/wisdomFunctions';
 import { addNewWisdomToFirestore } from '../../actions/firebaseActions';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';
@@ -43,9 +46,9 @@ const WisdomAdd: React.FC = () => {
       setLoading(true);
       const username = currentUser!.displayName!;
       const uid = currentUser!.uid;
-      await addNewWisdomToFirestore(values, username, uid);
-      /////////////////////////
-      addNewWisdomToContext(values, username, userWisdoms, setUserWisdoms!);
+      const newWisdom = buildNewWisdom(values, username);
+      addNewWisdomToFirestore(newWisdom, uid);
+      addNewWisdomToContext(newWisdom, userWisdoms, setUserWisdoms!);
       setLoading(false);
       history.replace('/');
     },
