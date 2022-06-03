@@ -274,10 +274,15 @@ export const fetchCurrentWisdom: FetchCurrentWisdom = (wisdomid) => {
 };
 
 export const uploadEditedWisdom: UploadEditedWisdom = async (editedWisdom) => {
-  const wisdomPath = `${editedWisdom.id}.wisdomData`;
-  const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
-  await updateDoc(docRef, { [`${wisdomPath}`]: { ...editedWisdom } });
+  const docRef = doc(wisdomsCollection, editedWisdom.id);
+  await updateDoc(docRef, { wisdomData: { ...editedWisdom } });
 };
+
+// export const uploadEditedWisdom: UploadEditedWisdom = async (editedWisdom) => {
+//   const wisdomPath = `${editedWisdom.id}.wisdomData`;
+//   const docRef = doc(wisdomsCollection, wisdomsCollectionDocId);
+//   await updateDoc(docRef, { [`${wisdomPath}`]: { ...editedWisdom } });
+// };
 
 export const uploadNewWisdom: UploadNewWisdom = async (newWisdom) => {
   const docRef = doc(wisdomsCollection, newWisdom.wisdomData.id);

@@ -34,12 +34,21 @@ export const filterDeletedItem: FilterDeletedItem = (
 export const handleEdit: HandleEdit = (values, currentWisdom) => {
   const editedWisdom = {
     ...currentWisdom,
-    id: currentWisdom.id,
     text: values.text,
     source: values.source === '' ? 'unknown' : values.source,
   };
   return editedWisdom;
 };
+
+// export const handleEdit: HandleEdit = (values, currentWisdom) => {
+//   const editedWisdom = {
+//     ...currentWisdom,
+//     id: currentWisdom.id, // is this line necessary?
+//     text: values.text,
+//     source: values.source === '' ? 'unknown' : values.source,
+//   };
+//   return editedWisdom;
+// };
 
 export const buildNewWisdom: BuildNewWisdom = (values, username) => {
   const newWisdom: WisdomObj = {
