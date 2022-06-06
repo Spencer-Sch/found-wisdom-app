@@ -14,13 +14,34 @@ import UserAccountListItem from '../../components/UserAccountListItem/UserAccoun
 import styles from './userAccount.module.css';
 
 interface UserInfo {
-  username: string;
+  date_joined: string;
   email: string;
-  dateJoined: string;
+  password: string;
+  profile_img: string;
+  uid: string;
+  username: string;
 }
 
-const UserAccount: React.FC<UserInfo> = ({ username, email, dateJoined }) => {
+const UserAccount: React.FC<UserInfo> = ({
+  date_joined,
+  email,
+  password,
+  username,
+}) => {
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
+
+  const censorPassword = (password: string) => {
+    const firstChar = password[0];
+    const lastChar = password[password.length - 1];
+    const middlePortion = password.slice(1, password.length - 1);
+
+    const starStr = middlePortion
+      .split('')
+      .map(() => '*')
+      .join('');
+    const censoredPassword = firstChar + starStr + lastChar;
+    return censoredPassword;
+  };
 
   return (
     <IonPage>
@@ -31,7 +52,7 @@ const UserAccount: React.FC<UserInfo> = ({ username, email, dateJoined }) => {
               <h2>Account Info</h2>
             </IonLabel>
           </IonListHeader>
-          <UserAccountListItem name="date joined" itemData={dateJoined} />
+          <UserAccountListItem name="date joined" itemData={date_joined} />
           <UserAccountListItem
             name="username"
             itemData={username}
@@ -44,7 +65,12 @@ const UserAccount: React.FC<UserInfo> = ({ username, email, dateJoined }) => {
             button
             buttonText="change"
           />
-          <UserAccountListItem name="password" button buttonText="change" />
+          <UserAccountListItem
+            name="password"
+            itemData={censorPassword(password)}
+            button
+            buttonText="change"
+          />
         </IonList>
       </IonContent>
     </IonPage>
