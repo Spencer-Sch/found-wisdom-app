@@ -16,20 +16,12 @@ const UserAccountListItem: React.FC<PropsData> = ({
   itemData,
   buttonText = 'button text',
 }) => {
-  const passwordItemText = name === 'password' ? '******************' : null;
-
   return (
     <IonItem lines="full">
       <IonLabel class="ion-padding-bottom" position="stacked">
         {name}
       </IonLabel>
-      {passwordItemText ? (
-        <IonText class={`ion-padding-bottom ${styles.ss_password_text}`}>
-          {passwordItemText}
-        </IonText>
-      ) : (
-        <IonText class="ion-padding-bottom">{itemData ? itemData : ''}</IonText>
-      )}
+      <IonText class="ion-padding-bottom">{itemData ? itemData : ''}</IonText>
       {button && (
         <IonButton fill="outline" size="small" slot="end">
           {buttonText ? buttonText : 'button text'}
