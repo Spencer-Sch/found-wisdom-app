@@ -66,7 +66,7 @@ type AddUserToDB = (
   username: string
 ) => void;
 
-type FetchUserData = (username: string) => Promise<UsersCollectionUserObj>;
+type FetchUserPrivData = (uid: string) => DocumentData;
 
 type FetchWisdomsById = (
   wisdomIds: string[]
@@ -187,19 +187,24 @@ export const addUserToDB: AddUserToDB = async (
 // };
 ///////////////////////////////////
 
-export const fetchUserData: FetchUserData = (uid) => {
-  // so far, this function is not used...
-  return getDocs(Q_USERS_COLLECTION)
-    .then((snapshot) => {
-      const userDocs = snapshot.docs.map((item) => ({
-        ...item.data(),
-      }));
-      return userDocs[0][`${uid}`];
-    })
-    .catch((error) => {
-      // improve error handeling!!!
-      console.error('fetchUserData Error:', error);
-    });
+export const fetchUserPrivData: FetchUserPrivData = async (uid) => {
+  try {
+    const docRef = doc(usersCollection, uid, 'user_priv', 'user_priv');
+    const snapshot = await getDoc(docRef);
+    const userPrivInfo = snapshot.data();
+
+    if (typeof userPrivInfo === undefined) {
+      // TODO: improve error handeling
+      throw new Error(
+        'firebaseActions.ts -> fetchUserPrivData: userPrivData = undefined'
+      );
+    }
+
+    return userPrivInfo;
+  } catch (error) {
+    // improve error handeling!!!
+    console.error('firebaseActions -> fetchUserPrivData Error:', error);
+  }
 };
 
 // export const fetchUserData: FetchUserData = (username) => {
