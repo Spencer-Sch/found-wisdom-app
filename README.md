@@ -1,6 +1,6 @@
 # Found Wisdom
 
-> An app where users can collect inspirational / meaningful quotes & phrases. The app will reguarly send push notifications to the user's phone in order to bring these helpful words back into the user's daily life.
+An app where users can collect inspirational / meaningful quotes & phrases. The app will reguarly send push notifications to the user's phone in order to bring these helpful words back into the user's daily life.
 
 ---
 
@@ -17,7 +17,7 @@
 
 ### The Inspiration
 
-Throughout my journey of self-improvement, I have collected many inspirational quotes and helpful thoughts in the notes app on my phone.
+Throughout my journey of self-improvement I have collected many inspirational quotes and helpful thoughts in the notes app on my phone.
 
 ### The Problem
 
