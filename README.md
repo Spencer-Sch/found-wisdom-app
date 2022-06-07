@@ -46,6 +46,9 @@ I am building this app to regular injection these encouraging words into my life
 
 ## How To Use
 
+⚠️ firebase.ts file is currently being withheld from the repo until I get all my Firestore security rules written and tested. </br>
+Cloning the repo and attempting to run the app will not currently get you very far. ⚠️
+
 This project was bootstrapped with [Ionic React](https://ionicframework.com/react).
 
 ### Installation
