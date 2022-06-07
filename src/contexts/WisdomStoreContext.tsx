@@ -1,18 +1,17 @@
 import React, { useContext, useState, createContext } from 'react';
 
-import {
-  User as FirebaseUser, // User type from firebase
-} from 'firebase/auth';
+// import {
+//   User as FirebaseUser, // User type from firebase
+// } from 'firebase/auth';
 
-import { firestoreDB } from '../firebase/firebase';
+// import { firestoreDB } from '../firebase/firebase';
 
 import {
-  fetchUserData,
-  fetchWisdomsById,
+  // fetchWisdomsById,
   wisdomsCollection,
 } from '../actions/firebaseActions';
 import { WisdomData } from '../models/models';
-import { doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { getDocs, query, where } from 'firebase/firestore';
 
 interface WisdomStoreContextResult {
   setUserWisdoms?: React.Dispatch<
@@ -47,7 +46,6 @@ export const WisdomStoreProvider: React.FC = ({ children }) => {
     const querySnapshot = await getDocs(q);
     const wisdomData: WisdomData[] = [];
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, ' => ', doc.data());
       const wisdom = doc.data().wisdomData;
       wisdomData.push(wisdom);
     });
