@@ -30,7 +30,6 @@ const Header: React.FC = () => {
     try {
       await menuController.close();
       await logOutUser!();
-      setUserWisdoms!(null);
     } catch (e) {
       // TODO: IMPROVE ERROR HANDLING!
       console.error(e);
