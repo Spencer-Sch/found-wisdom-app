@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  IonContent,
-  IonPage,
-  useIonViewDidEnter,
-  useIonViewDidLeave,
-} from '@ionic/react';
+import { IonContent, IonPage, useIonViewDidLeave } from '@ionic/react';
 
 import WisdomView from '../../components/WisdomView/WisdomView';
 import WisdomEdit from '../../components/WisdomEdit/WisdomEdit';
@@ -24,11 +19,9 @@ const WisdomPage: React.FC<PropsData> = ({ passingData }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { currentWisdom, setCurrentWisdom } = passingData;
 
-  useIonViewDidEnter(() => {
-    console.log('WisdomPage Did Enter');
-  });
   useIonViewDidLeave(() => {
-    console.log('WisdomPage Did Leave');
+    setShowEdit(false);
+    setShowDeleteModal(false);
   });
 
   useEffect(() => {
