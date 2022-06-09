@@ -21,14 +21,11 @@ const UserAccountWrapper: React.FC = () => {
   const { currentUser } = useAuth();
 
   useEffect(() => {
-    console.log('UserAccountWrapper rendering...');
     if (userPrivInfo) {
-      console.log('UserAccountWrapper: userPrivInfo exists. Return.');
       return;
     }
 
     const getUserData = async () => {
-      console.log('UserAccountWrapper: getting user data...');
       // reach out to firebase and pull user_priv data to display
       const uid = currentUser?.uid;
 
@@ -53,8 +50,6 @@ const UserAccountWrapper: React.FC = () => {
       setUserPrivInfo(data);
     };
     getUserData();
-
-    return console.log('UserAccountWrapper: unmounting...');
   }, [currentUser, userPrivInfo]);
 
   return userPrivInfo ? (

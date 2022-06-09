@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import {
   IonContent,
   IonFab,
@@ -21,7 +20,6 @@ const Home: React.FC = () => {
   const [reloadCount, setReloadCount] = useState(0);
   const { currentUser } = useAuth();
   const { userWisdoms, fetchWisdomData } = useWisdomStore();
-  const history = useHistory();
 
   useEffect(() => {
     if (!currentUser) {
@@ -60,9 +58,6 @@ const Home: React.FC = () => {
           <IonFabButton
             color="secondary"
             routerDirection="forward"
-            // onClick={() => {
-            //   history.replace('/add');
-            // }}
             routerLink="/add"
           >
             <IonIcon icon={add} />

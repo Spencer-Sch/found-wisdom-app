@@ -17,19 +17,11 @@ interface PropsData {
 const WisdomPage: React.FC<PropsData> = ({ passingData }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { currentWisdom, setCurrentWisdom } = passingData;
+  const { currentWisdom } = passingData;
 
   useIonViewDidLeave(() => {
     setShowEdit(false);
     setShowDeleteModal(false);
-  });
-
-  useEffect(() => {
-    console.log('WisdomPage rendering...');
-
-    return () => {
-      console.log('WisdomPage unmounting...');
-    };
   });
 
   return (

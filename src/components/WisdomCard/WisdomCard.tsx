@@ -10,7 +10,11 @@ interface WisdomCardProps {
 
 const WisdomCard: React.FC<WisdomCardProps> = ({ id, text }) => {
   return (
-    <IonCard className={styles.ss_card} routerLink={`/wisdom/${id}`}>
+    <IonCard
+      className={styles.ss_card}
+      routerLink={`/wisdom/${id}`}
+      routerDirection="forward"
+    >
       <IonItem className="ion-no-padding">
         <IonCardContent>{text}</IonCardContent>
       </IonItem>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import {
   IonButton,
   IonGrid,
@@ -25,7 +24,6 @@ interface PropsData {
 const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
   const { logIn, renderHome, setRenderHome } = useAuth();
-  const history = useHistory();
 
   useEffect(() => {
     if (renderHome) {
@@ -54,7 +52,6 @@ const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
     logIn!(email, password)
       .then(() => {
         setRenderHome!(true);
-        history.replace('/');
       })
       .catch((error: Error) => {
         console.error('register user: ', error);
