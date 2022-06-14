@@ -13,14 +13,14 @@ import {
   UpdateEditedWisdomInWisdomStore,
 } from '../models/models';
 
-export const getNextWisdomId: GetNextWisdomId = (wisdomId, userWisdoms) => {
+export const getNextWisdomId: GetNextWisdomId = (wisdomId, userWisdomIds) => {
   let nextWisdomId = '';
-  const currentWisdomIdx = userWisdoms.indexOf(wisdomId);
+  const currentWisdomIdx = userWisdomIds.indexOf(wisdomId);
 
-  if (currentWisdomIdx === userWisdoms.length - 1) {
-    nextWisdomId = userWisdoms[0];
+  if (currentWisdomIdx === userWisdomIds.length - 1) {
+    nextWisdomId = userWisdomIds[0];
   } else {
-    nextWisdomId = userWisdoms[currentWisdomIdx + 1];
+    nextWisdomId = userWisdomIds[currentWisdomIdx + 1];
   }
 
   return nextWisdomId;
@@ -34,7 +34,6 @@ export const filterDeletedItem: FilterDeletedItem = (
 export const handleEdit: HandleEdit = (values, currentWisdom) => {
   const editedWisdom = {
     ...currentWisdom,
-    id: currentWisdom.id,
     text: values.text,
     source: values.source === '' ? 'unknown' : values.source,
   };
@@ -64,12 +63,10 @@ export const findSelectedWisdom: FindSelectedWisdom = (
 };
 
 export const addNewWisdomToContext: AddNewWisdomToContext = (
-  values,
-  username,
+  newWisdom,
   userWisdoms,
   setUserWisdoms
 ) => {
-  const newWisdom = buildNewWisdom(values, username);
   setUserWisdoms([...userWisdoms!, newWisdom.wisdomData]);
 };
 

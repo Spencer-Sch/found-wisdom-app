@@ -8,7 +8,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 import styles from './logInOrRegister.module.css';
 
-const LogInOrRegister: React.FC = (props: any) => {
+const LogInOrRegister: React.FC = () => {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const { currentUser } = useAuth();
 
@@ -18,12 +18,9 @@ const LogInOrRegister: React.FC = (props: any) => {
         <IonPage>
           <IonContent>
             {showRegisterForm ? (
-              <RegisterForm
-                {...props}
-                setShowRegisterForm={setShowRegisterForm}
-              />
+              <RegisterForm setShowRegisterForm={setShowRegisterForm} />
             ) : (
-              <LogInForm {...props} setShowRegisterForm={setShowRegisterForm} />
+              <LogInForm setShowRegisterForm={setShowRegisterForm} />
             )}
           </IonContent>
         </IonPage>

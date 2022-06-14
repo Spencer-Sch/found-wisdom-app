@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import {
   IonButtons,
   IonContent,
@@ -17,20 +16,16 @@ import { home, person, cog, key } from 'ionicons/icons';
 import { menuController } from '@ionic/core/components';
 
 import { useAuth } from '../../contexts/AuthContext';
-import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 
 import styles from './header.module.css';
 
 const Header: React.FC = () => {
   const { logOutUser } = useAuth();
-  const { setUserWisdoms } = useWisdomStore();
-  const history = useHistory();
 
   const logoutHandler = async () => {
     try {
       await menuController.close();
       await logOutUser!();
-      setUserWisdoms!(null);
     } catch (e) {
       // TODO: IMPROVE ERROR HANDLING!
       console.error(e);
@@ -51,10 +46,9 @@ const Header: React.FC = () => {
               button={true}
               onClick={async () => {
                 await menuController.close();
-                history.push('/');
               }}
-              // routerLink="/"
-              // routerDirection="back"
+              routerLink="/"
+              routerDirection="back"
             >
               <IonIcon slot="start" icon={home} />
               <IonLabel>Home</IonLabel>
@@ -63,9 +57,9 @@ const Header: React.FC = () => {
               button={true}
               onClick={async () => {
                 await menuController.close();
-                history.push('/account');
               }}
-              routerDirection="forward"
+              routerLink="/account"
+              routerDirection="back"
             >
               <IonIcon slot="start" icon={person} />
               <IonLabel>Account</IonLabel>

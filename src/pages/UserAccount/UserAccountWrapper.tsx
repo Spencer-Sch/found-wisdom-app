@@ -5,43 +5,55 @@ import UserAccount from './UserAccount';
 import { useAuth } from '../../contexts/AuthContext';
 
 import styles from './userAccountWrapper.module.css';
-import { fetchUserData } from '../../actions/firebaseActions';
+import { fetchUserPrivData } from '../../actions/firebaseActions';
 
-interface UserInfo {
-  username: string;
+interface UserPrivInfo {
+  date_joined: string;
   email: string;
-  dateJoined: string;
+  password: string;
+  profile_img: string;
+  uid: string;
+  username: string;
 }
 
 const UserAccountWrapper: React.FC = () => {
-  const [userInfo, setUserInfo] = useState<null | UserInfo>(null);
+  const [userPrivInfo, setUserPrivInfo] = useState<null | UserPrivInfo>(null);
   const { currentUser } = useAuth();
 
-  // reach out to firebase and pull user info to display
   useEffect(() => {
-    const getUserData = async () => {
-      const username = currentUser?.displayName!;
-      // maybe make a new function to fetch only the user account info and not the userWisdoms
-      const userData = await fetchUserData(username);
-      // figure out a way not to bring down or store the user's password
-      // const dataObj = {
-      //   userId: userData.userId,
-      //   userInfo: {
+    if (userPrivInfo) {
+      return;
+    }
 
-      //   }
-      // }
-      const userInfoData = {
-        username: userData.userInfo.username,
-        email: userData.userInfo.email,
-        dateJoined: userData.userInfo.dateJoined,
+    const getUserData = async () => {
+      // reach out to firebase and pull user_priv data to display
+      const uid = currentUser?.uid;
+
+      if (!uid) {
+        // TODO: improve error handeling.
+        console.error(
+          'error from UserAccountWrapper.tsx -> userEffect: user uid is undefined.'
+        );
+        return;
+      }
+
+      const userPrivData = await fetchUserPrivData(uid);
+
+      const data: UserPrivInfo = {
+        date_joined: userPrivData.date_joined,
+        email: userPrivData.email,
+        password: userPrivData.password,
+        profile_img: userPrivData.profile_img,
+        uid: userPrivData.uid,
+        username: userPrivData.username,
       };
-      setUserInfo(userInfoData);
+      setUserPrivInfo(data);
     };
     getUserData();
-  }, [currentUser]);
+  }, [currentUser, userPrivInfo]);
 
-  return userInfo ? (
-    <UserAccount {...userInfo} />
+  return userPrivInfo ? (
+    <UserAccount {...userPrivInfo} />
   ) : (
     <IonLoading
       isOpen={true}

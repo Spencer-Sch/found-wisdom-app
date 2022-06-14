@@ -1,17 +1,14 @@
 import React, { useContext, useState, createContext } from 'react';
 
-import {
-  User as FirebaseUser, // User type from firebase
-} from 'firebase/auth';
-
-import { fetchUserData, fetchWisdomsById } from '../actions/firebaseActions';
+import { wisdomsCollection } from '../actions/firebaseActions';
 import { WisdomData } from '../models/models';
+import { getDocs, query, where } from 'firebase/firestore';
 
 interface WisdomStoreContextResult {
   setUserWisdoms?: React.Dispatch<
     React.SetStateAction<WisdomData[] | [] | null>
   >;
-  fetchWisdomData?: (user: FirebaseUser) => void;
+  fetchWisdomData?: (username: string) => void;
   userWisdoms: WisdomData[] | null;
 }
 
@@ -31,12 +28,16 @@ export const WisdomStoreProvider: React.FC = ({ children }) => {
     null
   );
 
-  const fetchWisdomData = async (currentUser: FirebaseUser) => {
-    const userData = await fetchUserData(currentUser!.displayName!);
-    const defaultCollection: string[] = userData.wisdomCollections.default;
-    const wisdomsArr = await fetchWisdomsById(defaultCollection);
-
-    setUserWisdoms(wisdomsArr);
+  const fetchWisdomData = async (username: string) => {
+    // TODO: this query will need to be limited and ordered in the future!!!
+    const q = query(wisdomsCollection, where('createdBy', '==', username));
+    const querySnapshot = await getDocs(q);
+    const wisdomData: WisdomData[] = [];
+    querySnapshot.forEach((doc) => {
+      const wisdom = doc.data().wisdomData;
+      wisdomData.push(wisdom);
+    });
+    setUserWisdoms(wisdomData);
   };
 
   const value = {

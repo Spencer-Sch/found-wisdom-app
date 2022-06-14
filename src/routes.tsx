@@ -50,10 +50,7 @@ const Routes: React.FC = () => {
             <Redirect to="/" />
           </Route>
           <Route path="/account" component={AuthGuard(UserAccountWrapper)} />
-          <Route
-            path="/login_register"
-            component={(props: any) => <LogInOrRegister {...props} />}
-          />
+          <Route path="/login_register" component={LogInOrRegister} />
           <Route exact path="/" component={AuthGuard(HomeWrapper)} />
         </IonRouterOutlet>
       </IonReactRouter>

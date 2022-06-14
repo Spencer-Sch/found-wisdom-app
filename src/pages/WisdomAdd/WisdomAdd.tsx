@@ -15,7 +15,10 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { addNewWisdomToContext } from '../../functions/wisdomFunctions';
+import {
+  addNewWisdomToContext,
+  buildNewWisdom,
+} from '../../functions/wisdomFunctions';
 import { addNewWisdomToFirestore } from '../../actions/firebaseActions';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';
@@ -42,8 +45,10 @@ const WisdomAdd: React.FC = () => {
     onSubmit: async (values) => {
       setLoading(true);
       const username = currentUser!.displayName!;
-      await addNewWisdomToFirestore(values, username);
-      addNewWisdomToContext(values, username, userWisdoms, setUserWisdoms!);
+      const uid = currentUser!.uid;
+      const newWisdom = buildNewWisdom(values, username);
+      addNewWisdomToFirestore(newWisdom, uid);
+      addNewWisdomToContext(newWisdom, userWisdoms, setUserWisdoms!);
       setLoading(false);
       history.replace('/');
     },
@@ -97,9 +102,6 @@ const WisdomAdd: React.FC = () => {
             className="ion-text-uppercase"
             routerDirection="back"
             routerLink="/"
-            // onClick={() => {
-            //   history.replace('/');
-            // }}
           >
             cancel
           </IonButton>
