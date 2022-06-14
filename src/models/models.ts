@@ -30,21 +30,6 @@ export interface HandleEditArgs {
   currentWisdom: WisdomObj;
 }
 
-export interface UsersCollectionUserObj {
-  userId: string;
-  userInfo: {
-    username: string;
-    email: string;
-    password: string;
-    dateJoined: string;
-  };
-  wisdomCollections: {
-    nextWisdomToPush: string | null;
-    default: string[];
-    userCreatedCategory?: string[];
-  };
-}
-
 export interface UserPrivObj {
   date_joined: string;
   email: string;
@@ -86,12 +71,6 @@ export type BuildNewWisdom = (
   username: string
 ) => WisdomObj;
 
-export type CreateNewUserObj = (
-  username: string,
-  email: string,
-  password: string
-) => UsersCollectionUserObj;
-
 export type CreateNewUserPrivObj = (
   email: string,
   password: string,
@@ -109,12 +88,6 @@ export type AddNewWisdomToFirestore = (
   newWisdom: WisdomObj,
   uid: string
 ) => void;
-
-// export type AddNewWisdomToFirestore = (
-//   values: FormikValues,
-//   username: string,
-//   uid: string
-// ) => Promise<void>;
 
 export type FilterDeletedItem = (
   collectionToFilter: string[],
@@ -140,13 +113,6 @@ export type AddNewWisdomToContext = (
   userWisdoms: WisdomData[] | null,
   setUserWisdoms: React.Dispatch<React.SetStateAction<WisdomData[] | [] | null>>
 ) => void;
-
-// export type AddNewWisdomToContext = (
-//   values: FormikValues,
-//   username: string,
-//   userWisdoms: WisdomData[] | null,
-//   setUserWisdoms: React.Dispatch<React.SetStateAction<WisdomData[] | [] | null>>
-// ) => void;
 
 export type UpdateEditedWisdomInWisdomStore = (
   editedWisdom: WisdomData,
