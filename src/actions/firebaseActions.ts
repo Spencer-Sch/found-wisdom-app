@@ -408,3 +408,55 @@ export const deleteWisdomFromFirestore: DeleteWisdomFromFirestore = async (
   removeFromUserWisdomIds(uid, filteredCollection, newNextWisdomToPush);
   removeWisdomFromWisdomsCollection(wisdomId);
 };
+
+////////////////////////////////////////
+// OLD PUSH NOTIFICATION CODE BACKUP
+// DO NOT DELETE!!!!
+////////////////////////////////////////
+
+// const pushNotification = () => {
+//   //////////////////////////////////////////
+//   // REFACTOR???
+//   //////////////////////////////////////////
+//   if (!storedWisdoms) {
+//     // improve error handeling!!!
+//     console.error('from pushNotification in Home: storedWisdoms is null!');
+//     return;
+//   }
+//   //////////////////////////////////////////
+//   let wisdomToShow: WisdomData;
+//   let nextWisdom: WisdomData;
+//   const editedState = [...storedWisdoms];
+
+//   storedWisdoms.forEach((item, idx) => {
+//     if (item.next === true) {
+//       wisdomToShow = {
+//         ...item,
+//         next: false,
+//       };
+
+//       editedState[idx] = { ...wisdomToShow };
+
+//       if (idx === storedWisdoms.length - 1) {
+//         nextWisdom = {
+//           ...storedWisdoms[0],
+//           next: true,
+//         };
+
+//         editedState[0] = { ...nextWisdom };
+//       } else {
+//         nextWisdom = {
+//           ...storedWisdoms[idx + 1],
+//           next: true,
+//         };
+
+//         editedState[idx + 1] = { ...nextWisdom };
+//       }
+//     }
+//   });
+
+//   localStorage.setItem('myWisdoms', JSON.stringify(editedState));
+//   setStoredWisdoms(editedState);
+
+//   alert(wisdomToShow!.text);
+// };
