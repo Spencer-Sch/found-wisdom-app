@@ -224,27 +224,12 @@ export const uploadNewWisdom: UploadNewWisdom = async (newWisdom) => {
 };
 
 const addToUserWisdomIdList: AddToUserWisdomIdList = async (uid, wisdomId) => {
-  const next_wisdom_to_push_DocRef = doc(
-    usersCollection,
-    uid,
-    'wisdom_ids',
-    'next_wisdom_to_push'
-  );
   const wisdoms_all_DocRef = doc(
     usersCollection,
     uid,
     'wisdom_ids',
     'wisdoms_all'
   );
-
-  // const wisdoms_all_snapshot = await getDoc(wisdoms_all_DocRef);
-  // const wisdoms_all = wisdoms_all_snapshot.data();
-  // if (!wisdoms_all) {
-  //   console.error(
-  //     'wisdoms_all is null or undefined. Sent from firebaseActions.ts -> addToUserWisdomIdList'
-  //   );
-  //   return;
-  // }
 
   // add wisdomId to the array located at wisdoms_all.ids
   try {
@@ -255,29 +240,42 @@ const addToUserWisdomIdList: AddToUserWisdomIdList = async (uid, wisdomId) => {
       e
     );
   }
+};
+
+const updateUsersNextWisdomToPush: UpdateUsersNextWisdomToPush = async (
+  uid,
+  wisdomId
+) => {
+  const next_wisdom_to_push_DocRef = doc(
+    usersCollection,
+    uid,
+    'wisdom_ids',
+    'next_wisdom_to_push'
+  );
 
   // get the current value stored in next_wisdom_to_push
   let nextWisdomToPushId;
   try {
     const NWTP_snapshot = await getDoc(next_wisdom_to_push_DocRef);
     const next_wisdom_to_push = NWTP_snapshot.data();
-    // if (!next_wisdom_to_push) {
     if (typeof next_wisdom_to_push === 'undefined') {
       console.error(
-        'next_wisdom_to_push is undefined (does not exist). Sent from firebaseActions.ts -> addToUserWisdomIdList'
+        'next_wisdom_to_push is undefined (user account does not exist). Sent from firebaseActions.ts -> addToUserWisdomIdList'
       );
       return;
     }
     nextWisdomToPushId = next_wisdom_to_push.wisdomId;
   } catch (e) {
     console.error(
-      'error from firebaseActions.ts -> addToUserWisdomIdList -> get the current value stored in next_wisdom_to_push:',
+      'error from firebaseActions.ts -> addToUserWisdomIdList -> "get the current value stored in next_wisdom_to_push" block.',
       e
     );
   }
 
-  // if nextWisdomToPushId is null, add this wisdomId, else do nothing
+  // next_wisdom_to_push is initilized as null
+  // next_wisdom_to_push is set back to null if the last of the user's wisdoms is deleted
   try {
+    // if nextWisdomToPushId is null, add this wisdomId, else do nothing
     if (nextWisdomToPushId === null) {
       await updateDoc(next_wisdom_to_push_DocRef, {
         wisdomId: wisdomId,
@@ -285,7 +283,7 @@ const addToUserWisdomIdList: AddToUserWisdomIdList = async (uid, wisdomId) => {
     }
   } catch (e) {
     console.error(
-      'error from firebaseActions.ts -> addToUserWisdomIdList -> if nextWisdomToPushId is null, add this wisdomId:',
+      'error from firebaseActions.ts -> addToUserWisdomIdList -> "if nextWisdomToPushId is null, add this wisdomId" block.',
       e
     );
   }
@@ -298,9 +296,11 @@ export const addNewWisdomToFirestore: AddNewWisdomToFirestore = async (
   // upload new wisdom to wisdomsCollection
   uploadNewWisdom(newWisdom);
 
-  // upload new wisdomId to user's wisdom_all and maybe to next_wisdom_to_push
   const wisdomId = newWisdom.wisdomData.id;
+  // upload new wisdomId to user's wisdom_all
   addToUserWisdomIdList(uid, wisdomId);
+  // check to see if user's next_wisdom_to_push needs to be updated
+  updateUsersNextWisdomToPush(uid, wisdomId);
 };
 
 export const removeFromUserWisdomIds: RemoveFromUserWisdomIds = async (
