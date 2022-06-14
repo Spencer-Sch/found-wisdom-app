@@ -43,7 +43,6 @@ const WisdomView: React.FC<PropsData> = ({
   currentUser
     ? (uid = currentUser.uid)
     : console.error('WisdomView.tsx: currentUser is null.');
-  // const username = currentUser!.displayName!;
 
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
   const screenAvailHeight = window.screen.availHeight;
@@ -51,7 +50,6 @@ const WisdomView: React.FC<PropsData> = ({
   const handleDelete = async () => {
     setLoading(true);
     deleteWisdomFromFirestore(uid, currentWisdom.id);
-    // await deleteWisdomFromFirestore(username, currentWisdom.id);
     deleteWisdomFromWisdomStore(currentWisdom.id, userWisdoms, setUserWisdoms!);
     setShowDeleteModal(false);
     setLoading(false);

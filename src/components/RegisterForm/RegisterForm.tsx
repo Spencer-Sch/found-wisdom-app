@@ -73,24 +73,6 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
         console.error('register user: ', e);
       });
   };
-  /////////////////////////
-  // Previous submitForm
-  /////////////////////////
-  // const submitForm: SubmitRegistrationForm = ({
-  //   username,
-  //   email,
-  //   password,
-  // }) => {
-  //   registerNewUser!(email, password)
-  //     .then(async () => {
-  //       await addUserToDB(username, email, password);
-  //       updateUserProfile!(username);
-  //     })
-  //     .catch((e) => {
-  //       console.error('register user: ', e);
-  //     });
-  // };
-  /////////////////////////
 
   return (
     <>

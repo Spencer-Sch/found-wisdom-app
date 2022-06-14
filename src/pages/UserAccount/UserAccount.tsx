@@ -1,12 +1,9 @@
 import {
-  IonButton,
   IonContent,
-  IonItem,
   IonLabel,
   IonList,
   IonListHeader,
   IonPage,
-  IonText,
 } from '@ionic/react';
 import React from 'react';
 import UserAccountListItem from '../../components/UserAccountListItem/UserAccountListItem';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IonContent, IonPage, useIonViewDidLeave } from '@ionic/react';
 
 import WisdomView from '../../components/WisdomView/WisdomView';
