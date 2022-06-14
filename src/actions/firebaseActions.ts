@@ -171,6 +171,10 @@ export const fetchWisdomsById: FetchWisdomsById = (wisdomIds) => {
   if (wisdomIds.length === 0) {
     return [];
   }
+  // TODO:
+  // THIS FUNCTION IS NOT CURRENTLY IN USE ANYWHERE IN THE APP
+  // IS THIS A METHOD I WANT TO RE-INTRODUCE OR REMOVE???
+  //
   // I need to query the whole of wisdomsCollection to find the docs who's names match the ids in the incoming 'wisdomIds' array
   // create a forEach loop and getDoc for every wisdomId? That would result in a lot of reads...
   //////////////////////
