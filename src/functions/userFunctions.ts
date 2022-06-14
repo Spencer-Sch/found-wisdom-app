@@ -1,42 +1,12 @@
-import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
 
 import {
-  UsersCollectionUserObj,
-  CreateNewUserObj,
   UserPrivObj,
   CreateNewUserPrivObj,
   CreateNewUserPubObj,
   UserPubObj,
 } from '../models/models';
 
-//////////////////////////////////////
-// Old Function
-export const createNewUserObj: CreateNewUserObj = (
-  username,
-  email,
-  password
-) => {
-  const newUserObj: UsersCollectionUserObj = {
-    userId: uuidv4(),
-    userInfo: {
-      username,
-      email,
-      password: password, // encrypt this data!!!
-      dateJoined: format(new Date(), 'MMM dd, yyyy'),
-    },
-    wisdomCollections: {
-      nextWisdomToPush: null,
-      default: [],
-    },
-  };
-
-  return newUserObj;
-};
-//////////////////////////////////////
-
-//////////////////////////////////////
-// New functions
 export const createNewUserPrivObj: CreateNewUserPrivObj = (
   email,
   password,
@@ -68,4 +38,3 @@ export const createNewUserPubObj: CreateNewUserPubObj = (
 
   return user_pub_docData;
 };
-//////////////////////////////////////
