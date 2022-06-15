@@ -49,6 +49,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
+    "test:rules": "jest --watchAll --testPathPattern=src/tests/security-rules --detectOpenHandles --forceExit",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -71,7 +72,10 @@
   },
   "devDependencies": {
     "@capacitor/cli": "3.4.0",
-    "@types/uuid": "^8.3.4"
+    "@firebase/testing": "^0.20.11",
+    "@types/uuid": "^8.3.4",
+    "jest": "^28.1.1",
+    "ts-jest": "^28.0.5"
   },
   "description": "An Ionic project"
 }

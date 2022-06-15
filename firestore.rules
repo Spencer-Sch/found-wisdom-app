@@ -1,0 +1,338 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // universal access granted
+    // match /{document=**} {
+      // allow read: if true;
+      // allow create, write, update, delete: if request.auth != null;
+    // }
+    
+    function userIsSignedIn(request) {
+      return request.auth != null;
+    }
+    
+    function userIsAccessingOwnDocs(request, docId) {
+      return request.auth.uid == docId;
+    }
+    
+    /////////////////////////
+    // USERS_COLLECTION RULES
+    /////////////////////////
+    match /usersCollection/{userId} {
+      allow read, write: if true;
+    }
+    // match /usersCollection/{userId} {
+    //   // only allow a signed in user to create a new user document
+    //   // user uid must match the id of the document they are trying to read / write
+    //   allow read, write: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
+    //   // CAN I ENFORCE A SCHEMA OF SUBCOLLECTIONS AND DOCS HERE???
+    // }
+    
+    ///////////////////////////////////
+    // USERS_COLLECTION/USER_PRIV RULES
+    ///////////////////////////////////
+    match /usersCollection/{userId}/user_priv/user_priv {
+      allow read, write: if true;
+    }
+    // match /usersCollection/{userId}/user_priv/user_priv {
+    //   // `date_joined`: string, required
+    //   // `email`: string, required
+    //   // `password`: string, required
+    //   // `uid`: string, required
+    //   // `username`: string, requried
+    //   // `profile_img`: string ('' by default), required
+       
+    //   function userPrivFieldsAreValidTypes(docData) {
+    //     return docData.date_joined is string &&
+    //     	docData.email is string &&
+    //     	docData.password is string &&
+    //     	docData.uid is string &&
+    //     	docData.username is string &&
+    //     	docData.profile_img is string;
+    //   }
+      
+    //   function dateJoinedAndUidAreNotChanged(docData) {
+    //     return docData.diff(resource.data).unchangedKeys().hasAll([
+    //       "date_joined",
+    //       "uid",
+    //     ])
+    //   }
+      
+    //   function allAndOnlyUserPrivFieldsArePresent(docData) {
+    //     return docData.keys().hasAll([
+    //       "date_joined",
+    //       "email",
+    //       "password",
+    //       "uid",
+    //       "username",
+    //       "profile_img"
+    //     ]) &&
+    //     docData.keys().hasOnly([
+    //       "date_joined",
+    //       "email",
+    //       "password",
+    //       "uid",
+    //       "username",
+    //       "profile_img"
+    //     ]);
+    //   }
+       
+    //   // only allow a signed in user to read their own private data doc
+    //   allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
+      
+      
+    //   allow create: if
+    //   	// only allow a signed in user to create their own private data doc
+    //     userIsSignedIn(request) && 
+    //     userIsAccessingOwnDocs(request, userId) &&
+    //     // only allow if all required fields, and only required fields, are included
+    //     allAndOnlyUserPrivFieldsArePresent(request.resource.data) &&
+    //     // all fields must be of the appropriate type
+    //     userPrivFieldsAreValidTypes(request.resource.data);
+        
+        
+    //   allow update: if
+    //     // only let a signed in user update their own private data doc
+    //     userIsSignedIn(request) && 
+    //     userIsAccessingOwnDocs(request, userId) &&
+    //     // don't allow 'date_joined' or 'uid' to be edited
+    //     dateJoinedAndUidAreNotChanged(request.resource.data) &&
+    //     // only allow if all required fields, and only required fields, are included
+    //     allAndOnlyUserPrivFieldsArePresent(request.resource.data) &&
+    //     // all fields must be of the appropriate type
+    //     userPrivFieldsAreValidTypes(request.resource.data);
+        
+    //   // allow delete: if...
+    //     // rules for deleting this doc (someone deleting their account)
+    // }
+    
+    //////////////////////////////////
+    // USERS_COLLECTION/USER_PUB RULES
+    //////////////////////////////////
+    match /usersCollection/{userId}/user_pub/user_pub {
+      allow read, write: if true;
+    }
+//     match /usersCollection/{userId}/user_pub/user_pub {
+//       // `date_joined`: string, required
+//       // `username`: string, requried
+//       // `profile_img`: string ('' by default), required
+    
+//       function userPubFieldsAreValidTypes(docData) {
+//         return docData.date_joined is string &&
+//         	docData.username is string &&
+//         	docData.profile_img is string;
+//       }
+      
+//       function dateJoinedIsNotChanged(docData) {
+//         return docData.diff(resource.data).unchangedKeys().hasAll([
+//           "date_joined",
+//         ])
+//       }
+      
+//       function allAndOnlyUserPubFieldsArePresent(docData) {
+//         return docData.keys().hasAll([
+//           "date_joined",
+//           "username",
+//           "profile_img"
+//         ]) &&
+//         docData.keys().hasOnly([
+//           "date_joined",
+//           "username",
+//           "profile_img"
+//         ]);
+//       }
+      
+//       // allow any signed in user to read another user's public doc
+//       allow read: if userIsSignedIn(request);
+    
+//       allow create: if
+//         // only let a signed in user create their own pub data doc
+//         userIsSignedIn(request) &&
+//         userIsAccessingOwnDocs(request, userId) &&
+//         // only allow if all required fields, and only required fields, are included
+//         allAndOnlyUserPubFieldsArePresent(request.resource.data) &&
+//         // all fields must be of the appropriate type
+//         userPubFieldsAreValidTypes(request.resource.data);
+//         // ADD SCHEMA ENFORCMENT CHECKS ON INCOMING OBJECT
+
+//       allow update: if
+//         // only let a signed in user update their own pub data doc
+//         userIsSignedIn(request) && 
+//         userIsAccessingOwnDocs(request, userId) &&
+//         // don't allow 'date_joined' to be edited
+//         dateJoinedIsNotChanged(request.resource.data) &&
+//         // only allow if all required fields, and only required fields, are included
+//         allAndOnlyUserPubFieldsArePresent(request.resource.data) &&
+//         // all fields must be of the appropriate type
+//         userPubFieldsAreValidTypes(request.resource.data);
+      
+//       // allow delete: if...
+//         // rules for deleting this doc (someone deleting their account)
+//     }
+    
+    ////////////////////////////////////////////////////////
+    // USERS_COLLECTION/WISDOM_IDS/NEXT_WISDOM_TO_PUSH RULES
+    ////////////////////////////////////////////////////////
+    match /usersCollection/{userId}/wisdom_ids/next_wisdom_to_push {
+      allow read, write: if true;
+    }
+    // match /usersCollection/{userId}/wisdom_ids/next_wisdom_to_push {
+    //   // `wisdomId`: string | null (null by default), required
+      
+    //   function allAndOnlyNWTPFieldsArePresent(docData) {
+    //     return docData.keys().hasAll([
+    //       "wisdomId"
+    //     ]) &&
+    //     docData.keys().hasOnly([
+    //       "wisdomId"
+    //     ]);
+    //   }
+      
+    //   function NWTPFieldsAreValidTypes(docData) {
+    //     return docData.wisdomId == null ||
+    //     docData.wisdomId is string;
+    //   }
+      
+    //   // only allow a signed in user to read their next_wisdom_to_push
+    //   allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
+      
+    //   allow create: if
+    //     // only allow a signed in user to create their own next_wisdom_to_push doc
+    //     userIsSignedIn(request) &&
+    //     userIsAccessingOwnDocs(request, userId) &&
+    //     // only allow if all required fields, and only required fields, are included
+    //     allAndOnlyNWTPFieldsArePresent(request.resource.data) &&
+    //     // when first created, next_wisdom_to_push.wisdomId should be null
+    //     request.resource.data.wisdomId == null;
+      
+    //   allow update: if
+    //     // only allow a signed in user to update their own next_wisdom_to_push doc
+    //     userIsSignedIn(request) &&
+    //     userIsAccessingOwnDocs(request, userId) &&
+    //     // only allow if all required fields, and only required fields, are included
+    //     allAndOnlyNWTPFieldsArePresent(request.resource.data) &&
+    //     // all fields must be of the appropriate type
+    //     NWTPFieldsAreValidTypes(request.resource.data);
+      
+    //   // allow delete: if...
+    //     // rules for deleting this doc (someone deleting their account)
+    // }
+    
+    ////////////////////////////////////////////////////
+    // USERS_COLLECTION/WISDOM_IDS/USER_CATEGORIES RULES
+    ////////////////////////////////////////////////////
+    match /usersCollection/{userId}/wisdom_ids/user_categories {
+      allow read, write: if true;
+    }
+    // match /usersCollection/{userId}/wisdom_ids/user_categories {
+    //   // `userCategories`: array (empty by default), required
+       
+    //   function userCategoriesFieldsAreValidTypes(docData) {
+    //     return docData.userCategories is list;
+    //   }
+      
+    //   function allAndOnlyUserCategoryFieldsArePresent(docData) {
+    //     return docData.keys().hasAll([
+    //       "userCategories",
+    //     ]) &&
+    //     docData.keys().hasOnly([
+    //       "userCategories",
+    //     ]);
+    //   }
+       
+    //   // only allow a signed in user to read their own user categories doc
+    //   allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
+      
+      
+    //   allow create: if
+    //   	// only allow a signed in user to create their own user categories doc
+    //     userIsSignedIn(request) && 
+    //     userIsAccessingOwnDocs(request, userId) &&
+    //     // only allow if all required fields, and only required fields, are included
+    //     allAndOnlyUserCategoryFieldsArePresent(request.resource.data) &&
+    //     // all fields must be of the appropriate type
+    //     userCategoriesFieldsAreValidTypes(request.resource.data);
+        
+        
+    //   allow update: if
+    //     // only let a signed in user update their own user categories doc
+    //     userIsSignedIn(request) && 
+    //     userIsAccessingOwnDocs(request, userId) &&
+    //     // only allow if all required fields, and only required fields, are included
+    //     allAndOnlyUserCategoryFieldsArePresent(request.resource.data) &&
+    //     // all fields must be of the appropriate type
+    //     userCategoriesFieldsAreValidTypes(request.resource.data);
+        
+    //   // allow delete: if...
+    //     // rules for deleting this doc (someone deleting their account)
+    // }
+    
+    ////////////////////////////////////////////////
+    // USERS_COLLECTION/WISDOM_IDS/WISDOMS_ALL RULES
+    ////////////////////////////////////////////////
+    match /usersCollection/{userId}/wisdom_ids/wisdoms_all {
+      allow read, write: if true;
+    }
+    // match /usersCollection/{userId}/wisdom_ids/wisdoms_all {
+    //   // `ids`: array (empty by default), required
+       
+    //   function wisdomsAllFieldsAreValidTypes(docData) {
+    //     return docData.ids is list &&
+    //       docData.ids[docData.ids.size() - 1] is string;
+    //   }
+      
+    //   function allAndOnlyWisdomsAllFieldsArePresent(docData) {
+    //     return docData.keys().hasAll([
+    //       "ids",
+    //     ]) &&
+    //     docData.keys().hasOnly([
+    //       "ids",
+    //     ]);
+    //   }
+       
+    //   // only allow a signed in user to read their own wisdoms_all doc
+    //   allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
+      
+      
+    //   allow create: if
+    //   	// only allow a signed in user to create their own wisdoms_all doc
+    //     userIsSignedIn(request) && 
+    //     userIsAccessingOwnDocs(request, userId) &&
+    //     // only allow if all required fields, and only required fields, are included
+    //     allAndOnlyWisdomsAllFieldsArePresent(request.resource.data) &&
+    //     // all fields must be of the appropriate type
+    //     wisdomsAllFieldsAreValidTypes(request.resource.data);
+        
+        
+    //   allow update: if
+    //     // only let a signed in user update their own wisdoms_all doc
+    //     userIsSignedIn(request) && 
+    //     userIsAccessingOwnDocs(request, userId) &&
+    //     // only allow if all required fields, and only required fields, are included
+    //     allAndOnlyWisdomsAllFieldsArePresent(request.resource.data) &&
+    //     // all fields must be of the appropriate type
+    //     wisdomsAllFieldsAreValidTypes(request.resource.data);
+        
+    //   // allow delete: if...
+    //     // rules for deleting this doc (someone deleting their account)
+    // }
+    
+    ///////////////////////////
+    // WISDOMS_COLLECTION RULES
+    ///////////////////////////
+    match /wisdomsCollection {
+      // never allow wisdomsCollection to be deleted
+      allow delete: if false;
+    }
+    
+    match /wisdomsCollection/{wisdomId} {
+      allow read, write: if true;
+    }
+    // match /wisdomsCollection/{wisdomId} {
+    //   // only allow a signed in user to read / write wisdoms
+    //   allow read, write: if userIsSignedIn(request);
+    //   // ADD SCHEMA ENFORCMENT CHECKS ON INCOMING OBJECT
+    // }
+    
+  }
+}
