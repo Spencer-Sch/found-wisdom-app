@@ -1,5 +1,5 @@
 import { firestore } from '@firebase/testing';
-const firebase = require('../../../node_modules/@firebase/testing');
+const firebase = require('../../../../node_modules/@firebase/testing');
 
 /*====================
  CLI COMMANDS
