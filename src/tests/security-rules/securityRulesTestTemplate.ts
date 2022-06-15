@@ -32,9 +32,6 @@ type GetAdminFirestore = () => firestore.Firestore;
 ====================*/
 
 const MY_PROJECT_ID = 'foundwisdom-76365';
-// const myId = 'user_abc';
-// const theirId = 'user_xyz';
-// const myAuth = { uid: myId, email: 'abc@gmail.com' };
 const myId: string = 'user_abc';
 const theirId: string = 'user_xyz';
 const myAuth: MyAuth = { uid: myId, email: 'abc@gmail.com' };
@@ -65,9 +62,8 @@ beforeEach(async () => {
  TESTS
 ====================*/
 
-describe('Security Rules Tests', () => {
-  test('basic read test against rules', async () => {
-    // const db = getFirestore(null);
+describe('[ specify which collection/document you are testing against here ]', () => {
+  test('[ describe test specifics here ]', async () => {
     const db = getFirestore(null);
     const testDoc = db.collection('usersCollection').doc('testDoc');
     return firebase.assertSucceeds(testDoc.get()).then(() => {});
