@@ -32,12 +32,10 @@ type GetAdminFirestore = () => firestore.Firestore;
 ====================*/
 
 const MY_PROJECT_ID = 'foundwisdom-76365';
-// const myId = 'user_abc';
-// const theirId = 'user_xyz';
-// const myAuth = { uid: myId, email: 'abc@gmail.com' };
 const myUid: string = 'user_abc';
-const theirId: string = 'user_xyz';
+const theirUid: string = 'user_xyz';
 const myAuth: MyAuth = { uid: myUid, email: 'abc@gmail.com' };
+const USERS_COLLECTION = 'usersCollection';
 
 /*====================
  HELPER FUNCTIONS
@@ -66,17 +64,71 @@ beforeEach(async () => {
 ====================*/
 
 describe('Tests for usersCollection security rules', () => {
-  test('unauthorized user should not be able to read from usersCollection', async () => {
-    // setup usersCollection collection in emulator
+  test("unauthorized user can't read from usersCollection", async () => {
+    // setup
     const admin = getAdminFirestore();
     const docId = myUid;
-    const setupDoc = admin.collection('usersCollection').doc(docId);
+    const setupDoc = admin.collection(USERS_COLLECTION).doc(docId);
     await setupDoc.set({ testData: 'testData' });
 
-    // test code
+    // test
     const db = getFirestore(null);
-    const testRead = db.collection('usersCollection').doc(docId);
+    const testRead = db.collection(USERS_COLLECTION).doc(docId);
     await firebase.assertFails(testRead.get());
+  });
+
+  test("authorized user can't read another user's doc", async () => {
+    // setup
+    const admin = getAdminFirestore();
+    const setupDoc = admin.collection(USERS_COLLECTION).doc(theirUid);
+    await setupDoc.set({ testData: 'testData' });
+
+    // test
+    const db = getFirestore(myAuth);
+    const testRead = db.collection(USERS_COLLECTION).doc(theirUid);
+    await firebase.assertFails(testRead.get());
+  });
+
+  test('authorized user can read their own doc', async () => {
+    // setup
+    const admin = getAdminFirestore();
+    const setupDoc = admin.collection(USERS_COLLECTION).doc(myUid);
+    await setupDoc.set({ testData: 'testData' });
+
+    // test
+    const db = getFirestore(myAuth);
+    const testRead = db.collection(USERS_COLLECTION).doc(myUid);
+    await firebase.assertSucceeds(testRead.get());
+  });
+
+  test("unauthorized user can't write to usersCollection", async () => {
+    const db = getFirestore(null);
+    const testWrite = db.collection(USERS_COLLECTION).doc('non_user');
+    await firebase.assertFails(testWrite.set({ testData: 'testData' }));
+  });
+
+  test("authorized user can't write to another user's doc", async () => {
+    // setup
+    const admin = getAdminFirestore();
+    const setupDoc = admin.collection(USERS_COLLECTION).doc(theirUid);
+    await setupDoc.set({ testData: 'testData' });
+
+    // test
+    const db = getFirestore(myAuth);
+    const testWrite = db.collection(USERS_COLLECTION).doc(theirUid);
+    await firebase.assertFails(testWrite.set({ newData: 'newData' }));
+  });
+
+  test('authorized user can write to their own doc', async () => {
+    // setup
+    const admin = getAdminFirestore();
+    const setupDoc = admin.collection(USERS_COLLECTION).doc(myUid);
+    await setupDoc.set({ testData: 'testData' });
+
+    // test
+    const db = getFirestore(myAuth);
+    const testWrite = db.collection(USERS_COLLECTION).doc(myUid);
+    await firebase.assertSucceeds(testWrite.set({ newData: 'newData' }));
   });
 });
 

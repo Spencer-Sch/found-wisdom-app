@@ -25,7 +25,6 @@ service cloud.firestore {
       // only allow a signed in user to create a new user document
       // user uid must match the id of the document they are trying to read / write
       allow read, write: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
-      // CAN I ENFORCE A SCHEMA OF SUBCOLLECTIONS AND DOCS HERE???
     }
     
     ///////////////////////////////////
