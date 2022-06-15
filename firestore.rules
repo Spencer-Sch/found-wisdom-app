@@ -31,79 +31,76 @@ service cloud.firestore {
     // USERS_COLLECTION/USER_PRIV RULES
     ///////////////////////////////////
     match /usersCollection/{userId}/user_priv/user_priv {
-      allow read, write: if true;
+      // `date_joined`: string, required
+      // `email`: string, required
+      // `password`: string, required
+      // `uid`: string, required
+      // `username`: string, requried
+      // `profile_img`: string ('' by default), required
+       
+      function userPrivFieldsAreValidTypes(docData) {
+        return docData.date_joined is string &&
+        	docData.email is string &&
+        	docData.password is string &&
+        	docData.uid is string &&
+        	docData.username is string &&
+        	docData.profile_img is string;
+      }
+      
+      function dateJoinedAndUidAreNotChanged(docData) {
+        return docData.diff(resource.data).unchangedKeys().hasAll([
+          "date_joined",
+          "uid",
+        ])
+      }
+      
+      function allAndOnlyUserPrivFieldsArePresent(docData) {
+        return docData.keys().hasAll([
+          "date_joined",
+          "email",
+          "password",
+          "uid",
+          "username",
+          "profile_img"
+        ]) &&
+        docData.keys().hasOnly([
+          "date_joined",
+          "email",
+          "password",
+          "uid",
+          "username",
+          "profile_img"
+        ]);
+      }
+       
+      // only allow a signed in user to read their own private data doc
+      allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
+      
+      
+      allow create: if
+      	// only allow a signed in user to create their own private data doc
+        userIsSignedIn(request) && 
+        userIsAccessingOwnDocs(request, userId) &&
+        // only allow if all required fields, and only required fields, are included
+        allAndOnlyUserPrivFieldsArePresent(request.resource.data) &&
+        // all fields must be of the appropriate type
+        userPrivFieldsAreValidTypes(request.resource.data);
+        
+        
+      allow update: if
+        // only let a signed in user update their own private data doc
+        userIsSignedIn(request) && 
+        userIsAccessingOwnDocs(request, userId) &&
+        // don't allow 'date_joined' or 'uid' to be edited
+        dateJoinedAndUidAreNotChanged(request.resource.data) &&
+        // only allow if all required fields, and only required fields, are included
+        allAndOnlyUserPrivFieldsArePresent(request.resource.data) &&
+        // all fields must be of the appropriate type
+        userPrivFieldsAreValidTypes(request.resource.data);
+        
+      // allow delete: if...
+        // rules for deleting this doc (someone deleting their account)
     }
-    // match /usersCollection/{userId}/user_priv/user_priv {
-    //   // `date_joined`: string, required
-    //   // `email`: string, required
-    //   // `password`: string, required
-    //   // `uid`: string, required
-    //   // `username`: string, requried
-    //   // `profile_img`: string ('' by default), required
-       
-    //   function userPrivFieldsAreValidTypes(docData) {
-    //     return docData.date_joined is string &&
-    //     	docData.email is string &&
-    //     	docData.password is string &&
-    //     	docData.uid is string &&
-    //     	docData.username is string &&
-    //     	docData.profile_img is string;
-    //   }
-      
-    //   function dateJoinedAndUidAreNotChanged(docData) {
-    //     return docData.diff(resource.data).unchangedKeys().hasAll([
-    //       "date_joined",
-    //       "uid",
-    //     ])
-    //   }
-      
-    //   function allAndOnlyUserPrivFieldsArePresent(docData) {
-    //     return docData.keys().hasAll([
-    //       "date_joined",
-    //       "email",
-    //       "password",
-    //       "uid",
-    //       "username",
-    //       "profile_img"
-    //     ]) &&
-    //     docData.keys().hasOnly([
-    //       "date_joined",
-    //       "email",
-    //       "password",
-    //       "uid",
-    //       "username",
-    //       "profile_img"
-    //     ]);
-    //   }
-       
-    //   // only allow a signed in user to read their own private data doc
-    //   allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
-      
-      
-    //   allow create: if
-    //   	// only allow a signed in user to create their own private data doc
-    //     userIsSignedIn(request) && 
-    //     userIsAccessingOwnDocs(request, userId) &&
-    //     // only allow if all required fields, and only required fields, are included
-    //     allAndOnlyUserPrivFieldsArePresent(request.resource.data) &&
-    //     // all fields must be of the appropriate type
-    //     userPrivFieldsAreValidTypes(request.resource.data);
-        
-        
-    //   allow update: if
-    //     // only let a signed in user update their own private data doc
-    //     userIsSignedIn(request) && 
-    //     userIsAccessingOwnDocs(request, userId) &&
-    //     // don't allow 'date_joined' or 'uid' to be edited
-    //     dateJoinedAndUidAreNotChanged(request.resource.data) &&
-    //     // only allow if all required fields, and only required fields, are included
-    //     allAndOnlyUserPrivFieldsArePresent(request.resource.data) &&
-    //     // all fields must be of the appropriate type
-    //     userPrivFieldsAreValidTypes(request.resource.data);
-        
-    //   // allow delete: if...
-    //     // rules for deleting this doc (someone deleting their account)
-    // }
     
     //////////////////////////////////
     // USERS_COLLECTION/USER_PUB RULES
