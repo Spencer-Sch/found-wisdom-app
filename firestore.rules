@@ -158,49 +158,46 @@ service cloud.firestore {
     // USERS_COLLECTION/WISDOM_IDS/NEXT_WISDOM_TO_PUSH RULES
     ////////////////////////////////////////////////////////
     match /usersCollection/{userId}/wisdom_ids/next_wisdom_to_push {
-      allow read, write: if true;
+      // `wisdomId`: string | null (null by default), required
+      
+      function allAndOnlyNWTPFieldsArePresent(docData) {
+        return docData.keys().hasAll([
+          "wisdomId"
+        ]) &&
+        docData.keys().hasOnly([
+          "wisdomId"
+        ]);
+      }
+      
+      function NWTPFieldsAreValidTypes(docData) {
+        return docData.wisdomId == null ||
+        docData.wisdomId is string;
+      }
+      
+      // only allow a signed in user to read their next_wisdom_to_push
+      allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
+      
+      allow create: if
+        // only allow a signed in user to create their own next_wisdom_to_push doc
+        userIsSignedIn(request) &&
+        userIsAccessingOwnDocs(request, userId) &&
+        // only allow if all required fields, and only required fields, are included
+        allAndOnlyNWTPFieldsArePresent(request.resource.data) &&
+        // when first created, next_wisdom_to_push.wisdomId should be null
+        request.resource.data.wisdomId == null;
+      
+      allow update: if
+        // only allow a signed in user to update their own next_wisdom_to_push doc
+        userIsSignedIn(request) &&
+        userIsAccessingOwnDocs(request, userId) &&
+        // only allow if all required fields, and only required fields, are included
+        allAndOnlyNWTPFieldsArePresent(request.resource.data) &&
+        // all fields must be of the appropriate type
+        NWTPFieldsAreValidTypes(request.resource.data);
+      
+      // allow delete: if...
+        // rules for deleting this doc (someone deleting their account)
     }
-    // match /usersCollection/{userId}/wisdom_ids/next_wisdom_to_push {
-    //   // `wisdomId`: string | null (null by default), required
-      
-    //   function allAndOnlyNWTPFieldsArePresent(docData) {
-    //     return docData.keys().hasAll([
-    //       "wisdomId"
-    //     ]) &&
-    //     docData.keys().hasOnly([
-    //       "wisdomId"
-    //     ]);
-    //   }
-      
-    //   function NWTPFieldsAreValidTypes(docData) {
-    //     return docData.wisdomId == null ||
-    //     docData.wisdomId is string;
-    //   }
-      
-    //   // only allow a signed in user to read their next_wisdom_to_push
-    //   allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
-      
-    //   allow create: if
-    //     // only allow a signed in user to create their own next_wisdom_to_push doc
-    //     userIsSignedIn(request) &&
-    //     userIsAccessingOwnDocs(request, userId) &&
-    //     // only allow if all required fields, and only required fields, are included
-    //     allAndOnlyNWTPFieldsArePresent(request.resource.data) &&
-    //     // when first created, next_wisdom_to_push.wisdomId should be null
-    //     request.resource.data.wisdomId == null;
-      
-    //   allow update: if
-    //     // only allow a signed in user to update their own next_wisdom_to_push doc
-    //     userIsSignedIn(request) &&
-    //     userIsAccessingOwnDocs(request, userId) &&
-    //     // only allow if all required fields, and only required fields, are included
-    //     allAndOnlyNWTPFieldsArePresent(request.resource.data) &&
-    //     // all fields must be of the appropriate type
-    //     NWTPFieldsAreValidTypes(request.resource.data);
-      
-    //   // allow delete: if...
-    //     // rules for deleting this doc (someone deleting their account)
-    // }
     
     ////////////////////////////////////////////////////
     // USERS_COLLECTION/WISDOM_IDS/USER_CATEGORIES RULES
