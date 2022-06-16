@@ -203,50 +203,47 @@ service cloud.firestore {
     // USERS_COLLECTION/WISDOM_IDS/USER_CATEGORIES RULES
     ////////////////////////////////////////////////////
     match /usersCollection/{userId}/wisdom_ids/user_categories {
-      allow read, write: if true;
+      // `userCategories`: array (empty by default), required
+       
+      function userCategoriesFieldsAreValidTypes(docData) {
+        return docData.userCategories is list;
+      }
+      
+      function allAndOnlyUserCategoryFieldsArePresent(docData) {
+        return docData.keys().hasAll([
+          "userCategories",
+        ]) &&
+        docData.keys().hasOnly([
+          "userCategories",
+        ]);
+      }
+       
+      // only allow a signed in user to read their own user categories doc
+      allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
+      
+      
+      allow create: if
+      	// only allow a signed in user to create their own user categories doc
+        userIsSignedIn(request) && 
+        userIsAccessingOwnDocs(request, userId) &&
+        // only allow if all required fields, and only required fields, are included
+        allAndOnlyUserCategoryFieldsArePresent(request.resource.data) &&
+        // all fields must be of the appropriate type
+        userCategoriesFieldsAreValidTypes(request.resource.data);
+        
+        
+      allow update: if
+        // only let a signed in user update their own user categories doc
+        userIsSignedIn(request) && 
+        userIsAccessingOwnDocs(request, userId) &&
+        // only allow if all required fields, and only required fields, are included
+        allAndOnlyUserCategoryFieldsArePresent(request.resource.data) &&
+        // all fields must be of the appropriate type
+        userCategoriesFieldsAreValidTypes(request.resource.data);
+        
+      // allow delete: if...
+        // rules for deleting this doc (someone deleting their account)
     }
-    // match /usersCollection/{userId}/wisdom_ids/user_categories {
-    //   // `userCategories`: array (empty by default), required
-       
-    //   function userCategoriesFieldsAreValidTypes(docData) {
-    //     return docData.userCategories is list;
-    //   }
-      
-    //   function allAndOnlyUserCategoryFieldsArePresent(docData) {
-    //     return docData.keys().hasAll([
-    //       "userCategories",
-    //     ]) &&
-    //     docData.keys().hasOnly([
-    //       "userCategories",
-    //     ]);
-    //   }
-       
-    //   // only allow a signed in user to read their own user categories doc
-    //   allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
-      
-      
-    //   allow create: if
-    //   	// only allow a signed in user to create their own user categories doc
-    //     userIsSignedIn(request) && 
-    //     userIsAccessingOwnDocs(request, userId) &&
-    //     // only allow if all required fields, and only required fields, are included
-    //     allAndOnlyUserCategoryFieldsArePresent(request.resource.data) &&
-    //     // all fields must be of the appropriate type
-    //     userCategoriesFieldsAreValidTypes(request.resource.data);
-        
-        
-    //   allow update: if
-    //     // only let a signed in user update their own user categories doc
-    //     userIsSignedIn(request) && 
-    //     userIsAccessingOwnDocs(request, userId) &&
-    //     // only allow if all required fields, and only required fields, are included
-    //     allAndOnlyUserCategoryFieldsArePresent(request.resource.data) &&
-    //     // all fields must be of the appropriate type
-    //     userCategoriesFieldsAreValidTypes(request.resource.data);
-        
-    //   // allow delete: if...
-    //     // rules for deleting this doc (someone deleting their account)
-    // }
     
     ////////////////////////////////////////////////
     // USERS_COLLECTION/WISDOM_IDS/WISDOMS_ALL RULES
