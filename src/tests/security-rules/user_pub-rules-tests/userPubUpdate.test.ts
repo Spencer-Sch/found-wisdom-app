@@ -109,7 +109,7 @@ describe('Tests for usersCollection/user_pub "allow update" security rules', () 
     const setupDoc = getSetupDoc(theirUid);
     await setupDoc.set(user_pub_correct_doc);
     // test
-    const testUpdate = getTestDoc(myAuth, myUid);
+    const testUpdate = getTestDoc(myAuth, theirUid);
     await firebase.assertFails(testUpdate.update({ username: 'matthew' }));
   });
   test("authorized user can't update 'date_joined' field in their own usersCollection/{userId}/user_pub/user_pub doc", async () => {

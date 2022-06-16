@@ -112,7 +112,7 @@ describe('Tests for usersCollection/user_priv "allow update" security rules', ()
     const setupDoc = getSetupDoc(theirUid);
     await setupDoc.set(user_priv_correct_doc);
     // test
-    const testUpdate = getTestDoc(myAuth, myUid);
+    const testUpdate = getTestDoc(myAuth, theirUid);
     await firebase.assertFails(testUpdate.update({ username: 'matthew' }));
   });
   test('authorized user can update their own usersCollection/{userId}/user_priv/user_priv doc as long as the doc meets all criteria', async () => {
