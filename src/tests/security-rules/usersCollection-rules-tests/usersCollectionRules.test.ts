@@ -26,6 +26,13 @@ interface MyAuth {
 
 type GetFirestore = (auth: MyAuth | null) => firestore.Firestore;
 type GetAdminFirestore = () => firestore.Firestore;
+type GetSetupDoc = (
+  uid: string
+) => firestore.DocumentReference<firestore.DocumentData>;
+type GetTestDoc = (
+  auth: MyAuth | null,
+  uid: string
+) => firestore.DocumentReference<firestore.DocumentData>;
 
 /*====================
  CONSTANTS
@@ -51,6 +58,16 @@ const getAdminFirestore: GetAdminFirestore = () => {
   return firebase.initializeAdminApp({ projectId: MY_PROJECT_ID }).firestore();
 };
 
+const getSetupDoc: GetSetupDoc = (uid) => {
+  const admin = getAdminFirestore();
+  return admin.collection(USERS_COLLECTION).doc(uid);
+};
+
+const getTestDoc: GetTestDoc = (auth, uid) => {
+  const db = getFirestore(auth);
+  return db.collection(USERS_COLLECTION).doc(uid);
+};
+
 /*====================
  TEST SETUP
 ====================*/
@@ -63,71 +80,56 @@ beforeEach(async () => {
  TESTS
 ====================*/
 
-describe('Tests for usersCollection security rules', () => {
+describe('Tests for usersCollection "allow read" security rules', () => {
   test("unauthorized user can't read from usersCollection", async () => {
     // setup
-    const admin = getAdminFirestore();
-    const docId = myUid;
-    const setupDoc = admin.collection(USERS_COLLECTION).doc(docId);
+    const setupDoc = getSetupDoc(myUid);
     await setupDoc.set({ testData: 'testData' });
-
     // test
-    const db = getFirestore(null);
-    const testRead = db.collection(USERS_COLLECTION).doc(docId);
+    const testRead = getTestDoc(null, myUid);
     await firebase.assertFails(testRead.get());
   });
 
   test("authorized user can't read another user's doc", async () => {
     // setup
-    const admin = getAdminFirestore();
-    const setupDoc = admin.collection(USERS_COLLECTION).doc(theirUid);
+    const setupDoc = getSetupDoc(theirUid);
     await setupDoc.set({ testData: 'testData' });
-
     // test
-    const db = getFirestore(myAuth);
-    const testRead = db.collection(USERS_COLLECTION).doc(theirUid);
+    const testRead = getTestDoc(myAuth, theirUid);
     await firebase.assertFails(testRead.get());
   });
 
   test('authorized user can read their own doc', async () => {
     // setup
-    const admin = getAdminFirestore();
-    const setupDoc = admin.collection(USERS_COLLECTION).doc(myUid);
+    const setupDoc = getSetupDoc(myUid);
     await setupDoc.set({ testData: 'testData' });
-
     // test
-    const db = getFirestore(myAuth);
-    const testRead = db.collection(USERS_COLLECTION).doc(myUid);
+    const testRead = getTestDoc(myAuth, myUid);
     await firebase.assertSucceeds(testRead.get());
   });
+});
 
+describe('Tests for usersCollection "allow write" security rules', () => {
   test("unauthorized user can't write to usersCollection", async () => {
-    const db = getFirestore(null);
-    const testWrite = db.collection(USERS_COLLECTION).doc('non_user');
+    const testWrite = getTestDoc(null, 'non_user');
     await firebase.assertFails(testWrite.set({ testData: 'testData' }));
   });
 
   test("authorized user can't write to another user's doc", async () => {
     // setup
-    const admin = getAdminFirestore();
-    const setupDoc = admin.collection(USERS_COLLECTION).doc(theirUid);
+    const setupDoc = getSetupDoc(theirUid);
     await setupDoc.set({ testData: 'testData' });
-
     // test
-    const db = getFirestore(myAuth);
-    const testWrite = db.collection(USERS_COLLECTION).doc(theirUid);
+    const testWrite = getTestDoc(myAuth, theirUid);
     await firebase.assertFails(testWrite.set({ newData: 'newData' }));
   });
 
   test('authorized user can write to their own doc', async () => {
     // setup
-    const admin = getAdminFirestore();
-    const setupDoc = admin.collection(USERS_COLLECTION).doc(myUid);
+    const setupDoc = getSetupDoc(myUid);
     await setupDoc.set({ testData: 'testData' });
-
     // test
-    const db = getFirestore(myAuth);
-    const testWrite = db.collection(USERS_COLLECTION).doc(myUid);
+    const testWrite = getTestDoc(myAuth, myUid);
     await firebase.assertSucceeds(testWrite.set({ newData: 'newData' }));
   });
 });
