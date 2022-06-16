@@ -12,29 +12,6 @@ const firebase = require('../../../../node_modules/@firebase/testing');
 // $ npm run test:rules
 
 /*====================
- INTERFACES
-====================*/
-
-interface MyAuth {
-  uid: string;
-  email: string;
-}
-
-/*====================
- TYPES
-====================*/
-
-type GetFirestore = (auth: MyAuth | null) => firestore.Firestore;
-type GetAdminFirestore = () => firestore.Firestore;
-type GetSetupDoc = (
-  uid: string
-) => firestore.DocumentReference<firestore.DocumentData>;
-type GetTestDoc = (
-  auth: MyAuth | null,
-  uid: string
-) => firestore.DocumentReference<firestore.DocumentData>;
-
-/*====================
  CONSTANTS
 ====================*/
 
@@ -55,6 +32,29 @@ const user_priv_correct_doc = {
 };
 
 /*====================
+ INTERFACES
+====================*/
+
+interface MyAuth {
+  uid: string;
+  email: string;
+}
+
+/*====================
+ TYPES
+====================*/
+
+type GetFirestore = (auth: MyAuth | null) => firestore.Firestore;
+type GetAdminFirestore = () => firestore.Firestore;
+type GetSetupDoc = (
+  docId: string
+) => firestore.DocumentReference<firestore.DocumentData>;
+type GetTestDoc = (
+  auth: MyAuth | null,
+  docId: string
+) => firestore.DocumentReference<firestore.DocumentData>;
+
+/*====================
  HELPER FUNCTIONS
 ====================*/
 
@@ -68,20 +68,20 @@ const getAdminFirestore: GetAdminFirestore = () => {
   return firebase.initializeAdminApp({ projectId: MY_PROJECT_ID }).firestore();
 };
 
-const getSetupDoc: GetSetupDoc = (uid) => {
+const getSetupDoc: GetSetupDoc = (docId) => {
   const admin = getAdminFirestore();
   return admin
     .collection(USERS_COLLECTION)
-    .doc(uid)
+    .doc(docId)
     .collection(USER_PRIV)
     .doc(USER_PRIV);
 };
 
-const getTestDoc: GetTestDoc = (auth, uid) => {
+const getTestDoc: GetTestDoc = (auth, docId) => {
   const db = getFirestore(auth);
   return db
     .collection(USERS_COLLECTION)
-    .doc(uid)
+    .doc(docId)
     .collection(USER_PRIV)
     .doc(USER_PRIV);
 };
