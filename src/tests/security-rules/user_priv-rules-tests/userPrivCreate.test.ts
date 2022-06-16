@@ -94,6 +94,19 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testCreate = getTestDoc(myAuth, myUid);
     await firebase.assertSucceeds(testCreate.set(user_priv_correct_doc));
   });
+  test("authorized user can't create their own usersCollection/{userId}/user_priv/user_priv doc with unrecognized field(s)", async () => {
+    const testDoc = {
+      date_joined: '06/15/22',
+      email: 'abc@gmail.com',
+      password: 'password',
+      uid: 'user_abc',
+      username: 'spencer',
+      profile_img: '',
+      favorite_color: 'green', // unrecognized field
+    };
+    const testUpdate = getTestDoc(myAuth, myUid);
+    await firebase.assertFails(testUpdate.set(testDoc));
+  });
   test("authorized user can't create usersCollection/{userId}/user_priv/user_priv doc if 'date_joined' field is missing", async () => {
     const testDoc = {
       // date_joined: '06/15/22', is missing
