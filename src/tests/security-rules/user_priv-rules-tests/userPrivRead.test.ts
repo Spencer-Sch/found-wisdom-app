@@ -26,6 +26,13 @@ interface MyAuth {
 
 type GetFirestore = (auth: MyAuth | null) => firestore.Firestore;
 type GetAdminFirestore = () => firestore.Firestore;
+type GetSetupDoc = (
+  uid: string
+) => firestore.DocumentReference<firestore.DocumentData>;
+type GetTestDoc = (
+  auth: MyAuth | null,
+  uid: string
+) => firestore.DocumentReference<firestore.DocumentData>;
 
 /*====================
  CONSTANTS
@@ -52,6 +59,24 @@ const getAdminFirestore: GetAdminFirestore = () => {
   return firebase.initializeAdminApp({ projectId: MY_PROJECT_ID }).firestore();
 };
 
+const getSetupDoc: GetSetupDoc = (uid) => {
+  const admin = getAdminFirestore();
+  return admin
+    .collection(USERS_COLLECTION)
+    .doc(uid)
+    .collection(USER_PRIV)
+    .doc(USER_PRIV);
+};
+
+const getTestDoc: GetTestDoc = (auth, uid) => {
+  const db = getFirestore(auth);
+  return db
+    .collection(USERS_COLLECTION)
+    .doc(uid)
+    .collection(USER_PRIV)
+    .doc(USER_PRIV);
+};
+
 /*====================
  TEST SETUP
 ====================*/
@@ -67,56 +92,26 @@ beforeEach(async () => {
 describe('Tests for usersCollection/user_priv "allow read" security rules', () => {
   test("unauthorized user can't read from usersCollection/{userId}/user_priv/user_priv", async () => {
     // setup
-    const admin = getAdminFirestore();
-    const setupDoc = admin
-      .collection(USERS_COLLECTION)
-      .doc(myUid)
-      .collection(USER_PRIV)
-      .doc(USER_PRIV);
+    const setupDoc = getSetupDoc(myUid);
     await setupDoc.set({ testData: 'testData' });
     // test
-    const db = getFirestore(null);
-    const testRead = db
-      .collection(USERS_COLLECTION)
-      .doc(myUid)
-      .collection(USER_PRIV)
-      .doc(USER_PRIV);
+    const testRead = getTestDoc(null, myUid);
     await firebase.assertFails(testRead.get());
   });
   test("authorized user can't read another user's usersCollection/{userId}/user_priv/user_priv", async () => {
     // setup
-    const admin = getAdminFirestore();
-    const setupDoc = admin
-      .collection(USERS_COLLECTION)
-      .doc(theirUid)
-      .collection(USER_PRIV)
-      .doc(USER_PRIV);
+    const setupDoc = getSetupDoc(theirUid);
     await setupDoc.set({ testData: 'testData' });
     // test
-    const db = getFirestore(myAuth);
-    const testRead = db
-      .collection(USERS_COLLECTION)
-      .doc(theirUid)
-      .collection(USER_PRIV)
-      .doc(USER_PRIV);
+    const testRead = getTestDoc(myAuth, theirUid);
     await firebase.assertFails(testRead.get());
   });
   test('authorized user can read their own usersCollection/{userId}/user_priv/user_priv', async () => {
     // setup
-    const admin = getAdminFirestore();
-    const setupDoc = admin
-      .collection(USERS_COLLECTION)
-      .doc(myUid)
-      .collection(USER_PRIV)
-      .doc(USER_PRIV);
+    const setupDoc = getSetupDoc(myUid);
     await setupDoc.set({ testData: 'testData' });
     // test
-    const db = getFirestore(myAuth);
-    const testRead = db
-      .collection(USERS_COLLECTION)
-      .doc(myUid)
-      .collection(USER_PRIV)
-      .doc(USER_PRIV);
+    const testRead = getTestDoc(myAuth, myUid);
     await firebase.assertSucceeds(testRead.get());
   });
 });
