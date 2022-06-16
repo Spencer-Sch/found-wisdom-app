@@ -12,6 +12,23 @@ const firebase = require('../../../../node_modules/@firebase/testing');
 // $ npm run test:rules
 
 /*====================
+ CONSTANTS
+====================*/
+
+const MY_PROJECT_ID = 'foundwisdom-76365';
+const myUid: string = 'user_abc';
+const theirUid: string = 'user_xyz';
+const myAuth: MyAuth = { uid: myUid, email: 'abc@gmail.com' };
+const USERS_COLLECTION = 'usersCollection';
+const USER_PUB = 'user_pub';
+
+const user_pub_correct_doc = {
+  date_joined: '06/15/22',
+  username: 'spencer',
+  profile_img: '',
+};
+
+/*====================
  INTERFACES
 ====================*/
 
@@ -29,23 +46,6 @@ type GetTestDoc = (
   auth: MyAuth | null,
   docId: string
 ) => firestore.DocumentReference<firestore.DocumentData>;
-
-/*====================
- CONSTANTS
-====================*/
-
-const MY_PROJECT_ID = 'foundwisdom-76365';
-const myUid: string = 'user_abc';
-const theirUid: string = 'user_xyz';
-const myAuth: MyAuth = { uid: myUid, email: 'abc@gmail.com' };
-const USERS_COLLECTION = 'usersCollection';
-const USER_PUB = 'user_pub';
-
-const user_pub_correct_doc = {
-  date_joined: '06/15/22',
-  username: 'spencer',
-  profile_img: '',
-};
 
 /*====================
  HELPER FUNCTIONS
