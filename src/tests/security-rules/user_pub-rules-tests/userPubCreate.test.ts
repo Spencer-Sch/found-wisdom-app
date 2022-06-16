@@ -25,10 +25,6 @@ interface MyAuth {
 ====================*/
 
 type GetFirestore = (auth: MyAuth | null) => firestore.Firestore;
-type GetAdminFirestore = () => firestore.Firestore;
-type GetSetupDoc = (
-  docId: string
-) => firestore.DocumentReference<firestore.DocumentData>;
 type GetTestDoc = (
   auth: MyAuth | null,
   docId: string
@@ -59,19 +55,6 @@ const getFirestore: GetFirestore = (auth) => {
   return firebase
     .initializeTestApp({ projectId: MY_PROJECT_ID, auth: auth })
     .firestore();
-};
-
-const getAdminFirestore: GetAdminFirestore = () => {
-  return firebase.initializeAdminApp({ projectId: MY_PROJECT_ID }).firestore();
-};
-
-const getSetupDoc: GetSetupDoc = (docId) => {
-  const admin = getAdminFirestore();
-  return admin
-    .collection(USERS_COLLECTION)
-    .doc(docId)
-    .collection(USER_PUB)
-    .doc(USER_PUB);
 };
 
 const getTestDoc: GetTestDoc = (auth, docId) => {
