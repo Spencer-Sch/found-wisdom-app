@@ -311,13 +311,24 @@ service cloud.firestore {
     }
     
     match /wisdomsCollection/{wisdomId} {
-      allow read, write: if true;
+      // `createdBy`: string, required
+      // `wisdomData`: object, required {
+      //   `date`: string, required
+      //   `id`: string, required
+      //   `source`: string, requried
+      //   `text`: string, required
+      // }
+
+
+      // only allow a signed in user to read wisdoms
+      allow read: if userIsSignedIn(request);
+
+      // allow create: if //...
+
+      // allow update: if //...
+
+      // allow delete: if //...
     }
-    // match /wisdomsCollection/{wisdomId} {
-    //   // only allow a signed in user to read / write wisdoms
-    //   allow read, write: if userIsSignedIn(request);
-    //   // ADD SCHEMA ENFORCMENT CHECKS ON INCOMING OBJECT
-    // }
     
   }
 }
