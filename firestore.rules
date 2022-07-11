@@ -173,6 +173,10 @@ service cloud.firestore {
         return docData.wisdomId == null ||
         docData.wisdomId is string;
       }
+
+      function wisdomIdIsNull(docData) {
+        return docData.wisdomId == null;
+      }
       
       // only allow a signed in user to read their next_wisdom_to_push
       allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
@@ -184,7 +188,7 @@ service cloud.firestore {
         // only allow if all required fields, and only required fields, are included
         allAndOnlyNWTPFieldsArePresent(request.resource.data) &&
         // when first created, next_wisdom_to_push.wisdomId should be null
-        request.resource.data.wisdomId == null;
+        wisdomIdIsNull(request.resource.data);
       
       allow update: if
         // only allow a signed in user to update their own next_wisdom_to_push doc
