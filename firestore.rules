@@ -248,52 +248,52 @@ service cloud.firestore {
     ////////////////////////////////////////////////
     // USERS_COLLECTION/WISDOM_IDS/WISDOMS_ALL RULES
     ////////////////////////////////////////////////
-    match /usersCollection/{userId}/wisdom_ids/wisdoms_all {
-      allow read, write: if true;
-    }
     // match /usersCollection/{userId}/wisdom_ids/wisdoms_all {
-    //   // `ids`: array (empty by default), required
-       
-    //   function wisdomsAllFieldsAreValidTypes(docData) {
-    //     return docData.ids is list &&
-    //       docData.ids[docData.ids.size() - 1] is string;
-    //   }
-      
-    //   function allAndOnlyWisdomsAllFieldsArePresent(docData) {
-    //     return docData.keys().hasAll([
-    //       "ids",
-    //     ]) &&
-    //     docData.keys().hasOnly([
-    //       "ids",
-    //     ]);
-    //   }
-       
-    //   // only allow a signed in user to read their own wisdoms_all doc
-    //   allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
-      
-      
-    //   allow create: if
-    //   	// only allow a signed in user to create their own wisdoms_all doc
-    //     userIsSignedIn(request) && 
-    //     userIsAccessingOwnDocs(request, userId) &&
-    //     // only allow if all required fields, and only required fields, are included
-    //     allAndOnlyWisdomsAllFieldsArePresent(request.resource.data) &&
-    //     // all fields must be of the appropriate type
-    //     wisdomsAllFieldsAreValidTypes(request.resource.data);
-        
-        
-    //   allow update: if
-    //     // only let a signed in user update their own wisdoms_all doc
-    //     userIsSignedIn(request) && 
-    //     userIsAccessingOwnDocs(request, userId) &&
-    //     // only allow if all required fields, and only required fields, are included
-    //     allAndOnlyWisdomsAllFieldsArePresent(request.resource.data) &&
-    //     // all fields must be of the appropriate type
-    //     wisdomsAllFieldsAreValidTypes(request.resource.data);
-        
-    //   // allow delete: if...
-    //     // rules for deleting this doc (someone deleting their account)
+    //   allow read, write: if true;
     // }
+    match /usersCollection/{userId}/wisdom_ids/wisdoms_all {
+      // `ids`: array (empty by default), required
+       
+      function wisdomsAllFieldsAreValidTypes(docData) {
+        return docData.ids is list &&
+          docData.ids[docData.ids.size() - 1] is string;
+      }
+      
+      function allAndOnlyWisdomsAllFieldsArePresent(docData) {
+        return docData.keys().hasAll([
+          "ids",
+        ]) &&
+        docData.keys().hasOnly([
+          "ids",
+        ]);
+      }
+       
+      // only allow a signed in user to read their own wisdoms_all doc
+      allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
+      
+      
+      // allow create: if
+      // 	// only allow a signed in user to create their own wisdoms_all doc
+      //   userIsSignedIn(request) && 
+      //   userIsAccessingOwnDocs(request, userId) &&
+      //   // only allow if all required fields, and only required fields, are included
+      //   allAndOnlyWisdomsAllFieldsArePresent(request.resource.data) &&
+      //   // all fields must be of the appropriate type
+      //   wisdomsAllFieldsAreValidTypes(request.resource.data);
+        
+        
+      // allow update: if
+      //   // only let a signed in user update their own wisdoms_all doc
+      //   userIsSignedIn(request) && 
+      //   userIsAccessingOwnDocs(request, userId) &&
+      //   // only allow if all required fields, and only required fields, are included
+      //   allAndOnlyWisdomsAllFieldsArePresent(request.resource.data) &&
+      //   // all fields must be of the appropriate type
+      //   wisdomsAllFieldsAreValidTypes(request.resource.data);
+        
+      // allow delete: if...
+        // rules for deleting this doc (someone deleting their account)
+    }
     
     ///////////////////////////
     // WISDOMS_COLLECTION RULES
