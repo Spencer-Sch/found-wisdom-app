@@ -248,13 +248,14 @@ service cloud.firestore {
     ////////////////////////////////////////////////
     // USERS_COLLECTION/WISDOM_IDS/WISDOMS_ALL RULES
     ////////////////////////////////////////////////
-    // match /usersCollection/{userId}/wisdom_ids/wisdoms_all {
-    //   allow read, write: if true;
-    // }
     match /usersCollection/{userId}/wisdom_ids/wisdoms_all {
       // `ids`: array (empty by default), required
        
-      function wisdomsAllFieldsAreValidTypes(docData) {
+      function wisdomsAllIdsFieldIsEmptyList(docData) {
+        return docData.ids == [];
+      }
+
+      function wisdomsAllIdsFieldIsListOfStrings(docData) {
         return docData.ids is list &&
           docData.ids[docData.ids.size() - 1] is string;
       }
@@ -272,14 +273,14 @@ service cloud.firestore {
       allow read: if userIsSignedIn(request) && userIsAccessingOwnDocs(request, userId);
       
       
-      // allow create: if
-      // 	// only allow a signed in user to create their own wisdoms_all doc
-      //   userIsSignedIn(request) && 
-      //   userIsAccessingOwnDocs(request, userId) &&
-      //   // only allow if all required fields, and only required fields, are included
-      //   allAndOnlyWisdomsAllFieldsArePresent(request.resource.data) &&
-      //   // all fields must be of the appropriate type
-      //   wisdomsAllFieldsAreValidTypes(request.resource.data);
+      allow create: if
+      	// only allow a signed in user to create their own wisdoms_all doc
+        userIsSignedIn(request) && 
+        userIsAccessingOwnDocs(request, userId) &&
+        // only allow if all required fields, and only required fields, are included
+        allAndOnlyWisdomsAllFieldsArePresent(request.resource.data) &&
+        // when first created, wisdoms_all.ids should be an empty list
+        wisdomsAllIdsFieldIsEmptyList(request.resource.data);
         
         
       // allow update: if
@@ -289,7 +290,10 @@ service cloud.firestore {
       //   // only allow if all required fields, and only required fields, are included
       //   allAndOnlyWisdomsAllFieldsArePresent(request.resource.data) &&
       //   // all fields must be of the appropriate type
-      //   wisdomsAllFieldsAreValidTypes(request.resource.data);
+      //   wisdomsAllIdsFieldIsListOfStrings(request.resource.data);
+
+      // !!!!!! wisdomsAllIdsFieldIsListOfStrings will (probably) deny update when deleting the last item from wisdoms_all.id
+      // because it will again check the index for a string and there will be no item in the array to check.
         
       // allow delete: if...
         // rules for deleting this doc (someone deleting their account)
