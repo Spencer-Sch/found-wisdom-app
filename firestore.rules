@@ -12,6 +12,11 @@ service cloud.firestore {
     /////////////////////////
     // USERS_COLLECTION RULES
     /////////////////////////
+    match /usersCollection {
+      // never allow usersCollection to be deleted
+      allow delete: if false;
+    }
+
     match /usersCollection/{userId} {
       // only allow a signed in user to create a new user document
       // user uid must match the id of the document they are trying to read / write
@@ -319,13 +324,68 @@ service cloud.firestore {
       //   `text`: string, required
       // }
 
+      function authDisplayNameMatchesCreatedByField(request) {
+        return request.auth.token.name == request.resource.data.createdBy;
+      }
+      
+      function allAndOnlyRequiredFieldsArePresent(docData) {
+        return docData.keys().hasAll([
+          "createdBy",
+          "wisdomData",
+        ]) &&
+        docData.keys().hasOnly([
+          "createdBy",
+          "wisdomData",
+        ]) &&
+        docData.wisdomData.keys().hasAll([
+          "date",
+          "id",
+          "source",
+          "text",
+        ]) &&
+        docData.wisdomData.keys().hasOnly([
+          "date",
+          "id",
+          "source",
+          "text",
+        ]);
+      }
+
+      function allWisdomObjectFieldsAreValidTypes(docData) {
+        return docData.createdBy is string &&
+          docData.wisdomData is map &&
+          docData.wisdomData.date is string &&
+          docData.wisdomData.id is string &&
+          docData.wisdomData.source is string &&
+          docData.wisdomData.text is string;
+      }
+
+      function dateJoinedAndUidAreNotChanged(docData) {
+        return docData.diff(resource.data).unchangedKeys().hasAll([
+          "date_joined",
+          "uid",
+        ])
+      }
+
 
       // only allow a signed in user to read wisdoms
       allow read: if userIsSignedIn(request);
 
-      // allow create: if //...
+      allow create: if
+        // only allow a signed in user to create wisdoms
+        userIsSignedIn(request) &&
+        // only allow a user to create wisdoms under their username
+        authDisplayNameMatchesCreatedByField(request) &&
+        // only allow if all required fields, and only required fields, are included
+        allAndOnlyRequiredFieldsArePresent(request.resource.data) &&
+        // 'id' field can not be an empty string
+        request.resource.data.wisdomData.id.size() > 0 &&
+        // only allow if all fields are of correct type
+        allWisdomObjectFieldsAreValidTypes(request.resource.data);
 
-      // allow update: if //...
+      // allow update: if
+        //...
+        // createdBy, date, and id cannot be changed 
 
       // allow delete: if //...
     }
