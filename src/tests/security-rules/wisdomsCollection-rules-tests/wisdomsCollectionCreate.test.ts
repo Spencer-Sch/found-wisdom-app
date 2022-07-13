@@ -268,67 +268,65 @@ describe('Tests for wisdomsCollection "allow create" security rules', () => {
     );
   });
 
-  // src/tests/security-rules/wisdomsCollection-rules-tests/wisdomsCollectionCreate.test.ts
+  test("authorized user can't create a wisdom if 'wisdomData.date' field is of wrong type", async () => {
+    const testWrite = getTestDoc(myAuth, wisdomUid1);
+    await firebase.assertFails(
+      testWrite.set({
+        createdBy: 'spencer',
+        wisdomData: {
+          date: 123, // wrong type
+          id: 'd36cd4d3-536e-4776-b1ba-4f86b34ccb9b',
+          source: 'Someone famous',
+          text: 'Something wise this person once said...',
+        },
+      })
+    );
+  });
 
-  // test("authorized user can't create a wisdom if 'wisdomData.date' field is missing", async () => {
-  //   const testWrite = getTestDoc(myAuth, wisdomUid1);
-  //   await firebase.assertFails(
-  //     testWrite.set({
-  //       createdBy: 'spencer',
-  //       wisdomData: {
-  //         // date: 'Jun 29, 2022', missing field
-  //         id: 'd36cd4d3-536e-4776-b1ba-4f86b34ccb9b',
-  //         source: 'Someone famous',
-  //         text: 'Something wise this person once said...',
-  //       },
-  //     })
-  //   );
-  // });
+  test("authorized user can't create a wisdom if 'wisdomData.id' field is of wrong type", async () => {
+    const testWrite = getTestDoc(myAuth, wisdomUid1);
+    await firebase.assertFails(
+      testWrite.set({
+        createdBy: 'spencer',
+        wisdomData: {
+          date: 'Jun 29, 2022',
+          id: 123, // wrong type
+          source: 'Someone famous',
+          text: 'Something wise this person once said...',
+        },
+      })
+    );
+  });
 
-  // test("authorized user can't create a wisdom if 'wisdomData.id' field is missing", async () => {
-  //   const testWrite = getTestDoc(myAuth, wisdomUid1);
-  //   await firebase.assertFails(
-  //     testWrite.set({
-  //       createdBy: 'spencer',
-  //       wisdomData: {
-  //         date: 'Jun 29, 2022',
-  //         // id: 'd36cd4d3-536e-4776-b1ba-4f86b34ccb9b', missing field
-  //         source: 'Someone famous',
-  //         text: 'Something wise this person once said...',
-  //       },
-  //     })
-  //   );
-  // });
+  test("authorized user can't create a wisdom if 'wisdomData.source' field is of wrong type", async () => {
+    const testWrite = getTestDoc(myAuth, wisdomUid1);
+    await firebase.assertFails(
+      testWrite.set({
+        createdBy: 'spencer',
+        wisdomData: {
+          date: 'Jun 29, 2022',
+          id: 'd36cd4d3-536e-4776-b1ba-4f86b34ccb9b',
+          source: 123, // wrong type
+          text: 'Something wise this person once said...',
+        },
+      })
+    );
+  });
 
-  // test("authorized user can't create a wisdom if 'wisdomData.source' field is missing", async () => {
-  //   const testWrite = getTestDoc(myAuth, wisdomUid1);
-  //   await firebase.assertFails(
-  //     testWrite.set({
-  //       createdBy: 'spencer',
-  //       wisdomData: {
-  //         date: 'Jun 29, 2022',
-  //         id: 'd36cd4d3-536e-4776-b1ba-4f86b34ccb9b',
-  //         // source: 'Someone famous', missing field
-  //         text: 'Something wise this person once said...',
-  //       },
-  //     })
-  //   );
-  // });
-
-  // test("authorized user can't create a wisdom if 'wisdomData.text' field is missing", async () => {
-  //   const testWrite = getTestDoc(myAuth, wisdomUid1);
-  //   await firebase.assertFails(
-  //     testWrite.set({
-  //       createdBy: 'spencer',
-  //       wisdomData: {
-  //         date: 'Jun 29, 2022',
-  //         id: 'd36cd4d3-536e-4776-b1ba-4f86b34ccb9b',
-  //         source: 'Someone famous',
-  //         // text: 'Something wise this person once said...', missing field
-  //       },
-  //     })
-  //   );
-  // });
+  test("authorized user can't create a wisdom if 'wisdomData.text' field is of wrong type", async () => {
+    const testWrite = getTestDoc(myAuth, wisdomUid1);
+    await firebase.assertFails(
+      testWrite.set({
+        createdBy: 'spencer',
+        wisdomData: {
+          date: 'Jun 29, 2022',
+          id: 'd36cd4d3-536e-4776-b1ba-4f86b34ccb9b',
+          source: 'Someone famous',
+          text: 123, // wrong type
+        },
+      })
+    );
+  });
 });
 
 /*====================
