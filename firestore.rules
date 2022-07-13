@@ -324,8 +324,26 @@ service cloud.firestore {
       //   `text`: string, required
       // }
 
-      function authDisplayNameMatchesCreatedByField(request) {
+      function authDisplayNameMatchesCreatedByFieldCreate(request) {
+        // specifically for when wisdom is being created
+        // compare user displayName against incoming request.resource
         return request.auth.token.name == request.resource.data.createdBy;
+      }
+
+      function authDisplayNameMatchesCreatedByFieldUpdate(request, resource) {
+        // specifically for when wisdom is being updated
+        // compare user displayName against existing resource
+        return request.auth.token.name == resource.data.createdBy;
+      }
+
+      function createdByAndDateAndIdAreNotChanged(docData, resource) {
+        return docData.diff(resource.data).unchangedKeys().hasAll([
+          "createdBy",
+        ]) &&
+        docData.wisdomData.diff(resource.data.wisdomData).unchangedKeys().hasAll([
+          "date",
+          "id",
+        ])
       }
       
       function allAndOnlyRequiredFieldsArePresent(docData) {
@@ -360,13 +378,6 @@ service cloud.firestore {
           docData.wisdomData.text is string;
       }
 
-      function dateJoinedAndUidAreNotChanged(docData) {
-        return docData.diff(resource.data).unchangedKeys().hasAll([
-          "date_joined",
-          "uid",
-        ])
-      }
-
 
       // only allow a signed in user to read wisdoms
       allow read: if userIsSignedIn(request);
@@ -375,7 +386,7 @@ service cloud.firestore {
         // only allow a signed in user to create wisdoms
         userIsSignedIn(request) &&
         // only allow a user to create wisdoms under their username
-        authDisplayNameMatchesCreatedByField(request) &&
+        authDisplayNameMatchesCreatedByFieldCreate(request) &&
         // only allow if all required fields, and only required fields, are included
         allAndOnlyRequiredFieldsArePresent(request.resource.data) &&
         // 'id' field can not be an empty string
@@ -383,9 +394,17 @@ service cloud.firestore {
         // only allow if all fields are of correct type
         allWisdomObjectFieldsAreValidTypes(request.resource.data);
 
-      // allow update: if
-        //...
-        // createdBy, date, and id cannot be changed 
+      allow update: if
+        // only allow a signed in user to update wisdoms
+        userIsSignedIn(request) &&
+        // only allow a user to update their own wisdoms
+        authDisplayNameMatchesCreatedByFieldUpdate(request, resource) &&
+        // createdBy, date, and id cannot be changed
+        createdByAndDateAndIdAreNotChanged(request.resource.data, resource) &&
+        // only allow if all required fields, and only required fields, are included
+        allAndOnlyRequiredFieldsArePresent(request.resource.data) &&
+        // only allow if all fields are of correct type
+        allWisdomObjectFieldsAreValidTypes(request.resource.data);
 
       // allow delete: if //...
     }
