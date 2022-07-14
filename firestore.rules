@@ -406,7 +406,11 @@ service cloud.firestore {
         // only allow if all fields are of correct type
         allWisdomObjectFieldsAreValidTypes(request.resource.data);
 
-      // allow delete: if //...
+      allow delete: if
+        // only allow a signed in user to delete wisdoms
+        userIsSignedIn(request) &&
+        // only allow a user to delete thier own wisdoms
+        authDisplayNameMatchesCreatedByFieldUpdate(request, resource);
     }
     
   }
