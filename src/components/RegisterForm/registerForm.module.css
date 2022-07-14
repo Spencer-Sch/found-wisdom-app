@@ -26,6 +26,7 @@
 
 .ss_span {
   color: var(--ion-color-secondary);
+  cursor: pointer;
 }
 
 .my_custom_spinner {
