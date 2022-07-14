@@ -24,7 +24,7 @@ import './theme/variables.css';
 import Header from './components/Header/Header';
 import HomeWrapper from './pages/Home/HomeWrapper';
 import AuthGuard from './components/HOC/AuthGuard';
-import LogInOrRegister from './pages/LogInOrRegister';
+import LogInOrRegister from './pages/LogInOrRegister/LogInOrRegister';
 import WisdomPageWrapper from './pages/WisdomPage/WisdomPageWrapper';
 import WisdomAdd from './pages/WisdomAdd/WisdomAdd';
 import UserAccountWrapper from './pages/UserAccount/UserAccountWrapper';
