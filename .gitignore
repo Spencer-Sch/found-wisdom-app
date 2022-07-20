@@ -24,6 +24,7 @@ NOTES.md
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+CLI_commands.md
 
 npm-debug.log*
 yarn-debug.log*
