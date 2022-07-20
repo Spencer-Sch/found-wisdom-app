@@ -15,7 +15,7 @@ import * as Yup from 'yup';
 import {
   handleEdit,
   updateEditedWisdomInWisdomStore,
-} from '../../functions/wisdomFunctions';
+} from '../../functions_client/wisdomFunctions';
 import { uploadEditedWisdom } from '../../actions/firebaseActions';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 import { WisdomData } from '../../models/models';

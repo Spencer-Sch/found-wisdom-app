@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { IonLoading } from '@ionic/react';
 
 import WisdomPage from './WisdomPage';
-import { findSelectedWisdom } from '../../functions/wisdomFunctions';
+import { findSelectedWisdom } from '../../functions_client/wisdomFunctions';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';
 import { WisdomData } from '../../models/models';

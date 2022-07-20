@@ -17,7 +17,7 @@ import {
 import {
   createNewUserPrivObj,
   createNewUserPubObj,
-} from '../functions/userFunctions';
+} from '../functions_client/userFunctions';
 import {
   WisdomData,
   WisdomObj,
@@ -26,7 +26,7 @@ import {
 import {
   filterDeletedItem,
   getNextWisdomId,
-} from '../functions/wisdomFunctions';
+} from '../functions_client/wisdomFunctions';
 
 /////////////////////////////////////
 // CONSTANTS

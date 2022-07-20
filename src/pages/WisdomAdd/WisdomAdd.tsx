@@ -18,7 +18,7 @@ import * as Yup from 'yup';
 import {
   addNewWisdomToContext,
   buildNewWisdom,
-} from '../../functions/wisdomFunctions';
+} from '../../functions_client/wisdomFunctions';
 import { addNewWisdomToFirestore } from '../../actions/firebaseActions';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';

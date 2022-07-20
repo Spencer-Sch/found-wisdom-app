@@ -13,7 +13,7 @@ import {
 import { home } from 'ionicons/icons';
 
 import WisdomPageModal from '../../components/WisdomPageModal/WisdomPageModal';
-import { deleteWisdomFromWisdomStore } from '../../functions/wisdomFunctions';
+import { deleteWisdomFromWisdomStore } from '../../functions_client/wisdomFunctions';
 import { deleteWisdomFromFirestore } from '../../actions/firebaseActions';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWisdomStore } from '../../contexts/WisdomStoreContext';
