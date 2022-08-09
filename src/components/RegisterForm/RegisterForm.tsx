@@ -17,6 +17,7 @@ import { addUserToDB } from '../../actions/firebaseActions';
 import { SubmitRegistrationForm } from '../../models/models';
 
 import styles from './registerForm.module.css';
+import { checkUsernameAvailability } from '../../actions/cloudFunctionActions';
 
 interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
@@ -51,11 +52,43 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
     },
   });
 
-  const submitForm: SubmitRegistrationForm = ({
+  const submitForm: SubmitRegistrationForm = async ({
     username,
     email,
     password,
   }) => {
+    /////////////////////////
+    // doing this here for now. should this be be called as part of registerNewUser() ?
+    // Check for unique username
+    //
+    // check for unique username on db
+    try {
+      const res = await checkUsernameAvailability(username);
+      const data = await res.json();
+      console.log('availability check ', data);
+
+      if (data.status >= 400) {
+        formik.errors.username =
+          data.code === 'USERNAME_TAKEN'
+            ? 'username unavailable'
+            : data.message;
+        setLoading(false);
+        return;
+      }
+
+      console.log(data.message);
+    } catch (error) {
+      console.log(
+        'something went wrong when checking for username availability...'
+      );
+      console.error(error);
+      return;
+    }
+    //
+    // if username is not available
+    //  return and error
+    // else continue...
+    /////////////////////////
     registerNewUser!(email, password) // I have .then() mixed with async/await. refactor to only use async/await???
       .then(async (onfulfilled) => {
         const newUserUid = onfulfilled.user.uid;
