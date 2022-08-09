@@ -8,6 +8,43 @@ service cloud.firestore {
     function userIsAccessingOwnDocs(request, docId) {
       return request.auth.uid == docId;
     }
+
+    function userIsCreatingOwnDoc(request) {
+      return request.auth.uid == request.resource.data.uid;
+    }
+
+    ///////////////////////////
+    // USERNAMES_COLLECTION RULES
+    ///////////////////////////
+    match /usernamesCollection {
+      // never allow usernamesCollection to be deleted
+      allow delete: if false;
+    }
+
+    match /usernamesCollection/{username} {
+      // `uid`: string, required
+
+      function UidIsValidType(docData) {
+        return docData.uid is string;
+      }
+
+      function allAndOnlyUserPrivFieldsArePresent(docData) {
+        return docData.keys().hasAll([
+          "uid",
+        ]) &&
+        docData.keys().hasOnly([
+          "uid",
+        ]);
+      }
+
+
+      // only cloud functions are allowed to alter or read this collection
+      allow read, update, delete: if false;
+      // client is only allowed to create this doc
+      allow create: if userIsSignedIn(request) && userIsCreatingOwnDoc(request) &&
+      UidIsValidType(request.resource.data) &&
+      allAndOnlyAllowedFieldsArePresent(request.resource.data);
+    }
     
     /////////////////////////
     // USERS_COLLECTION RULES
