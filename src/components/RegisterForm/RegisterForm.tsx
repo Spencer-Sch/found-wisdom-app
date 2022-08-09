@@ -57,39 +57,21 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
     email,
     password,
   }) => {
-    /////////////////////////
-    // doing this here for now. should this be be called as part of registerNewUser() ?
-    // Check for unique username
-    //
-    // check for unique username on db
     try {
       const res = await checkUsernameAvailability(username);
-      const data = await res.json();
-      console.log('availability check ', data);
 
-      if (data.status >= 400) {
-        formik.errors.username =
-          data.code === 'USERNAME_TAKEN'
-            ? 'username unavailable'
-            : data.message;
+      if (res.status >= 400) {
+        formik.errors.username = res.message;
         setLoading(false);
         return;
       }
-
-      console.log(data.message);
+      console.log(res.message);
     } catch (error) {
-      console.log(
-        'something went wrong when checking for username availability...'
-      );
-      console.error(error);
+      console.error('RegisterForm.tsx -> submitForm: ', error);
       return;
     }
-    //
-    // if username is not available
-    //  return and error
-    // else continue...
-    /////////////////////////
-    registerNewUser!(email, password) // I have .then() mixed with async/await. refactor to only use async/await???
+
+    registerNewUser!(email, password) // TODO: I have .then() mixed with async/await. refactor to only use async/await???
       .then(async (onfulfilled) => {
         const newUserUid = onfulfilled.user.uid;
         try {
