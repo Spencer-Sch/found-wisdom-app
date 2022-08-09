@@ -32,6 +32,7 @@ import {
 // CONSTANTS
 /////////////////////////////////////
 
+const USERNAMES_COLLECTION = 'usernamesCollection';
 const USERS_COLLECTION = 'usersCollection';
 const WISDOMS_COLLECTION = 'wisdomsCollection';
 
@@ -110,6 +111,9 @@ export const addUserToDB: AddUserToDB = async (
   username
 ) => {
   const batch = writeBatch(firestoreDB);
+
+  const username_doc_ref = doc(firestoreDB, USERNAMES_COLLECTION, username);
+  batch.set(username_doc_ref, { uid: uid });
 
   const user_priv_ref = buildUserDocRef(uid, 'user_priv', 'user_priv');
   batch.set(
