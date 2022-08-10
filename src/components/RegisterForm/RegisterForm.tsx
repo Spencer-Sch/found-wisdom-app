@@ -18,6 +18,7 @@ import { SubmitRegistrationForm } from '../../models/models';
 
 import styles from './registerForm.module.css';
 import { checkUsernameAvailability } from '../../actions/cloudFunctionActions';
+import { useHistory } from 'react-router';
 
 interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
@@ -25,7 +26,9 @@ interface PropsData {
 
 const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
-  const { registerNewUser, updateUserProfile } = useAuth();
+  const { registerNewUser, updateUserProfile, logOutUser, setRenderHome } =
+    useAuth();
+  const history = useHistory();
 
   const formik = useFormik({
     initialValues: {
@@ -73,16 +76,51 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
 
     registerNewUser!(email, password) // TODO: I have .then() mixed with async/await. refactor to only use async/await???
       .then(async (onfulfilled) => {
-        const newUserUid = onfulfilled.user.uid;
         try {
+          await updateUserProfile!(username);
+        } catch (error) {
+          console.error('registerNewUser -> updateUserProfile failed', error);
+        }
+
+        try {
+          /*********************
+          
+          authUsernameMatchesDocName() in firestore.rules is denying permision when batch writing a new user on registration.
+
+          I debugged in the security rules emulator and everything came out as true and correct variables
+
+          I used the built in playground in the rules tab on the firestore console and everything passed
+
+          but a new write to firestore on registration does not work if authUsernameMatchesDocName() is enabled
+
+          Look harder to confirm that all variables going into the batch write are correct.
+
+          **********************/
+          console.log('Before addUserToDB. userCredential: ', onfulfilled);
+          console.log('Before addUserToDB. Form Username: ', username);
+          console.log(
+            'Before addUserToDB. auth.username: ',
+            onfulfilled.user.displayName
+          );
+          const newUserUid = onfulfilled.user.uid;
           await addUserToDB(email, password, newUserUid, username);
+          //////////////
+          // ORIGINAL
+          // setRenderHome!(true);
+          //////////////
         } catch (e) {
           console.error(
             'addUserToDB failed. RegisterForm.tsx -> registerNewUser: ',
             e
           );
+          await logOutUser!();
+          history.push('login_register');
+          return;
         }
-        updateUserProfile!(username);
+        //////////////
+        // ORIGINAL
+        // updateUserProfile!(username);
+        //////////////
       })
       .catch((e) => {
         console.error('register user: ', e);
