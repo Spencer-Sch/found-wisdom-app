@@ -17,12 +17,15 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    match /usernamesCollection/{username} {
+    match /usernamesCollection/{docName} {
       // `uid`: string, required
 
-      function userIsCreatingOwnDoc(request, username) {
-        return request.auth.uid == request.resource.data.uid &&
-        request.auth.token.name == username;
+      function authIdMatchesDocUid(request) {
+        return request.auth.uid == request.resource.data.uid;
+      }
+
+      function authUsernameMatchesDocName(request, docName) {
+        return request.auth.token.name == docName;
       }
 
       function UidIsValidType(docData) {
@@ -42,7 +45,8 @@ service cloud.firestore {
       allow read, update, delete: if false;
       // client is only allowed to create this doc
       allow create: if userIsSignedIn(request) &&
-      userIsCreatingOwnDoc(request, username) &&
+      authIdMatchesDocUid(request) &&
+      authUsernameMatchesDocName(request, docName) &&
       allAndOnlyAllowedFieldsArePresent(request.resource.data) &&
       // 'uid' field can not be an empty string
       request.resource.data.uid.size() > 0 &&
