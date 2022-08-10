@@ -9,10 +9,6 @@ service cloud.firestore {
       return request.auth.uid == docId;
     }
 
-    function userIsCreatingOwnDoc(request) {
-      return request.auth.uid == request.resource.data.uid;
-    }
-
     ///////////////////////////
     // USERNAMES_COLLECTION RULES
     ///////////////////////////
@@ -24,11 +20,16 @@ service cloud.firestore {
     match /usernamesCollection/{username} {
       // `uid`: string, required
 
+      function userIsCreatingOwnDoc(request, username) {
+        return request.auth.uid == request.resource.data.uid &&
+        request.auth.token.name == username;
+      }
+
       function UidIsValidType(docData) {
         return docData.uid is string;
       }
 
-      function allAndOnlyUserPrivFieldsArePresent(docData) {
+      function allAndOnlyAllowedFieldsArePresent(docData) {
         return docData.keys().hasAll([
           "uid",
         ]) &&
@@ -37,13 +38,15 @@ service cloud.firestore {
         ]);
       }
 
-
       // only cloud functions are allowed to alter or read this collection
       allow read, update, delete: if false;
       // client is only allowed to create this doc
-      allow create: if userIsSignedIn(request) && userIsCreatingOwnDoc(request) &&
-      UidIsValidType(request.resource.data) &&
-      allAndOnlyAllowedFieldsArePresent(request.resource.data);
+      allow create: if userIsSignedIn(request) &&
+      userIsCreatingOwnDoc(request, username) &&
+      allAndOnlyAllowedFieldsArePresent(request.resource.data) &&
+      // 'uid' field can not be an empty string
+      request.resource.data.uid.size() > 0 &&
+      UidIsValidType(request.resource.data);
     }
     
     /////////////////////////
