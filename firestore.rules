@@ -46,7 +46,11 @@ service cloud.firestore {
       // client is only allowed to create this doc
       allow create: if userIsSignedIn(request) &&
       authIdMatchesDocUid(request) &&
-      authUsernameMatchesDocName(request, docName) &&
+      // authUsernameMatchesDocName rule is causing the register new user batch write to fail
+      // I have no idea why this rule is denying permissions
+      // This rule is passed in both the Firebase emulator and the Firebase playground
+      // But it fails in production
+      // authUsernameMatchesDocName(request, docName) &&
       allAndOnlyAllowedFieldsArePresent(request.resource.data) &&
       // 'uid' field can not be an empty string
       request.resource.data.uid.size() > 0 &&
