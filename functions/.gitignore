@@ -7,3 +7,6 @@ typings/
 
 # Node.js dependency directory
 node_modules/
+
+src/uniqueUsername/backup.ts
+src/uniqueUsername/onChangeName.ts
