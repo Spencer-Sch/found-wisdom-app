@@ -55,7 +55,7 @@ type AddUserToDB = (
   password: string,
   uid: string,
   username: string
-) => void;
+) => Promise<void>;
 
 type FetchUserPrivData = (uid: string) => DocumentData;
 
@@ -142,12 +142,12 @@ export const addUserToDB: AddUserToDB = async (
   batch.set(wisdoms_all_ref, { ids: [] });
 
   try {
-    await batch.commit(); // should I check for resolve on the returned promise???
+    return await batch.commit(); // should I check for resolve on the returned promise???
   } catch (e) {
-    console.error(
-      'Error from firebaseActions -> addUserToDB: (batch write) ',
-      e
-    );
+    return Promise.reject({
+      message: 'batch write for new user account failed',
+      error: e,
+    });
   }
 };
 
