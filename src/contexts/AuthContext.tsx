@@ -20,7 +20,7 @@ interface AuthContextResult {
     password: string
   ) => Promise<UserCredential>;
   logOutUser?: () => Promise<void>;
-  updateUserProfile?: (username: string) => void;
+  updateUserProfile?: (username: string) => Promise<any>;
   setRenderHome?: (value: boolean) => void;
   renderHome: boolean;
 }
@@ -46,16 +46,21 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   const updateUserProfile = (username: string) => {
-    updateProfile(auth.currentUser!, {
+    return updateProfile(auth.currentUser!, {
       displayName: username,
       // photoURL: 'https://example.com/jane-q-user/profile.jpg',
     })
       .then(() => {
-        setRenderHome(true);
+        setRenderHome!(true);
+        return Promise.resolve('updateUserProfile successful');
       })
       .catch((error) => {
         // TODO: better error handeling!!!
         console.error('AuthContext/updateUserProfile error: ', error);
+        return Promise.reject({
+          message: 'updateUserProfile failed',
+          error: error,
+        });
       });
   };
 
