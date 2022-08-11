@@ -26,8 +26,7 @@ interface PropsData {
 
 const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
   const [loading, setLoading] = useState(false);
-  const { registerNewUser, updateUserProfile, logOutUser, setRenderHome } =
-    useAuth();
+  const { registerNewUser, updateUserProfile, logOutUser } = useAuth();
   const history = useHistory();
 
   const formik = useFormik({
@@ -61,22 +60,25 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
     password,
   }) => {
     try {
+      // Check to make sure the user submited username is available
       const res = await checkUsernameAvailability(username);
 
       if (res.status >= 400) {
+        // if not, show error to user
         formik.errors.username = res.message;
         setLoading(false);
         return;
       }
-      console.log(res.message);
+      // if it is, then proceed
     } catch (error) {
       console.error('RegisterForm.tsx -> submitForm: ', error);
       return;
     }
-
+    // create a new user auth account
     registerNewUser!(email, password) // TODO: I have .then() mixed with async/await. refactor to only use async/await???
       .then(async (onfulfilled) => {
         try {
+          // add the chosen username to the auth account
           await updateUserProfile!(username);
         } catch (error) {
           console.error('registerNewUser -> updateUserProfile failed', error);
@@ -84,43 +86,27 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
 
         try {
           /*********************
-          
           authUsernameMatchesDocName() in firestore.rules is denying permision when batch writing a new user on registration.
-
           I debugged in the security rules emulator and everything came out as true and correct variables
-
           I used the built in playground in the rules tab on the firestore console and everything passed
-
           but a new write to firestore on registration does not work if authUsernameMatchesDocName() is enabled
-
-          Look harder to confirm that all variables going into the batch write are correct.
-
+          Looked hard to confirm that all variables going into the batch write are correct.
+          I have confirmed that the variables, auth credentials, etc are all present and matching.
+          I have no idea why this security rule is denying permissions.
           **********************/
-          console.log('Before addUserToDB. userCredential: ', onfulfilled);
-          console.log('Before addUserToDB. Form Username: ', username);
-          console.log(
-            'Before addUserToDB. auth.username: ',
-            onfulfilled.user.displayName
-          );
+          // build and send a batch write to firestore to create all user collections and documents
           const newUserUid = onfulfilled.user.uid;
           await addUserToDB(email, password, newUserUid, username);
-          //////////////
-          // ORIGINAL
-          // setRenderHome!(true);
-          //////////////
         } catch (e) {
           console.error(
             'addUserToDB failed. RegisterForm.tsx -> registerNewUser: ',
             e
           );
+          // if the batch write fails, logout the user and send them back to the login screen
           await logOutUser!();
           history.push('login_register');
           return;
         }
-        //////////////
-        // ORIGINAL
-        // updateUserProfile!(username);
-        //////////////
       })
       .catch((e) => {
         console.error('register user: ', e);
