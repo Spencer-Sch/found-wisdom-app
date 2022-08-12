@@ -16,6 +16,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { SubmitLogInForm } from '../../models/models';
 
 import styles from './logInForm.module.css';
+import { getErrorMsg } from '../../functions_client/utilFunctions';
 
 interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
@@ -33,8 +34,8 @@ const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
 
   const formik = useFormik({
     initialValues: {
-      email: 'spencer@test.com',
-      password: 'password',
+      email: '',
+      password: '',
     },
     validationSchema: Yup.object({
       email: Yup.string()
@@ -53,8 +54,13 @@ const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
       .then(() => {
         setRenderHome!(true);
       })
-      .catch((error: Error) => {
-        console.error('register user: ', error);
+      .catch((error) => {
+        const errorMsg = getErrorMsg(error);
+
+        errorMsg.input === 'email'
+          ? (formik.errors.email = errorMsg.msg)
+          : (formik.errors.password = errorMsg.msg);
+        setLoading(false);
       });
   };
 
@@ -66,7 +72,7 @@ const LogInForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
       >
         <form onSubmit={formik.handleSubmit} className={styles.ss_form}>
           <IonText color="dark" className="ion-text-center">
-            <h2>Please Log In</h2>
+            <h2>Log In</h2>
           </IonText>
 
           <IonItem>

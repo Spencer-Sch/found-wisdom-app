@@ -19,6 +19,7 @@ import { SubmitRegistrationForm } from '../../models/models';
 import styles from './registerForm.module.css';
 import { checkUsernameAvailability } from '../../actions/cloudFunctionActions';
 import { useHistory } from 'react-router';
+import { getErrorMsg } from '../../functions_client/utilFunctions';
 
 interface PropsData {
   setShowRegisterForm: (value: boolean) => void;
@@ -76,7 +77,7 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
     }
     // create a new user auth account
     registerNewUser!(email, password) // TODO: I have .then() mixed with async/await. refactor to only use async/await???
-      .then(async (onfulfilled) => {
+      .then(async (UserCredential) => {
         try {
           // add the chosen username to the auth account
           await updateUserProfile!(username);
@@ -95,7 +96,7 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
           I have no idea why this security rule is denying permissions.
           **********************/
           // build and send a batch write to firestore to create all user collections and documents
-          const newUserUid = onfulfilled.user.uid;
+          const newUserUid = UserCredential.user.uid;
           await addUserToDB(email, password, newUserUid, username);
         } catch (e) {
           console.error(
@@ -108,8 +109,17 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
           return;
         }
       })
-      .catch((e) => {
-        console.error('register user: ', e);
+      .catch((error) => {
+        const errorMsg = getErrorMsg(error);
+
+        if (errorMsg.input === 'email') {
+          formik.errors.email = errorMsg.msg;
+        } else if (errorMsg.input === 'password') {
+          formik.errors.password = errorMsg.msg;
+        } else {
+          formik.errors.confirmPassword = errorMsg.msg;
+        }
+        setLoading(false);
       });
   };
 
@@ -121,7 +131,7 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
       >
         <form onSubmit={formik.handleSubmit} className={styles.ss_form}>
           <IonText color="dark" className="ion-text-center">
-            <h2>Please Enter Your Info</h2>
+            <h2>Enter Your Info</h2>
           </IonText>
 
           <IonItem>
