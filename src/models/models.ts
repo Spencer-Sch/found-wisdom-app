@@ -33,7 +33,6 @@ export interface HandleEditArgs {
 export interface UserPrivObj {
   date_joined: string;
   email: string;
-  password: string;
   profile_img: string;
   uid: string;
   username: string;
@@ -73,7 +72,6 @@ export type BuildNewWisdom = (
 
 export type CreateNewUserPrivObj = (
   email: string,
-  password: string,
   uid: string,
   username: string,
   profile_img?: string

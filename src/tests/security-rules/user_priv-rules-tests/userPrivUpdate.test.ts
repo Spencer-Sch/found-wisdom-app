@@ -25,7 +25,6 @@ const USER_PRIV = 'user_priv';
 const user_priv_correct_doc = {
   date_joined: '06/15/22',
   email: 'abc@gmail.com',
-  password: 'password',
   uid: 'user_abc',
   username: 'spencer',
   profile_img: '',
@@ -156,14 +155,6 @@ describe('Tests for usersCollection/user_priv "allow update" security rules', ()
     // test
     const testUpdate = getTestDoc(myAuth, myUid);
     await firebase.assertFails(testUpdate.update({ email: 123 }));
-  });
-  test("authorized user can't update their own usersCollection/{userId}/user_priv/user_priv doc 'password' field if it is not a string", async () => {
-    // setup
-    const setupDoc = getSetupDoc(myUid);
-    await setupDoc.set(user_priv_correct_doc);
-    // test
-    const testUpdate = getTestDoc(myAuth, myUid);
-    await firebase.assertFails(testUpdate.update({ password: 123 }));
   });
   test("authorized user can't update their own usersCollection/{userId}/user_priv/user_priv doc 'username' field if it is not a string", async () => {
     // setup

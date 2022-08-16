@@ -9,7 +9,6 @@ import {
 
 export const createNewUserPrivObj: CreateNewUserPrivObj = (
   email,
-  password,
   uid,
   username,
   profile_img = ''
@@ -17,7 +16,6 @@ export const createNewUserPrivObj: CreateNewUserPrivObj = (
   const user_priv_docData: UserPrivObj = {
     date_joined: format(new Date(), 'MMM dd, yyyy'),
     email,
-    password,
     profile_img,
     uid,
     username,

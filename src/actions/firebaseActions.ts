@@ -52,7 +52,6 @@ type BuildUserDocRef = (
 
 type AddUserToDB = (
   email: string,
-  password: string,
   uid: string,
   username: string
 ) => Promise<void>;
@@ -104,22 +103,14 @@ const buildUserDocRef: BuildUserDocRef = (
   );
 };
 
-export const addUserToDB: AddUserToDB = async (
-  email,
-  password,
-  uid,
-  username
-) => {
+export const addUserToDB: AddUserToDB = async (email, uid, username) => {
   const batch = writeBatch(firestoreDB);
 
   const username_doc_ref = doc(firestoreDB, USERNAMES_COLLECTION, username);
   batch.set(username_doc_ref, { uid: uid });
 
   const user_priv_ref = buildUserDocRef(uid, 'user_priv', 'user_priv');
-  batch.set(
-    user_priv_ref,
-    createNewUserPrivObj(email, password, uid, username)
-  );
+  batch.set(user_priv_ref, createNewUserPrivObj(email, uid, username));
 
   const user_pub_ref = buildUserDocRef(uid, 'user_pub', 'user_pub');
   batch.set(user_pub_ref, createNewUserPubObj(username));

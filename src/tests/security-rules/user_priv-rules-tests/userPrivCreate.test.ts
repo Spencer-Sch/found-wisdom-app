@@ -25,7 +25,6 @@ const USER_PRIV = 'user_priv';
 const user_priv_correct_doc = {
   date_joined: '06/15/22',
   email: 'abc@gmail.com',
-  password: 'password',
   uid: 'user_abc',
   username: 'spencer',
   profile_img: '',
@@ -98,7 +97,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: '06/15/22',
       email: 'abc@gmail.com',
-      password: 'password',
       uid: 'user_abc',
       username: 'spencer',
       profile_img: '',
@@ -111,7 +109,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       // date_joined: '06/15/22', is missing
       email: 'abc@gmail.com',
-      password: 'password',
       uid: 'user_abc',
       username: 'spencer',
       profile_img: '',
@@ -123,19 +120,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: '06/15/22',
       // email: 'abc@gmail.com', is missing
-      password: 'password',
-      uid: 'user_abc',
-      username: 'spencer',
-      profile_img: '',
-    };
-    const testCreate = getTestDoc(myAuth, myUid);
-    await firebase.assertFails(testCreate.set(testDoc));
-  });
-  test("authorized user can't create usersCollection/{userId}/user_priv/user_priv doc if 'password' field is missing", async () => {
-    const testDoc = {
-      date_joined: '06/15/22',
-      email: 'abc@gmail.com',
-      // password: 'password', is missing
       uid: 'user_abc',
       username: 'spencer',
       profile_img: '',
@@ -147,7 +131,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: '06/15/22',
       email: 'abc@gmail.com',
-      password: 'password',
       // uid: 'user_abc', is missing
       username: 'spencer',
       profile_img: '',
@@ -159,7 +142,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: '06/15/22',
       email: 'abc@gmail.com',
-      password: 'password',
       uid: 'user_abc',
       // username: 'spencer', is missing
       profile_img: '',
@@ -171,7 +153,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: '06/15/22',
       email: 'abc@gmail.com',
-      password: 'password',
       uid: 'user_abc',
       username: 'spencer',
       // profile_img: '', is missing
@@ -183,7 +164,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: 123,
       email: 'abc@gmail.com',
-      password: 'password',
       uid: 'user_abc',
       username: 'spencer',
       profile_img: '',
@@ -195,19 +175,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: '06/15/22',
       email: 123,
-      password: 'password',
-      uid: 'user_abc',
-      username: 'spencer',
-      profile_img: '',
-    };
-    const testCreate = getTestDoc(myAuth, myUid);
-    await firebase.assertFails(testCreate.set(testDoc));
-  });
-  test("authorized user can't create usersCollection/{userId}/user_priv/user_priv doc if 'password' field is not a string", async () => {
-    const testDoc = {
-      date_joined: '06/15/22',
-      email: 'abc@gmail.com',
-      password: 123,
       uid: 'user_abc',
       username: 'spencer',
       profile_img: '',
@@ -219,7 +186,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: '06/15/22',
       email: 'abc@gmail.com',
-      password: 'password',
       uid: 123,
       username: 'spencer',
       profile_img: '',
@@ -231,7 +197,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: '06/15/22',
       email: 'abc@gmail.com',
-      password: 'password',
       uid: 'user_abc',
       username: 123,
       profile_img: '',
@@ -243,7 +208,6 @@ describe('Tests for usersCollection/user_priv "allow create" security rules', ()
     const testDoc = {
       date_joined: '06/15/22',
       email: 'abc@gmail.com',
-      password: 'password',
       uid: 'user_abc',
       username: 'spencer',
       profile_img: 123,

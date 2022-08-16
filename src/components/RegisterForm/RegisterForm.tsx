@@ -97,7 +97,7 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
           **********************/
           // build and send a batch write to firestore to create all user collections and documents
           const newUserUid = UserCredential.user.uid;
-          await addUserToDB(email, password, newUserUid, username);
+          await addUserToDB(email, newUserUid, username);
         } catch (e) {
           console.error(
             'addUserToDB failed. RegisterForm.tsx -> registerNewUser: ',

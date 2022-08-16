@@ -77,7 +77,6 @@ service cloud.firestore {
     match /usersCollection/{userId}/user_priv/user_priv {
       // `date_joined`: string, required
       // `email`: string, required
-      // `password`: string, required
       // `uid`: string, required
       // `username`: string, requried
       // `profile_img`: string ('' by default), required
@@ -85,7 +84,6 @@ service cloud.firestore {
       function userPrivFieldsAreValidTypes(docData) {
         return docData.date_joined is string &&
         	docData.email is string &&
-        	docData.password is string &&
         	docData.uid is string &&
         	docData.username is string &&
         	docData.profile_img is string;
@@ -102,7 +100,6 @@ service cloud.firestore {
         return docData.keys().hasAll([
           "date_joined",
           "email",
-          "password",
           "uid",
           "username",
           "profile_img"
@@ -110,7 +107,6 @@ service cloud.firestore {
         docData.keys().hasOnly([
           "date_joined",
           "email",
-          "password",
           "uid",
           "username",
           "profile_img"

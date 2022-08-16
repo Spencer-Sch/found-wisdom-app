@@ -10,7 +10,6 @@ import { fetchUserPrivData } from '../../actions/firebaseActions';
 interface UserPrivInfo {
   date_joined: string;
   email: string;
-  password: string;
   profile_img: string;
   uid: string;
   username: string;
@@ -42,7 +41,6 @@ const UserAccountWrapper: React.FC = () => {
       const data: UserPrivInfo = {
         date_joined: userPrivData.date_joined,
         email: userPrivData.email,
-        password: userPrivData.password,
         profile_img: userPrivData.profile_img,
         uid: userPrivData.uid,
         username: userPrivData.username,
