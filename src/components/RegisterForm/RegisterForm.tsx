@@ -65,18 +65,19 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
       const res = await checkUsernameAvailability(username);
 
       if (res.status >= 400) {
-        // if not, show error to user
+        // if name is not available, show error to user
         formik.errors.username = res.message;
         setLoading(false);
         return;
       }
-      // if it is, then proceed
+      // if name is available, then proceed
     } catch (error) {
       console.error('RegisterForm.tsx -> submitForm: ', error);
       return;
     }
+
     // create a new user auth account
-    registerNewUser!(email, password) // TODO: I have .then() mixed with async/await. refactor to only use async/await???
+    registerNewUser!(email, password)
       .then(async (UserCredential) => {
         try {
           // add the chosen username to the auth account
