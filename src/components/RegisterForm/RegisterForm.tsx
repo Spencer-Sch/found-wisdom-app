@@ -87,13 +87,7 @@ const RegisterForm: React.FC<PropsData> = ({ setShowRegisterForm }) => {
 
         try {
           /*********************
-          authUsernameMatchesDocName() in firestore.rules is denying permision when batch writing a new user on registration.
-          I debugged in the security rules emulator and everything came out as true and correct variables
-          I used the built in playground in the rules tab on the firestore console and everything passed
-          but a new write to firestore on registration does not work if authUsernameMatchesDocName() is enabled
-          Looked hard to confirm that all variables going into the batch write are correct.
-          I have confirmed that the variables, auth credentials, etc are all present and matching.
-          I have no idea why this security rule is denying permissions.
+          See Issue #1 in known_issues_log.md for details
           **********************/
           // build and send a batch write to firestore to create all user collections and documents
           const newUserUid = UserCredential.user.uid;

@@ -93,6 +93,7 @@ describe('Tests for usernamesCollection "allow create" security rules', () => {
 
   // This test is attemtping to test the security rule authUsernameMatchesDocName().
   // with the security rule inactive this test was failing.
+  // See Issue #1 in known_issues_log.md for details
   // test("authorized user can't create a username doc if 'docId' doesn't match their username", async () => {
   //   const testWrite = getTestDoc(myAuth, 'calvin');
   //   await firebase.assertFails(testWrite.set(username_correct_doc));
