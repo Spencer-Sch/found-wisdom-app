@@ -24,9 +24,9 @@ service cloud.firestore {
         return request.auth.uid == request.resource.data.uid;
       }
 
-      function authUsernameMatchesDocName(request, docName) {
-        return request.auth.token.name == docName;
-      }
+      // function authUsernameMatchesDocName(request, docName) {
+      //   return request.auth.token.name == docName;
+      // }
 
       function UidIsValidType(docData) {
         return docData.uid is string;
