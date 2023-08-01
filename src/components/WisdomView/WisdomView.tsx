@@ -45,7 +45,7 @@ const WisdomView: React.FC<PropsData> = ({
     : console.error('WisdomView.tsx: currentUser is null.');
 
   const headerElHeight = document.getElementById('headerEl')?.offsetHeight;
-  const screenAvailHeight = window.screen.availHeight;
+  const innerHeight = window.innerHeight;
 
   const handleDelete = async () => {
     setLoading(true);
@@ -62,7 +62,7 @@ const WisdomView: React.FC<PropsData> = ({
         className={`${styles.ss_grid} ${styles.ss_move_back} ion-no-padding ion-margin-top`}
         style={{
           marginTop: `${headerElHeight}px`,
-          height: `${screenAvailHeight - headerElHeight!}px`,
+          height: `${innerHeight - headerElHeight!}px`,
         }}
       >
         <IonRow>

@@ -5,12 +5,16 @@
 .ss_grid {
   margin: 0;
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
 }
 
 .ss_form {
+  width: 100vw;
+  padding: 0 10px;
   margin-top: -6rem;
 }
 
@@ -31,4 +35,18 @@
 
 .my_custom_spinner {
   color: var(--ion-color-primary);
+}
+
+@media screen and (max-width: 300px) {
+  .ss_form {
+    width: 100vw;
+    padding: 0;
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .ss_form {
+    width: 450px;
+    padding: 0;
+  }
 }

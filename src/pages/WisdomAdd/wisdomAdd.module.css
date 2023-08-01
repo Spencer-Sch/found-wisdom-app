@@ -7,3 +7,20 @@
 .my_custom_spinner {
   color: var(--ion-color-primary);
 }
+
+.ss_page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.ss_content {
+  width: 100vw;
+}
+
+@media screen and (min-width: 600px) {
+  .ss_content {
+    width: 500px;
+  }
+}

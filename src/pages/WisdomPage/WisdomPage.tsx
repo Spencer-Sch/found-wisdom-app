@@ -25,8 +25,9 @@ const WisdomPage: React.FC<PropsData> = ({ passingData }) => {
   });
 
   return (
-    <IonPage>
-      <IonContent id="page-content" fullscreen>
+    <IonPage className={styles.ss_page}>
+      <IonContent id="page-content" className={styles.ss_content}>
+      {/* <IonContent id="page-content" fullscreen> */}
         {!showEdit ? (
           <WisdomView
             currentWisdom={currentWisdom}

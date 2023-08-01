@@ -55,8 +55,8 @@ const WisdomAdd: React.FC = () => {
   });
 
   return (
-    <IonPage>
-      <IonContent id="page-content">
+    <IonPage className={styles.ss_page}>
+      <IonContent id="page-content" className={styles.ss_content}>
         <IonList style={{ marginTop: `${headerElHeight}px` }}>
           <form onSubmit={formik.handleSubmit}>
             <IonItem>

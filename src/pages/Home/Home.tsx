@@ -51,8 +51,9 @@ const Home: React.FC = () => {
   }, [currentUser, reloadCount, fetchWisdomData, userWisdoms]);
 
   return (
-    <IonPage>
-      <IonContent id="page-content" fullscreen>
+    <IonPage className={styles.ss_page}>
+      <IonContent id="page-content" className={styles.ss_content}>
+      {/* <IonContent id="page-content" fullscreen> */}
         <WisdomList loading={loading} />
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton
